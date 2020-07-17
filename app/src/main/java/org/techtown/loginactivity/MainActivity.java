@@ -129,7 +129,7 @@ public class MainActivity extends Activity {
             try {
                 /* 서버연결 */
                 URL url = new URL(
-                        "http://10.210.14.164/login.php");
+                        "http://10.210.2.77/login.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");

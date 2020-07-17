@@ -93,6 +93,7 @@ public class SignActivty extends AppCompatActivity {
             Toast.makeText(this, "가입완료", Toast.LENGTH_LONG).show();
             registDB rdb = new registDB();
             rdb.execute();
+            finish();
         }
         //중복확인을 되었으나 비밀번호가 맞지 않을경우 메시지
         else if (spw!=spwck){
@@ -136,7 +137,7 @@ public class SignActivty extends AppCompatActivity {
             try {
                 /* 서버연결 */
                 URL url = new URL(
-                        "http://10.210.14.164/doublecheck.php");
+                        "http://10.210.2.77/doublecheck.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -289,7 +290,7 @@ public class SignActivty extends AppCompatActivity {
             try {
                 /* 서버연결 */
                 URL url = new URL(
-                        "http://10.210.11.84/snclib_join.php");
+                        "http://10.210.2.77/snclib_join.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
