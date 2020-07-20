@@ -137,7 +137,7 @@ public class SignActivty extends AppCompatActivity {
             try {
                 /* 서버연결 */
                 URL url = new URL(
-                        "http://10.210.2.77/doublecheck.php");
+                        "http://" + MainActivity.CONNECTION_IPADDRESS + "/jwabPHP/doublecheck.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -290,7 +290,7 @@ public class SignActivty extends AppCompatActivity {
             try {
                 /* 서버연결 */
                 URL url = new URL(
-                        "http://10.210.2.77/snclib_join.php");
+                        "http://" + MainActivity.CONNECTION_IPADDRESS + "/jwabPHP/snclib_join.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
