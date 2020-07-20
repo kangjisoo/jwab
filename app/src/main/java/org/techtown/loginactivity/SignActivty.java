@@ -27,12 +27,19 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.jar.Attributes;
 
+
+
 public class SignActivty extends AppCompatActivity {
     final Context context = this;
 
     //중복확인 시 확인가능하면 true, 기본적으로는 false로 설정
-    boolean idDoubleCheck = false;
+    boolean idDoubleCheck=false;
 
+    //중복확인 시 아이디를 수정했을때 확인할 수 있게 도와주는 변수
+    static String doubleChekId=null;
+
+    //url한번만 수정할 수 있도록 수정
+    final String ourUrl="http://10.210.14.164/";
 
     EditText NameText, PhoneText, IdText, PasswordText1, PasswordText2;
     String sname, sphone, sid, spw, spwck;
@@ -81,29 +88,55 @@ public class SignActivty extends AppCompatActivity {
             Toast.makeText(this,"빈칸을 채워주세요.",Toast.LENGTH_LONG).show();
         }
 
+        //공백확인해 주는 조건문
+        else if(spaceCheck(sname)==true||spaceCheck(sphone)==true||spaceCheck(sid)==true||spaceCheck(spw)==true||spaceCheck(spwck)==true){
+
+            Toast.makeText(this,"문자열에 공백이 있으면 안됩니다.",Toast.LENGTH_LONG).show();
+        }
+
         //idDoubleCheck가 완료되지 않으면 기본적으로 false값이 들어가있고 가입하기 눌렀을 시 db에 들어가지 않고 메세지가 뜸
         else if(idDoubleCheck==false) {
             Toast.makeText(this, "중복확인이 되지 않았습니다.", Toast.LENGTH_LONG).show();
+        }
 
+        //중복확인 누른 후 아이디를 저장, 아이디 수정했을 때 중복확인을 다시 하게 하기 위해 만든 else if문
+        else if(doubleChekId.equals(sid)) {
+            if(idDoubleCheck==true) {
+                if (spw.equals(spwck)) {
+
+                    Toast.makeText(this, "가입완료", Toast.LENGTH_LONG).show();
+                    registDB rdb = new registDB();
+                    rdb.execute();
+                    finish();
+                }
+                //중복확인을 되었으나 비밀번호가 맞지 않을경우 메시지
+                else if (spw != spwck) {
+                    //비밀번호가 서로 맞지 않으면 메세지 박스로 알려줌
+                    Toast.makeText(this, "비밀번호가 맞지 않습니다.", Toast.LENGTH_LONG).show();
+
+                }
+                idDoubleCheck=false;
+            }
+        }
+        else
+        {
+            Toast.makeText(this,"중복확인이 되지 않았습니다.",Toast.LENGTH_LONG).show();
         }
 
         //중복확인도 되고 비밀번호와 비밀번호확인이 맞을 경우 가입완료
-        else if (spw.equals(spwck)) {
 
-            Toast.makeText(this, "가입완료", Toast.LENGTH_LONG).show();
-            registDB rdb = new registDB();
-            rdb.execute();
-            finish();
-        }
-        //중복확인을 되었으나 비밀번호가 맞지 않을경우 메시지
-        else if (spw!=spwck){
-            //비밀번호가 서로 맞지 않으면 메세지 박스로 알려줌
-            Toast.makeText(this, "비밀번호가 맞지 않습니다.", Toast.LENGTH_LONG).show();
-
-        }
     }
 
-
+    //공백이 있는지 없는지 검출해주는 메소드(공백이 있으면 true 없으면 false)
+    public boolean spaceCheck(String spaceCheck)
+    {
+        for(int i = 0 ; i < spaceCheck.length() ; i++)
+        {
+            if(spaceCheck.charAt(i) == ' ')
+                return true;
+        }
+        return false;
+    }
 
 
     //중복체크 버튼을 누르면 실행되는 버튼 메소드
@@ -116,6 +149,7 @@ public class SignActivty extends AppCompatActivity {
             //실패시 로그에 메세지 전달
             Log.e("err", e.getMessage());
         }
+
 
         doublecheckDB lDB = new doublecheckDB();
         lDB.execute();
@@ -136,8 +170,7 @@ public class SignActivty extends AppCompatActivity {
             Log.e("POST",param);
             try {
                 /* 서버연결 */
-                URL url = new URL(
-                        "http://10.210.14.164/doublecheck.php");
+                URL url = new URL(ourUrl+"doublecheck.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -202,6 +235,7 @@ public class SignActivty extends AppCompatActivity {
             // 1이면 같은 아이디 없음
             if(data.equals("1"))
             {
+                doubleChekId = sid;
                 Log.e("RESULT","성공적으로 처리되었습니다!");
                 //idDoubleCheck boolean을 true로 설정해 가입하기를 눌렀을 때 실행 가능할 수 있게 변수를 설정하는 부분
                 idDoubleCheck = true;
@@ -290,7 +324,7 @@ public class SignActivty extends AppCompatActivity {
             try {
                 /* 서버연결 */
                 URL url = new URL(
-                        "http://10.210.11.84/snclib_join.php");
+                        ourUrl+"snclib_join.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
