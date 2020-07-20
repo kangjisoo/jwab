@@ -43,8 +43,8 @@ public class MainActivity extends Activity {
     final Context context = this;
 
     //ip 간편하게 바꾸기위해 만든 변수
-    final String ourUrl="http://10.210.14.164/";
-
+    final String ourUrl ="http://10.210.11.84/";
+    
     EditText et_id, et_pw;
     CheckBox chk_auto;
     Button btn_login;
