@@ -40,12 +40,9 @@ import org.json.JSONObject;
 
 public class MainActivity extends Activity {
     public static final int REQUEST_CODE_MENU = 101;
+    public static final String CONNECTION_IPADDRESS = "10.210.2.77";    //20.07.20 현재 localhost IP
+
     final Context context = this;
-
-    //ip 간편하게 바꾸기위해 만든 변수
-    final String ourUrl ="http://10.210.11.84/";
-
-
     EditText et_id, et_pw;
     CheckBox chk_auto;
     Button btn_login;
@@ -134,7 +131,7 @@ public class MainActivity extends Activity {
             try {
                 /* 서버연결 */
                 URL url = new URL(
-                        ourUrl+"login.php");
+                        "http://" + MainActivity.CONNECTION_IPADDRESS + "/jwabPHP/login.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");

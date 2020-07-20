@@ -27,19 +27,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.jar.Attributes;
 
-
-
 public class SignActivty extends AppCompatActivity {
     final Context context = this;
 
     //중복확인 시 확인가능하면 true, 기본적으로는 false로 설정
-    boolean idDoubleCheck=false;
+    boolean idDoubleCheck = false;
 
     //중복확인 시 아이디를 수정했을때 확인할 수 있게 도와주는 변수
     static String doubleChekId=null;
 
-    //url한번만 수정할 수 있도록 수정
-    final String ourUrl ="http://10.210.11.84/";
 
     EditText NameText, PhoneText, IdText, PasswordText1, PasswordText2;
     String sname, sphone, sid, spw, spwck;
@@ -97,6 +93,7 @@ public class SignActivty extends AppCompatActivity {
         //idDoubleCheck가 완료되지 않으면 기본적으로 false값이 들어가있고 가입하기 눌렀을 시 db에 들어가지 않고 메세지가 뜸
         else if(idDoubleCheck==false) {
             Toast.makeText(this, "중복확인이 되지 않았습니다.", Toast.LENGTH_LONG).show();
+
         }
 
         //중복확인 누른 후 아이디를 저장, 아이디 수정했을 때 중복확인을 다시 하게 하기 위해 만든 else if문
@@ -150,7 +147,6 @@ public class SignActivty extends AppCompatActivity {
             Log.e("err", e.getMessage());
         }
 
-
         doublecheckDB lDB = new doublecheckDB();
         lDB.execute();
 
@@ -170,7 +166,8 @@ public class SignActivty extends AppCompatActivity {
             Log.e("POST",param);
             try {
                 /* 서버연결 */
-                URL url = new URL(ourUrl+"doublecheck.php");
+                URL url = new URL(
+                        "http://" + MainActivity.CONNECTION_IPADDRESS + "/jwabPHP/doublecheck.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -324,7 +321,7 @@ public class SignActivty extends AppCompatActivity {
             try {
                 /* 서버연결 */
                 URL url = new URL(
-                        ourUrl+"snclib_join.php");
+                        "http://" + MainActivity.CONNECTION_IPADDRESS + "/jwabPHP/snclib_join.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
