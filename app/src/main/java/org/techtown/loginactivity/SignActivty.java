@@ -39,7 +39,7 @@ public class SignActivty extends AppCompatActivity {
     static String doubleChekId=null;
 
     //url한번만 수정할 수 있도록 수정
-    final String ourUrl="http://10.210.14.164/";
+    final String ourUrl ="http://10.210.11.84/";
 
     EditText NameText, PhoneText, IdText, PasswordText1, PasswordText2;
     String sname, sphone, sid, spw, spwck;
