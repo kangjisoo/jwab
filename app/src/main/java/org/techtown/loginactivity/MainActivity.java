@@ -41,6 +41,11 @@ import org.json.JSONObject;
 public class MainActivity extends Activity {
     public static final int REQUEST_CODE_MENU = 101;
     final Context context = this;
+
+    //ip 간편하게 바꾸기위해 만든 변수
+    final String ourUrl ="http://10.210.11.84/";
+
+
     EditText et_id, et_pw;
     CheckBox chk_auto;
     Button btn_login;
@@ -129,7 +134,7 @@ public class MainActivity extends Activity {
             try {
                 /* 서버연결 */
                 URL url = new URL(
-                        "http://10.210.14.164/login.php");
+                        ourUrl+"login.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
