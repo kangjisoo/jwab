@@ -36,13 +36,16 @@ import androidx.appcompat.app.AlertDialog;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.techtown.loginactivity.ui.gallery.Nav_header;
 
 
 public class MainActivity extends Activity {
     public static final int REQUEST_CODE_MENU = 101;
-    public static final String CONNECTION_IPADDRESS = "10.210.2.77";    //20.07.20 현재 localhost IP
-
+    public static final String CONNECTION_IPADDRESS = "172.30.1.45";    //20.07.20 현재 localhost IP
+    public static Context context2;
+    public int var;
     final Context context = this;
+
     EditText et_id, et_pw;
     CheckBox chk_auto;
     Button btn_login;
@@ -83,6 +86,7 @@ public class MainActivity extends Activity {
         btn_login = (Button) findViewById(R.id.button4); //로그인버튼
         sId = et_id.getText().toString();
         sPw = et_pw.getText().toString();
+
 
 
         Button button = findViewById(R.id.SignButton);
@@ -190,6 +194,8 @@ public class MainActivity extends Activity {
                     editor.putBoolean("chk_auto", true);
                     editor.commit();
                 } else {    //자동로그인 체크 해제시
+                    sId = et_id.getText().toString();
+                    sPw = et_pw.getText().toString();
                     editor.clear();
                     editor.commit();
                 }
@@ -201,13 +207,17 @@ public class MainActivity extends Activity {
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
                                 startActivity(intent);
                                 finish();
                             }
                         });
                 AlertDialog dialog = alertBuilder.create();
                 dialog.show();
+
+                Intent intent2 = new Intent(MainActivity.this, Nav_header.class);
+                intent2.putExtra("ID",sId);
+                startActivity(intent2);
             }
 
             //id존재, pw오류일경우
