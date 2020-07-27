@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainFrame"
+    android:id="@+id/prj_main_mainFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProjectMainActivity">
+    tools:context="org.techtown.projectmain.ProjectMainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topPanel"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/menuButton"
+            android:id="@+id/prj_main_menu"
             android:layout_width="100dp"
             android:layout_height="0dp"
             android:text="MENU"
@@ -26,18 +26,18 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/projectName"
+            android:id="@+id/prj_main_projectTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="&lt;Project Name&gt;"
+            android:text="Project Title"
             android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/expiredDate"
-            app:layout_constraintEnd_toStartOf="@+id/unusedButton"
-            app:layout_constraintStart_toEndOf="@+id/menuButton"
+            app:layout_constraintBottom_toTopOf="@+id/prj_main_expiredDate"
+            app:layout_constraintEnd_toStartOf="@+id/prj_main_unused"
+            app:layout_constraintStart_toEndOf="@+id/prj_main_menu"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/expiredDate"
+            android:id="@+id/prj_main_expiredDate"
             android:layout_width="70dp"
             android:layout_height="35dp"
             android:fontFamily="sans-serif"
@@ -45,10 +45,10 @@
             android:textAllCaps="false"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/unusedButton" />
+            app:layout_constraintEnd_toStartOf="@+id/prj_main_unused" />
 
         <Button
-            android:id="@+id/unusedButton"
+            android:id="@+id/prj_main_unused"
             android:layout_width="100dp"
             android:layout_height="0dp"
             android:fontFamily="sans-serif"
@@ -59,7 +59,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
-            android:id="@+id/divider1"
+            android:id="@+id/prj_main_divider1"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="?android:attr/listDivider"
@@ -69,71 +69,25 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ScrollView
-        android:id="@+id/scrollPanel"
+    <ListView
+        android:id="@+id/prj_main_projectUser"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/chatPanel"
+        app:layout_constraintBottom_toTopOf="@+id/prj_main_chatPanel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topPanel"
-        app:layout_constraintVertical_bias="1.0">
-
-        <LinearLayout
-            android:id="@+id/projectUser"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/user1"
-                android:layout_width="50dp"
-                android:layout_height="100dp"
-                android:text="1" />
-
-            <Button
-                android:id="@+id/user2"
-                android:layout_width="100dp"
-                android:layout_height="200dp"
-                android:text="2" />
-
-            <Button
-                android:id="@+id/user3"
-                android:layout_width="200dp"
-                android:layout_height="100dp"
-                android:text="3" />
-
-            <Button
-                android:id="@+id/user4"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:text="4" />
-
-            <Button
-                android:id="@+id/user5"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:text="5" />
-
-            <Button
-                android:id="@+id/user6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="6" />
-        </LinearLayout>
-    </ScrollView>
+        app:layout_constraintTop_toBottomOf="@+id/topPanel" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/chatPanel"
+        android:id="@+id/prj_main_chatPanel"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomPanel"
+        app:layout_constraintBottom_toTopOf="@+id/prj_main_bottomPanel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <View
-            android:id="@+id/divider2"
+            android:id="@+id/prj_main_divider2"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="?android:attr/listDivider"
@@ -142,43 +96,43 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/plusButton"
+            android:id="@+id/prj_main_plus"
             android:layout_width="50dp"
             android:layout_height="0dp"
             android:text="plus"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/chatContent"
+            app:layout_constraintEnd_toStartOf="@+id/prj_main_chatContent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/chatContent"
+            android:id="@+id/prj_main_chatContent"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:ems="10"
             android:inputType="textPersonName"
             android:text="chat"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/sendButton"
-            app:layout_constraintStart_toEndOf="@+id/plusButton"
+            app:layout_constraintEnd_toStartOf="@+id/prj_main_send"
+            app:layout_constraintStart_toEndOf="@+id/prj_main_plus"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/sendButton"
+            android:id="@+id/prj_main_send"
             android:layout_width="70dp"
             android:layout_height="0dp"
             android:text="Send"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/chatContent"
+            app:layout_constraintStart_toEndOf="@+id/prj_main_chatContent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/bottomPanel"
+        android:id="@+id/prj_main_bottomPanel"
         android:layout_width="0dp"
         android:layout_height="90dp"
         app:layout_constraintBottom_toBottomOf="parent"
