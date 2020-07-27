@@ -40,7 +40,7 @@ import org.json.JSONObject;
 
 public class MainActivity extends Activity {
     public static final int REQUEST_CODE_MENU = 101;
-    public static final String CONNECTION_IPADDRESS = "10.210.2.77";    //20.07.20 현재 localhost IP
+    public static final String CONNECTION_IPADDRESS = "192.168.0.136";    //20.07.27 현재 localhost IP
     public static final String CONNECTION_PHPFILEADDRESS = "login.php";          //20.07.22 현재 jwabPHP 내부의 파일 경로
 
     final Context context = this;
