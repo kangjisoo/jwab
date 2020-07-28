@@ -4,17 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
-import org.techtown.loginactivity.HomeActivity;
-import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 
-public class ProjectMainActivity extends AppCompatActivity {
+public class ProjectShow extends AppCompatActivity {
 
     // view 참조 변수 정의
     Button menuButton, expiredDateButton, plusButton, sendButton;
@@ -23,14 +19,14 @@ public class ProjectMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.project_main);
+        setContentView(R.layout.project_show);
 
         // view 참조 변수의 구성
-        menuButton = (Button) findViewById(R.id.prj_main_menu);
-        expiredDateButton = (Button) findViewById(R.id.prj_main_expiredDate);
-        plusButton = (Button) findViewById(R.id.prj_main_plus);
-        sendButton = (Button) findViewById(R.id.prj_main_send);
-        projectTitleTextView = (TextView) findViewById(R.id.prj_main_projectTitle);
+        menuButton = (Button) findViewById(R.id.prj_show_menu);
+        expiredDateButton = (Button) findViewById(R.id.prj_show_expiredDate);
+        plusButton = (Button) findViewById(R.id.prj_show_plus);
+        sendButton = (Button) findViewById(R.id.prj_show_send);
+        projectTitleTextView = (TextView) findViewById(R.id.prj_show_projectTitle);
         projectTitleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,7 +35,7 @@ public class ProjectMainActivity extends AppCompatActivity {
         });
     }
 
-    // project에 따라 project_main.xml의 view:content 수정
+    // project에 따라 project_show.xml의 view:content 수정
     protected void InitProject() {
 
     }

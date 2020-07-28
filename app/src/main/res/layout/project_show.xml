@@ -2,13 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/prj_main_mainFrame"
+    android:id="@+id/prj_show_mainFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.techtown.projectmain.ProjectMainActivity">
+    tools:context="org.techtown.projectmain.ProjectShow">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/topPanel"
+        android:id="@+id/prj_show_topPanel"
         android:layout_width="0dp"
         android:layout_height="90dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/prj_main_menu"
+            android:id="@+id/prj_show_menu"
             android:layout_width="100dp"
             android:layout_height="0dp"
             android:text="MENU"
@@ -26,18 +26,18 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/prj_main_projectTitle"
+            android:id="@+id/prj_show_projectTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Project Title"
             android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/prj_main_expiredDate"
-            app:layout_constraintEnd_toStartOf="@+id/prj_main_unused"
-            app:layout_constraintStart_toEndOf="@+id/prj_main_menu"
+            app:layout_constraintBottom_toTopOf="@+id/prj_show_expiredDate"
+            app:layout_constraintEnd_toStartOf="@+id/prj_show_unused"
+            app:layout_constraintStart_toEndOf="@+id/prj_show_menu"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/prj_main_expiredDate"
+            android:id="@+id/prj_show_expiredDate"
             android:layout_width="70dp"
             android:layout_height="35dp"
             android:fontFamily="sans-serif"
@@ -45,10 +45,10 @@
             android:textAllCaps="false"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/prj_main_unused" />
+            app:layout_constraintEnd_toStartOf="@+id/prj_show_unused" />
 
         <Button
-            android:id="@+id/prj_main_unused"
+            android:id="@+id/prj_show_unused"
             android:layout_width="100dp"
             android:layout_height="0dp"
             android:fontFamily="sans-serif"
@@ -59,7 +59,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
-            android:id="@+id/prj_main_divider1"
+            android:id="@+id/prj_show_divider1"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="?android:attr/listDivider"
@@ -70,24 +70,24 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ListView
-        android:id="@+id/prj_main_projectUser"
+        android:id="@+id/prj_show_projectUser"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/prj_main_chatPanel"
+        app:layout_constraintBottom_toTopOf="@+id/prj_show_chatPanel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topPanel" />
+        app:layout_constraintTop_toBottomOf="@+id/prj_show_topPanel" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/prj_main_chatPanel"
+        android:id="@+id/prj_show_chatPanel"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/prj_main_bottomPanel"
+        app:layout_constraintBottom_toTopOf="@+id/prj_show_bottomPanel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <View
-            android:id="@+id/prj_main_divider2"
+            android:id="@+id/prj_show_divider2"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="?android:attr/listDivider"
@@ -96,43 +96,43 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/prj_main_plus"
+            android:id="@+id/prj_show_plus"
             android:layout_width="50dp"
             android:layout_height="0dp"
             android:text="plus"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/prj_main_chatContent"
+            app:layout_constraintEnd_toStartOf="@+id/prj_show_chatContent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/prj_main_chatContent"
+            android:id="@+id/prj_show_chatContent"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:ems="10"
             android:inputType="textPersonName"
             android:text="chat"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/prj_main_send"
-            app:layout_constraintStart_toEndOf="@+id/prj_main_plus"
+            app:layout_constraintEnd_toStartOf="@+id/prj_show_send"
+            app:layout_constraintStart_toEndOf="@+id/prj_show_plus"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/prj_main_send"
+            android:id="@+id/prj_show_send"
             android:layout_width="70dp"
             android:layout_height="0dp"
             android:text="Send"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/prj_main_chatContent"
+            app:layout_constraintStart_toEndOf="@+id/prj_show_chatContent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/prj_main_bottomPanel"
+        android:id="@+id/prj_show_bottomPanel"
         android:layout_width="0dp"
         android:layout_height="90dp"
         app:layout_constraintBottom_toBottomOf="parent"
