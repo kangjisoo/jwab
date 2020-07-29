@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.gallery.Bottom_menu2">
+    tools:context="org.techtown.projectmain.ProjectHomeBottomMenu2">
 
     <TextView
         android:id="@+id/textView9"

@@ -16,7 +16,7 @@
 
 
         <activity
-            android:name=".MainActivity2"
+            android:name="org.techtown.projectmain.ProjectHome"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".SignActivty"
@@ -30,6 +30,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--<activity
+
+        </activity>-->
     </application>
 
 </manifest>

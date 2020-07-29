@@ -1,4 +1,4 @@
-package org.techtown.loginactivity.ui.gallery;
+package org.techtown.projectmain;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

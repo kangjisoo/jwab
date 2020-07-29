@@ -38,7 +38,8 @@ public class SignActivty extends AppCompatActivity {
 
 
     EditText NameText, PhoneText, IdText, PasswordText1, PasswordText2;
-    String sname, sphone, sid, spw, spwck;
+    static String sname, sphone, sid, spw, spwck;
+    public static String getsName() { return sname; }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +52,6 @@ public class SignActivty extends AppCompatActivity {
         IdText = (EditText) findViewById(R.id.IdText);
         PasswordText1 = (EditText) findViewById(R.id.PasswordText1);
         PasswordText2 = (EditText) findViewById(R.id.PasswordText2);
-
 
         Button button = findViewById(R.id.BackButton);
         button.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +78,7 @@ public class SignActivty extends AppCompatActivity {
         spwck = PasswordText2.getText().toString();
 
 
+
         //빈칸이 하나라도 있을 경우 메세지 띄움
         if(sname.length()==0||sphone.length()==0||sid.length()==0||spw.length()==0||spwck.length()==0){
 
@@ -100,7 +101,6 @@ public class SignActivty extends AppCompatActivity {
         else if(doubleChekId.equals(sid)) {
             if(idDoubleCheck==true) {
                 if (spw.equals(spwck)) {
-
                     Toast.makeText(this, "가입완료", Toast.LENGTH_LONG).show();
                     registDB rdb = new registDB();
                     rdb.execute();
@@ -167,7 +167,7 @@ public class SignActivty extends AppCompatActivity {
             try {
                 /* 서버연결 */
                 URL url = new URL(
-                        "http://" + MainActivity.CONNECTION_IPADDRESS + "/jwabPHP/doublecheck.php");
+                        "http://" + MainActivity.CONNECTION_IPADDRESS + "/jwabPHP/idcheck.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -384,4 +384,5 @@ public class SignActivty extends AppCompatActivity {
 
         }
     }
+
 }

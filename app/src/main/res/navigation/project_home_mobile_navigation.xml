@@ -8,19 +8,19 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="org.techtown.loginactivity.ui.gallery.Fragment2"
+        android:name="org.techtown.projectmain.ProjectHomeFragment2"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment2" />
+        tools:layout="@layout/project_home_fragment2" />
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="org.techtown.loginactivity.ui.gallery.Fragment1"
+        android:name="org.techtown.projectmain.ProjectHomeFragment1"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment1" />
+        tools:layout="@layout/project_home_fragment1" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="org.techtown.loginactivity.ui.gallery.Fragment3"
+        android:name="org.techtown.projectmain.ProjectHomeFragment3"
         android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment3" />
+        tools:layout="@layout/project_home_fragment3" />
 </navigation>
