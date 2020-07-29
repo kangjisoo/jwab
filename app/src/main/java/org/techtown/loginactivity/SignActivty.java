@@ -243,12 +243,16 @@ public class SignActivty extends AppCompatActivity {
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
+
                                 // finish();
+
 
                             }
                         });
                 AlertDialog dialog = alertBuilder.create();
                 dialog.show();
+
             }
 
 

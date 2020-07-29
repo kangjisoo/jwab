@@ -40,7 +40,7 @@ import org.json.JSONObject;
 
 public class MainActivity extends Activity {
     public static final int REQUEST_CODE_MENU = 101;
-    public static final String CONNECTION_IPADDRESS = "10.210.2.77";    //20.07.20 현재 localhost IP
+    public static final String CONNECTION_IPADDRESS = "192.168.0.137";    //20.07.20 현재 localhost IP
 
     final Context context = this;
     EditText et_id, et_pw;
