@@ -167,7 +167,7 @@ public class SignActivty extends AppCompatActivity {
             try {
                 /* 서버연결 */
                 URL url = new URL(
-                        "http://" + MainActivity.CONNECTION_IPADDRESS + "/jwabPHP/doublecheck.php");
+                        "http://rtemd.suwon.ac.kr/guest/doublecheck.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -197,7 +197,7 @@ public class SignActivty extends AppCompatActivity {
 
 
                 /* 서버에서 응답 */
-                Log.e("RECV DATA",data);
+                Log.e("RECV DATA1",data);
 
                 if(data.equals("0"))
                 {
@@ -224,7 +224,7 @@ public class SignActivty extends AppCompatActivity {
             super.onPostExecute(aVoid);
 
             /* 서버에서 응답 */
-            Log.e("RECV DATA",data);
+            Log.e("RECV DATA2",data);
 
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
 
@@ -321,7 +321,7 @@ public class SignActivty extends AppCompatActivity {
             try {
                 /* 서버연결 */
                 URL url = new URL(
-                        "http://" + MainActivity.CONNECTION_IPADDRESS + "/jwabPHP/snclib_join.php");
+                        "http://rtemd.suwon.ac.kr/guest/snclib_join.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -350,7 +350,7 @@ public class SignActivty extends AppCompatActivity {
                 }
                 data = buff.toString().trim();
 
-                Log.e("RECV DATA", data);
+                Log.e("RECV DATA3", data);
 
                 if (data.equals("0")) {
                     if(idDoubleCheck==false){

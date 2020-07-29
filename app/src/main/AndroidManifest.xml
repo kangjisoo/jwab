@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="org.techtown.projectmain.NavigationViewTest"
+            android:name="org.techtown.projectmain.ProjectShowNavigationView"
             android:label="@string/title_activity_navigation_view_test"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -22,7 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.techtown.projectmain.ProjectShow">
+        <activity
+            android:name="org.techtown.projectmain.ProjectShow"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

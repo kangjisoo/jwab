@@ -36,12 +36,12 @@ import androidx.appcompat.app.AlertDialog;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.techtown.projectmain.ProjectShowNavigationView;
 
 
 public class MainActivity extends Activity {
     public static final int REQUEST_CODE_MENU = 101;
-    public static final String CONNECTION_IPADDRESS = "192.168.0.136";    //20.07.27 현재 localhost IP
-    public static final String CONNECTION_PHPFILEADDRESS = "login.php";          //20.07.22 현재 jwabPHP 내부의 파일 경로
+    public static final String CONNECTION_IPADDRESS = "rtemd.suwon.ac.kr";    //20.07.29 현재 RTEMD SERVER address
 
     final Context context = this;
     EditText et_id, et_pw;
@@ -132,7 +132,11 @@ public class MainActivity extends Activity {
             try {
                 /* 서버연결 */
                 URL url = new URL(
+                        "http://rtemd.suwon.ac.kr/guest/login.php");
+                /*
+                URL url = new URL(
                         "http://" + MainActivity.CONNECTION_IPADDRESS + "/jwabPHP/login.php");
+                */
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -202,7 +206,9 @@ public class MainActivity extends Activity {
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                                //Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                                //임시: ProjectShowNavigationView.java 로 이동
+                                Intent intent = new Intent(MainActivity.this, ProjectShowNavigationView.class);
                                 startActivity(intent);
                                 finish();
                             }

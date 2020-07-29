@@ -10,20 +10,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/prj_show_topPanel"
         android:layout_width="0dp"
-        android:layout_height="90dp"
+        android:layout_height="50dp"
+        android:background="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <Button
-            android:id="@+id/prj_show_menu"
-            android:layout_width="100dp"
-            android:layout_height="0dp"
-            android:text="MENU"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/prj_show_projectTitle"
@@ -31,41 +23,10 @@
             android:layout_height="wrap_content"
             android:text="Project Title"
             android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/prj_show_expiredDate"
-            app:layout_constraintEnd_toStartOf="@+id/prj_show_unused"
-            app:layout_constraintStart_toEndOf="@+id/prj_show_menu"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/prj_show_expiredDate"
-            android:layout_width="70dp"
-            android:layout_height="35dp"
-            android:fontFamily="sans-serif"
-            android:text="D- xxx"
-            android:textAllCaps="false"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/prj_show_unused" />
-
-        <Button
-            android:id="@+id/prj_show_unused"
-            android:layout_width="100dp"
-            android:layout_height="0dp"
-            android:fontFamily="sans-serif"
-            android:text="unused"
-            android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:id="@+id/prj_show_divider1"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -73,63 +34,23 @@
         android:id="@+id/prj_show_projectUser"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/prj_show_chatPanel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prj_show_topPanel" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/prj_show_chatPanel"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
         app:layout_constraintBottom_toTopOf="@+id/prj_show_bottomPanel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/prj_show_topPanel">
 
-        <View
-            android:id="@+id/prj_show_divider2"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    </ListView>
 
-        <Button
-            android:id="@+id/prj_show_plus"
-            android:layout_width="50dp"
-            android:layout_height="0dp"
-            android:text="plus"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/prj_show_chatContent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/prj_show_chatContent"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="chat"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/prj_show_send"
-            app:layout_constraintStart_toEndOf="@+id/prj_show_plus"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/prj_show_send"
-            android:layout_width="70dp"
-            android:layout_height="0dp"
-            android:text="Send"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/prj_show_chatContent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <View
+        android:id="@+id/prj_show_divider1"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="590dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="@+id/prj_show_projectUser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/prj_show_projectUser" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/prj_show_bottomPanel"
