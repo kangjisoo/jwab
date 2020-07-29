@@ -4,13 +4,17 @@
     <item
     android:id="@+id/tab1"
     android:icon="@android:drawable/ic_dialog_email"
-    android:title="흐음"/>
+    android:title="홈"/>
     <item
         android:id="@+id/tab2"
         android:icon="@android:drawable/ic_menu_manage"
-        android:title="홈"/>
+        android:title="채팅"/>
     <item
         android:id="@+id/tab3"
+        android:icon="@android:drawable/ic_dialog_email"
+        android:title="게시판"/>
+    <item
+        android:id="@+id/tab4"
         android:icon="@android:drawable/ic_dialog_email"
         android:title="알림"/>
 

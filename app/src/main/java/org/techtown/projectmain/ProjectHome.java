@@ -1,11 +1,6 @@
 package org.techtown.projectmain;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -16,7 +11,6 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -26,16 +20,6 @@ import androidx.appcompat.widget.Toolbar;
 import org.techtown.loginactivity.FragmentCallback;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
-import org.techtown.loginactivity.SignActivty;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class ProjectHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentCallback {
     ProjectHomeFragment0 fragment0;
@@ -43,8 +27,9 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
     ProjectHomeFragment2 fragment2;
     ProjectHomeFragment3 fragment3;
     ProjectBottomMenu1 bottom_menu1;
-    ProjectHomeBottomMenu2 bottom_menu2;
-    ProjectHomeBottomMenu3 bottom_menu3;
+    ProjectBottomMenu2 bottom_menu2;
+    ProjectBottomMenu3 bottom_menu3;
+    ProjectBottomMenu4 bottom_menu4;
 
     DrawerLayout drawer;
     Toolbar toolbar;
@@ -81,8 +66,9 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         fragment2 = new ProjectHomeFragment2();
         fragment3 = new ProjectHomeFragment3();
         bottom_menu1 = new ProjectBottomMenu1();
-        bottom_menu2 = new ProjectHomeBottomMenu2();
-        bottom_menu3 = new ProjectHomeBottomMenu3();
+        bottom_menu2 = new ProjectBottomMenu2();
+        bottom_menu3 = new ProjectBottomMenu3();
+        bottom_menu4 = new ProjectBottomMenu4();
 
         //가장 처음에 나오는 액티비티(아무것도 누르지 않은 상태)
         getSupportFragmentManager().beginTransaction().add(R.id.container, fragment0).commit();
@@ -99,20 +85,26 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
                             case R.id.tab1:
                                 Toast.makeText(getApplicationContext(), "첫번째 탭 선택", Toast.LENGTH_LONG).show();
                                 onFragmentSelected(3, null);
-                                getSupportFragmentManager().beginTransaction().replace(R.id.container, bottom_menu1).commit();
+                                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment0).commit();
                                 return true;
 
 
                             case R.id.tab2:
                                 Toast.makeText(getApplicationContext(), "두번째 탭 선택", Toast.LENGTH_LONG).show();
                                 onFragmentSelected(4, null);
-                                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment0).commit();
+                                getSupportFragmentManager().beginTransaction().replace(R.id.container, bottom_menu2).commit();
                                 return true;
 
                             case R.id.tab3:
                                 Toast.makeText(getApplicationContext(), "세번째 탭 선택", Toast.LENGTH_LONG).show();
                                 onFragmentSelected(5, null);
                                 getSupportFragmentManager().beginTransaction().replace(R.id.container, bottom_menu3).commit();
+                                return true;
+
+                            case R.id.tab4:
+                                Toast.makeText(getApplicationContext(), "네번째 탭 선택", Toast.LENGTH_LONG).show();
+                                onFragmentSelected(6, null);
+                                getSupportFragmentManager().beginTransaction().replace(R.id.container, bottom_menu4).commit();
                                 return true;
                         }
                         return false;
@@ -165,14 +157,17 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
                 curFragment = fragment3;
                 toolbar.setTitle("세 번째 화면");
             } else if (position == 3) {
-                curFragment = fragment3;
+                curFragment = fragment0;
                 toolbar.setTitle("첫 번째 탭");
             } else if (position == 4) {
-                curFragment = fragment3;
+                curFragment = bottom_menu2;
                 toolbar.setTitle("두 번째 탭");
             } else if (position == 5) {
-                curFragment = fragment3;
+                curFragment = bottom_menu3;
                 toolbar.setTitle("세 번째 탭");
+            }else if (position == 6) {
+                curFragment = bottom_menu4;
+                toolbar.setTitle("네 번째 탭");
             }
             getSupportFragmentManager().beginTransaction().replace(R.id.container, curFragment).commit();
         }
