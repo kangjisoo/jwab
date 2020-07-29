@@ -8,7 +8,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 
 import android.app.Activity;
 
@@ -16,18 +15,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -37,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.techtown.projectmain.ProjectShowNavigationView;
+import org.techtown.projectmain.ProjectHome;
 
 
 public class MainActivity extends Activity {
@@ -49,7 +45,10 @@ public class MainActivity extends Activity {
     Button btn_login;
     SharedPreferences setting;
     SharedPreferences.Editor editor;
-    String sId, sPw;
+    static String sId, sPw;
+
+
+    public static String getsId() { return sId; }
 
 
     //연동코드
@@ -133,10 +132,6 @@ public class MainActivity extends Activity {
                 /* 서버연결 */
                 URL url = new URL(
                         "http://rtemd.suwon.ac.kr/guest/login.php");
-                /*
-                URL url = new URL(
-                        "http://" + MainActivity.CONNECTION_IPADDRESS + "/jwabPHP/login.php");
-                */
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -195,6 +190,8 @@ public class MainActivity extends Activity {
                     editor.putBoolean("chk_auto", true);
                     editor.commit();
                 } else {    //자동로그인 체크 해제시
+                    sId = et_id.getText().toString();
+                    sPw = et_pw.getText().toString();
                     editor.clear();
                     editor.commit();
                 }
@@ -206,9 +203,7 @@ public class MainActivity extends Activity {
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                //Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                                //임시: ProjectShowNavigationView.java 로 이동
-                                Intent intent = new Intent(MainActivity.this, ProjectShowNavigationView.class);
+                                Intent intent = new Intent(MainActivity.this, ProjectHome.class);
                                 startActivity(intent);
                                 finish();
                             }
