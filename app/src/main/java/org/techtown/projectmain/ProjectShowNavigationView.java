@@ -61,9 +61,9 @@ public class ProjectShowNavigationView extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
     }
 
-    // project에 따라 project_show.xml의 view:content 수정
-    protected void InitProject() {
-
+    // 선택한 project의 projectTitle, prjKey를 이전화면에서 받아와서 project의 모든 정보를 갱신
+    protected void InitProject(String projectTitle, int prjKey) {
+        //
     }
 
     // ProjectTitle을 클릭시 RenameProjectTitle() 실행
@@ -79,10 +79,11 @@ public class ProjectShowNavigationView extends AppCompatActivity {
                 .setMessage("프로젝트 제목 수정")
                 .setCancelable(true)
                 .setView(revisedTitle)
+                // Dialog의 확인 버튼을 눌렀을 때 listener
                 .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Dialog의 확인 버튼을 눌렀을 때 listener
+                        //수정한 title을 반영
                         projectTitleTextView.setText( revisedTitle.getText() );
                     }
                 });
