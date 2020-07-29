@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/app_bar_main">
+    tools:showIn="@layout/project_show_app_bar_main">
 
     <fragment
-        android:id="@+id/nav_host_fragment"
+        android:id="@+id/project_show_nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,11 +19,11 @@
         app:navGraph="@navigation/mobile_navigation" />
 
     <include
-        layout="@layout/project_show"
+        layout="@layout/project_show_project_show"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/nav_host_fragment" />
+        app:layout_constraintTop_toTopOf="@+id/project_show_nav_host_fragment" />
 </androidx.constraintlayout.widget.ConstraintLayout>

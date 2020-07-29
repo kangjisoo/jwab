@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/project_show_nav_home">
 
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@+id/project_show_nav_home"
         android:name="org.techtown.projectmain.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/project_show_fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/project_show_nav_gallery"
         android:name="org.techtown.projectmain.ui.gallery.GalleryFragment"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/project_show_fragment_gallery" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/project_show_nav_slideshow"
         android:name="org.techtown.projectmain.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/project_show_fragment_slideshow" />
 </navigation>
