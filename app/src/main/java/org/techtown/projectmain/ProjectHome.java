@@ -1,7 +1,14 @@
-package org.techtown.loginactivity;
+package org.techtown.projectmain;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -9,40 +16,56 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import org.techtown.loginactivity.ui.gallery.Bottom_menu1;
-import org.techtown.loginactivity.ui.gallery.Bottom_menu2;
-import org.techtown.loginactivity.ui.gallery.Bottom_menu3;
-import org.techtown.loginactivity.ui.gallery.Fragment0;
-import org.techtown.loginactivity.ui.gallery.Fragment1;
-import org.techtown.loginactivity.ui.gallery.Fragment2;
-import org.techtown.loginactivity.ui.gallery.Fragment3;
+import org.techtown.loginactivity.FragmentCallback;
+import org.techtown.loginactivity.MainActivity;
+import org.techtown.loginactivity.R;
+import org.techtown.loginactivity.SignActivty;
 
-public class MainActivity2 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentCallback {
-    Fragment0 fragment0;
-    Fragment1 fragment1;
-    Fragment2 fragment2;
-    Fragment3 fragment3;
-    Bottom_menu1 bottom_menu1;
-    Bottom_menu2 bottom_menu2;
-    Bottom_menu3 bottom_menu3;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class ProjectHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentCallback {
+    ProjectHomeFragment0 fragment0;
+    ProjectHomeFragment1 fragment1;
+    ProjectHomeFragment2 fragment2;
+    ProjectHomeFragment3 fragment3;
+    ProjectBottomMenu1 bottom_menu1;
+    ProjectHomeBottomMenu2 bottom_menu2;
+    ProjectHomeBottomMenu3 bottom_menu3;
 
     DrawerLayout drawer;
     Toolbar toolbar;
 
-    //private AppBarConfiguration mAppBarConfiguration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.project_home_slide_menu);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //아이디 프로필에 띄우기
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUserId = (TextView) headerView.findViewById(R.id.profile_email);
+        navUserId.setText(MainActivity.getsId());
+
+        //idcheckDB IDB = new idcheckDB();
+        //IDB.execute();
+
 
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -50,18 +73,16 @@ public class MainActivity2 extends AppCompatActivity implements NavigationView.O
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        NavigationView navigationView2 = findViewById(R.id.nav_view);
+        navigationView2.setNavigationItemSelectedListener(this);
 
-        //fragment0~3 : 하단바 탭을 눌렀을 때 나오는 액티비티
-        //bottom_menu1~3 : 슬라이드메뉴 액티비티
-        fragment0 = new Fragment0();
-        fragment1 = new Fragment1();
-        fragment2 = new Fragment2();
-        fragment3 = new Fragment3();
-        bottom_menu1 = new Bottom_menu1();
-        bottom_menu2 = new Bottom_menu2();
-        bottom_menu3 = new Bottom_menu3();
+        fragment0 = new ProjectHomeFragment0();
+        fragment1 = new ProjectHomeFragment1();
+        fragment2 = new ProjectHomeFragment2();
+        fragment3 = new ProjectHomeFragment3();
+        bottom_menu1 = new ProjectBottomMenu1();
+        bottom_menu2 = new ProjectHomeBottomMenu2();
+        bottom_menu3 = new ProjectHomeBottomMenu3();
 
         //가장 처음에 나오는 액티비티(아무것도 누르지 않은 상태)
         getSupportFragmentManager().beginTransaction().add(R.id.container, fragment0).commit();
@@ -100,61 +121,62 @@ public class MainActivity2 extends AppCompatActivity implements NavigationView.O
         );
     }
 
+        @Override
+        public void onBackPressed () {
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                super.onBackPressed();
+            }
+        }
 
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        //슬라이드메뉴
+        @Override
+        public boolean onNavigationItemSelected (MenuItem item){
+
+            int id = item.getItemId();
+            if (id == R.id.menu1) {
+                Toast.makeText(this, "첫 번째 메뉴 선택됨", Toast.LENGTH_LONG).show();
+                onFragmentSelected(0, null);
+            } else if (id == R.id.menu2) {
+                Toast.makeText(this, "두 번째 메뉴 선택됨", Toast.LENGTH_LONG).show();
+                onFragmentSelected(1, null);
+            } else if (id == R.id.menu3) {
+                Toast.makeText(this, "세 번째 메뉴 선택됨", Toast.LENGTH_LONG).show();
+                onFragmentSelected(2, null);
+            }
+
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
 
-    //슬라이드메뉴
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.menu1) {
-            Toast.makeText(this, "첫 번째 메뉴 선택됨", Toast.LENGTH_LONG).show();
-            onFragmentSelected(0, null);
-        } else if (id == R.id.menu2) {
-            Toast.makeText(this, "두 번째 메뉴 선택됨", Toast.LENGTH_LONG).show();
-            onFragmentSelected(1, null);
-        } else if (id == R.id.menu3) {
-            Toast.makeText(this, "세 번째 메뉴 선택됨", Toast.LENGTH_LONG).show();
-            onFragmentSelected(2, null);
+            return true;
         }
 
-        drawer.closeDrawer(GravityCompat.START);
+        @Override
+        public void onFragmentSelected (int position, Bundle bundle){
+            Fragment curFragment = null;
 
-        return true;
-    }
-
-    @Override
-    public void onFragmentSelected(int position, Bundle bundle) {
-        Fragment curFragment = null;
-
-        if (position == 0) {
-            curFragment = fragment1;
-            toolbar.setTitle("첫 번째 화면");
-        } else if (position == 1) {
-            curFragment = fragment2;
-            toolbar.setTitle("두 번째 화면");
-        } else if (position == 2) {
-            curFragment = fragment3;
-            toolbar.setTitle("세 번째 화면");
-        }else if (position == 3) {
-            curFragment = fragment3;
-            toolbar.setTitle("첫 번째 탭");
-        }else if (position == 4) {
-            curFragment = fragment3;
-            toolbar.setTitle("두 번째 탭");
-        }else if (position == 5) {
-            curFragment = fragment3;
-            toolbar.setTitle("세 번째 탭");
+            if (position == 0) {
+                curFragment = fragment1;
+                toolbar.setTitle("첫 번째 화면");
+            } else if (position == 1) {
+                curFragment = fragment2;
+                toolbar.setTitle("두 번째 화면");
+            } else if (position == 2) {
+                curFragment = fragment3;
+                toolbar.setTitle("세 번째 화면");
+            } else if (position == 3) {
+                curFragment = fragment3;
+                toolbar.setTitle("첫 번째 탭");
+            } else if (position == 4) {
+                curFragment = fragment3;
+                toolbar.setTitle("두 번째 탭");
+            } else if (position == 5) {
+                curFragment = fragment3;
+                toolbar.setTitle("세 번째 탭");
+            }
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, curFragment).commit();
         }
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, curFragment).commit();
-    }
+
 }
 
 /* 기존에 있던 코드
