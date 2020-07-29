@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import org.techtown.loginactivity.R;
-import java.lang.reflect.Member;
+
 import java.util.ArrayList;
 
 public class ProjectPersonAdapter extends RecyclerView.Adapter<ProjectPersonAdapter.ViewHolder> {
@@ -24,8 +24,8 @@ public class ProjectPersonAdapter extends RecyclerView.Adapter<ProjectPersonAdap
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.membernum = (TextView) itemView.findViewById(R.id.projectText);
-            this.findidorphone = (TextView) itemView.findViewById(R.id.addmemberView);
+            this.membernum = (TextView) itemView.findViewById(R.id.project_person_item_memberview);
+            this.findidorphone = (TextView) itemView.findViewById(R.id.project_person_item_addmember_id);
         }
     }
         public ProjectPersonAdapter(ArrayList<ProjectPerson> list) {

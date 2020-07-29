@@ -8,7 +8,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 
 import android.app.Activity;
 
@@ -16,26 +15,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 
 public class MainActivity extends Activity {
@@ -79,7 +70,7 @@ public class MainActivity extends Activity {
 
         et_id = (EditText) findViewById(R.id.editTextTextEmailAddress);
         et_pw = (EditText) findViewById(R.id.editTextTextPassword);
-        chk_auto = (CheckBox) findViewById(R.id.checkBox);  //자동로그인 체크박스
+        chk_auto = (CheckBox) findViewById(R.id.project_add_allcheckbox);  //자동로그인 체크박스
         btn_login = (Button) findViewById(R.id.button4); //로그인버튼
         sId = et_id.getText().toString();
         sPw = et_pw.getText().toString();

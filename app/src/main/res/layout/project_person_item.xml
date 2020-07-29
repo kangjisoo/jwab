@@ -28,7 +28,7 @@
                     android:orientation="horizontal">
 
                     <CheckBox
-                        android:id="@+id/checkBox2"
+                        android:id="@+id/project_person_item_checkbox"
                         android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_gravity="center"
@@ -39,7 +39,7 @@
                         app:layout_constraintStart_toStartOf="parent" />
 
                     <EditText
-                        android:id="@+id/projectText"
+                        android:id="@+id/project_person_item_memberview"
                         android:layout_width="10dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -52,7 +52,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <EditText
-                        android:id="@+id/addmemberView"
+                        android:id="@+id/project_person_item_addmember_id"
                         android:layout_width="150dp"
                         android:layout_gravity="center"
                         android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
-                        android:id="@+id/button2"
+                        android:id="@+id/project_person_item_invitebutton"
                         android:layout_width="30dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"

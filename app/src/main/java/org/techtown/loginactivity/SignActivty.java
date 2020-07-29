@@ -363,15 +363,11 @@ public class SignActivty extends AppCompatActivity {
                     else {
                         Log.e("RESULT", "완료");
                     }
-
                 }
                 else if(data.equals("1")){
                     Log.e("RESUL","빈칸이 있음");
-
                 }
-
                 else {
-
                     Log.e("RESULT", "error=" + data);
                 }
 
