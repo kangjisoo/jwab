@@ -115,7 +115,7 @@ public class ProjectAdd extends AppCompatActivity {
 
                 /* 서버연결 */
                 URL url = new URL(
-                        "http://" + MainActivity.CONNECTION_IPADDRESS + "/jwabPHP/projectmemberadd.php");
+                        "http://rtemd.suwon.ac.kr/guest/projectmemberadd.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
