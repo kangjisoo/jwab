@@ -243,12 +243,16 @@ public class SignActivty extends AppCompatActivity {
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
+
                                 // finish();
+
 
                             }
                         });
                 AlertDialog dialog = alertBuilder.create();
                 dialog.show();
+
             }
 
 
@@ -359,15 +363,11 @@ public class SignActivty extends AppCompatActivity {
                     else {
                         Log.e("RESULT", "완료");
                     }
-
                 }
                 else if(data.equals("1")){
                     Log.e("RESUL","빈칸이 있음");
-
                 }
-
                 else {
-
                     Log.e("RESULT", "error=" + data);
                 }
 
