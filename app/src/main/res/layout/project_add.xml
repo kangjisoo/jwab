@@ -86,6 +86,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginTop="0dp"
                     android:layout_weight="1" />
             </LinearLayout>
 
@@ -98,7 +100,8 @@
             android:scrollbarFadeDuration="1"
             android:scrollbarSize="5dp"
             android:scrollbarThumbVertical="@android:color/darker_gray"
-            android:scrollbars="vertical" />
+            android:scrollbars="vertical"
+            android:choiceMode="multipleChoice"/>
 
         <View
             android:id="@+id/divider"

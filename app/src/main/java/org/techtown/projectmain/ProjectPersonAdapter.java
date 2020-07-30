@@ -6,6 +6,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,11 +23,13 @@ public class ProjectPersonAdapter extends RecyclerView.Adapter<ProjectPersonAdap
 
         protected TextView membernum;
         protected TextView findidorphone;
+        protected CheckBox checkBox;
 
         public ViewHolder(View itemView) {
             super(itemView);
             this.membernum = (TextView) itemView.findViewById(R.id.project_person_item_memberview);
             this.findidorphone = (TextView) itemView.findViewById(R.id.project_person_item_addmember_id);
+            this.checkBox = (CheckBox)itemView.findViewById(R.id.project_person_item_checkbox);
         }
     }
         public ProjectPersonAdapter(ArrayList<ProjectPerson> list) {
@@ -48,6 +52,7 @@ public class ProjectPersonAdapter extends RecyclerView.Adapter<ProjectPersonAdap
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+
             viewHolder.membernum.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
             viewHolder.findidorphone.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
 

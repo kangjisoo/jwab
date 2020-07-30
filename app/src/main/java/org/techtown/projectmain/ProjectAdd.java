@@ -43,12 +43,15 @@ public class ProjectAdd extends AppCompatActivity {
     String stridPhone=null;
     String dbDataCheck="-2";
     boolean alreadyExistIdCheck = true;
+    TextView membercount;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.project_add);
+
 
         //리싸이클러뷰를 xml파일에 리싸이클러뷰에 연동
         final RecyclerView recyclerView =(RecyclerView) findViewById(R.id.project_add_recyclerView);
@@ -77,11 +80,6 @@ public class ProjectAdd extends AppCompatActivity {
             public void onClick(View v){
                 EditText insertText = (EditText)findViewById(R.id.project_add_insert_id);
                 stridPhone = (String)insertText.getText().toString();
-
-                //TextView membercount = (TextView) findViewById(R.id.project_add_membercountview);
-                //membercount.setText(count);
-                //초기화
-
 
                  //비어 있을 경우 메세지창 띄우기
                 if (stridPhone.equals("")){
@@ -132,7 +130,6 @@ public class ProjectAdd extends AppCompatActivity {
                 InputStream is = null;
                 BufferedReader in = null;
 
-
                 is = conn.getInputStream();
                 in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
                 String line = null;
@@ -144,9 +141,6 @@ public class ProjectAdd extends AppCompatActivity {
 
                 /* 서버에서 응답 */
                 Log.e("RECV DATA", data);
-
-                //db에서 존재하는 아이디를 찾았을때 data 0을 출력
-
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -164,7 +158,6 @@ public class ProjectAdd extends AppCompatActivity {
             /* 서버에서 응답 */
             Log.e("RECV DATA",data);
 
-            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
 
             //php에서 오는 data를 받아 비교
             // 1이면 같은 아이디 없음
@@ -174,7 +167,7 @@ public class ProjectAdd extends AppCompatActivity {
 
                 //카운트를 추가 시키고 member로 아래 목록을 리싸이클러뷰에 띄우기
 
-                ProjectPerson newMember = new ProjectPerson("조원 #" + (count+1), stridPhone);
+                ProjectPerson newMember = new ProjectPerson("조원 #" + (count+2), stridPhone);
 
                 //ProjectPerson tmp를 null값으로 초기화 시키고 tmp에 추가할 데이터 값인 newMember를 대입
                 ProjectPerson tmp = null;
@@ -199,12 +192,14 @@ public class ProjectAdd extends AppCompatActivity {
 
                 if (alreadyExistIdCheck==false) {
 
-
-
-
-
-
                     Toast.makeText(ProjectAdd.this, "추가", Toast.LENGTH_LONG).show();
+
+                    //membercountview에 추가된 조원의 수를 띄우기 위한 변수, 데이터가 추가 될때마다 증가
+                    membercount = (TextView) findViewById(R.id.project_add_membercountview);
+
+                    //membercount.setText(count);라고 쓰면 오류남 count가 string형이 아니기 때문에
+                    membercount.setText(String.valueOf(count+2));
+
 
                     //배열에 newMember값을 추가
                     mArrayList.add(newMember);
