@@ -6,7 +6,9 @@ import android.os.Bundle;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,13 +39,15 @@ public class ProjectAdd extends AppCompatActivity {
     private ProjectPersonAdapter mAdapter;
 
     //리스트에 추가할 번호 변수
-    private int count =-1;
+    private int count =0;
 
     //insert_text창에서 String형으로 받아올 변수
     String stridPhone=null;
     String dbDataCheck="-2";
     boolean alreadyExistIdCheck = true;
     TextView membercount;
+    EditText insertText;
+    CheckBox allCheckBox;
 
 
 
@@ -51,6 +55,12 @@ public class ProjectAdd extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.project_add);
+
+        //총 조원의 수를 나타내기 위해 textview를 받은 변수 (전역 변수로 설정한 이유는 삭제 버튼을 클릭했을 때도 실행, 추가 버튼을 눌렀을 때도 실행되야하기 때문)
+        membercount = (TextView) findViewById(R.id.project_add_membercountview);
+        //allCheckBox = (CheckBox)findViewById(R.id.project_add_allcheckbox);
+        //allCheckBox.setChecked(false);
+
 
 
         //리싸이클러뷰를 xml파일에 리싸이클러뷰에 연동
@@ -61,10 +71,11 @@ public class ProjectAdd extends AppCompatActivity {
 
         recyclerView.setLayoutManager(layoutManager);
 
-        //배열을 할당
+        //arraylist를 할당
         mArrayList = new ArrayList<>();
 
         //person어뎁터를 배열로 만들기
+        //mAdapter = new ProjectPersonAdapter(mArrayList);
         mAdapter = new ProjectPersonAdapter(mArrayList);
         recyclerView.setAdapter(mAdapter);
 
@@ -78,7 +89,7 @@ public class ProjectAdd extends AppCompatActivity {
 
             @Override
             public void onClick(View v){
-                EditText insertText = (EditText)findViewById(R.id.project_add_insert_id);
+                insertText = (EditText)findViewById(R.id.project_add_insert_id);
                 stridPhone = (String)insertText.getText().toString();
 
                  //비어 있을 경우 메세지창 띄우기
@@ -94,6 +105,38 @@ public class ProjectAdd extends AppCompatActivity {
                     //초기화
                     dbDataCheck = "-2";
                     alreadyExistIdCheck = false;
+                }
+
+            }
+        });
+
+
+        //삭제 버튼을 클릭시 선택된 리스트 삭제
+        Button deleteButton = (Button)findViewById(R.id.project_add_deletebutton);
+        deleteButton.setOnClickListener(new Button.OnClickListener(){
+            public void onClick(View v){
+
+                recyclerView.setItemViewCacheSize(mArrayList.size());
+
+
+                for (int i=0; i<mArrayList.size();i++){
+                    ProjectPerson checked = mArrayList.get(i);
+
+                    if (checked.isChecked()){
+                    //
+
+                        mArrayList.remove(i);
+                        //mArrayList.remove(i);
+
+                    Toast.makeText(ProjectAdd.this, "삭제 완료", Toast.LENGTH_LONG).show();
+                        //count 변수를 감소시키고 총조원 수를 다시 나타냄
+                        //count--;
+                        //membercount.setText(String.valueOf(count+1));
+                        //mAdapter.notifyItemRemoved(i);
+                         mAdapter.notifyDataSetChanged();
+
+                    }
+
                 }
 
             }
@@ -165,13 +208,10 @@ public class ProjectAdd extends AppCompatActivity {
 
                 Log.e("RESULT", "추가 가능한 조원");
 
-                //카운트를 추가 시키고 member로 아래 목록을 리싸이클러뷰에 띄우기
-
-                ProjectPerson newMember = new ProjectPerson("조원 #" + (count+2), stridPhone);
 
                 //ProjectPerson tmp를 null값으로 초기화 시키고 tmp에 추가할 데이터 값인 newMember를 대입
                 ProjectPerson tmp = null;
-                tmp = newMember;
+                //tmp = newMember;
 
                 //arraylist조회하여 리스트에 새로추가할 newMember가 리스트안에 존재하는 아이디인지 확인하기 위한 코드
                 for (int i=0; i<mArrayList.size();i++){
@@ -192,23 +232,32 @@ public class ProjectAdd extends AppCompatActivity {
 
                 if (alreadyExistIdCheck==false) {
 
-                    Toast.makeText(ProjectAdd.this, "추가", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(ProjectAdd.this, "추가", Toast.LENGTH_LONG).show();
 
-                    //membercountview에 추가된 조원의 수를 띄우기 위한 변수, 데이터가 추가 될때마다 증가
-                    membercount = (TextView) findViewById(R.id.project_add_membercountview);
 
                     //membercount.setText(count);라고 쓰면 오류남 count가 string형이 아니기 때문에
-                    membercount.setText(String.valueOf(count+2));
+                    membercount.setText(String.valueOf(count+1));
 
 
+                    //카운트를 추가 시키고 member로 아래 목록을 리싸이클러뷰에 띄우기
+                    ProjectPerson newMember = new ProjectPerson("조원 #" + (count+1), stridPhone, false );
+                    //newMember.setChecked(newMember.isChecked());
                     //배열에 newMember값을 추가
                     mArrayList.add(newMember);
 
+
+                    Toast.makeText(ProjectAdd.this, " " + count , Toast.LENGTH_LONG).show();
+
+
                     //어느 위치에 삽입할지를 정해줌 count 위치에 삽입함으로써 리스트 밑에 삽입
                     //0을 넣으면 위에 삽입
-                    count++;
                     mAdapter.notifyItemInserted(count);
+                    count++;
+
                     // mAdapter.notifyDataSetChanged();
+
+                    //추가 되고 난 후 insert창을 비워줌줌
+                    insertText.getText().clear();
 
                 }
 
@@ -234,6 +283,14 @@ public class ProjectAdd extends AppCompatActivity {
                 finish();
             }
         }
+
+
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+            Log.e("onItemClick", "클릭 -> "+position);
+            //mAdapter.checkedConfirm(position);
+            mAdapter.notifyDataSetChanged();
+        }
+
     }
 
 }
