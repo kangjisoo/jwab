@@ -7,7 +7,7 @@
     tools:context="org.techtown.projectmain.ProjectBottomMenu4">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/project_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="174dp"

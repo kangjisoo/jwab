@@ -54,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/project_person"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="54dp"
@@ -82,7 +82,7 @@
         app:layout_constraintEnd_toStartOf="@+id/editTextTextPassword"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/project_person"
         app:layout_constraintVertical_bias="0.0" />
 
     <CheckBox

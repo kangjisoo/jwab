@@ -8,7 +8,7 @@
     tools:context="org.techtown.projectmain.ProjectHomeFragment1">
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/project_add_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="169dp"

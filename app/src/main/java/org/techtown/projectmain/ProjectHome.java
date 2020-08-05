@@ -1,6 +1,9 @@
 package org.techtown.projectmain;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -16,13 +19,25 @@ import androidx.fragment.app.Fragment;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.techtown.loginactivity.FragmentCallback;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Arrays;
+
 public class ProjectHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentCallback {
-    ProjectHomeFragment0 fragment0;
+    ProjectHomeFragment0 fragment0; //로그인 후 첫화면
     ProjectHomeFragment1 fragment1;
     ProjectHomeFragment2 fragment2;
     ProjectHomeFragment3 fragment3;
@@ -30,6 +45,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
     ProjectBottomMenu2 bottom_menu2;
     ProjectBottomMenu3 bottom_menu3;
     ProjectBottomMenu4 bottom_menu4;
+
 
     DrawerLayout drawer;
     Toolbar toolbar;
@@ -39,6 +55,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.project_home_slide_menu);
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -47,10 +64,6 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         View headerView = navigationView.getHeaderView(0);
         TextView navUserId = (TextView) headerView.findViewById(R.id.profile_email);
         navUserId.setText(MainActivity.getsId());
-
-        //idcheckDB IDB = new idcheckDB();
-        //IDB.execute();
-
 
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -75,9 +88,11 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment0).commit();
 
 
+
+
         //하단바
-        BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
-        bottomNavigation.setOnNavigationItemSelectedListener(
+       BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
+       bottomNavigation.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -87,7 +102,6 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
                                 onFragmentSelected(3, null);
                                 getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment0).commit();
                                 return true;
-
 
                             case R.id.tab2:
                                 Toast.makeText(getApplicationContext(), "두번째 탭 선택", Toast.LENGTH_LONG).show();
@@ -111,7 +125,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
                     }
                 }
         );
-    }
+    }   //onCreate() 끝
 
         @Override
         public void onBackPressed () {
