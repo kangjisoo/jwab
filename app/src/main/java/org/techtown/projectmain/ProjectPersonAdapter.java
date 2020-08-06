@@ -81,11 +81,14 @@ public class ProjectPersonAdapter extends RecyclerView.Adapter<ProjectPersonAdap
         //viewHolder.checkBox.setClickable(true);
         //viewHolder.checkBox.setFocusable(false);
 
+
+        //체크박스의 리스너를 초기화 하면서 리스트를 스크롤을 내렸을 때 체크박스가 선택해제되는것을 방지
          viewHolder.checkBox.setOnCheckedChangeListener(null);
+
         viewHolder.checkBox.setChecked(projectPerson.isChecked());
         viewHolder.checkBox.setTag(viewHolder);
 
-        viewHolder.checkBox.setChecked(projectPerson.isChecked());
+        //체크박스가 선택되었을때 실행되는 리스너, 선택된 상태를 설정해준다*
         viewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {

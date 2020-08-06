@@ -116,28 +116,51 @@ public class ProjectAdd extends AppCompatActivity {
         deleteButton.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View v){
 
-                recyclerView.setItemViewCacheSize(mArrayList.size());
+                //arraylist 사이즈를 저장
+                int listSizeCheck = mArrayList.size();
+                int deleteListSize = mArrayList.size();
 
 
-                for (int i=0; i<mArrayList.size();i++){
-                    ProjectPerson checked = mArrayList.get(i);
+                //리스트에 있는 만큼 for문 돌리기
+                for (int j = 0; j<=listSizeCheck;j++) {
 
-                    if (checked.isChecked()){
-                    //
+                    //만약 arraylist의 사이즈가 0이면 더이상 확인할 리스트가 없는 것이기 때문에 for문을 탈출하는 if문 작성
+                    if (mArrayList.size() == 0) {
+                        deleteListSize = mArrayList.size();
+                        break;
+                    }
+                    //arraylist가 1이상일 경우 검사할 리스트가 있는 것이므로 하위 for문을 돌려줌
+                    //이중 포문을 써준이유는 arraylist가 삭제되면 사이즈가 줄어들어 모든 리스트를 검사하지 않기 떄문
+                    else {
+                        for (int i = 0; i < mArrayList.size(); i++) {
 
-                        mArrayList.remove(i);
-                        //mArrayList.remove(i);
+                            ProjectPerson checked = mArrayList.get(i);
 
-                    Toast.makeText(ProjectAdd.this, "삭제 완료", Toast.LENGTH_LONG).show();
-                        //count 변수를 감소시키고 총조원 수를 다시 나타냄
-                        //count--;
-                        //membercount.setText(String.valueOf(count+1));
-                        //mAdapter.notifyItemRemoved(i);
-                         mAdapter.notifyDataSetChanged();
+                            //체크박스가 true라면 선택이 된 상태
+                            if (checked.isChecked()) {
 
+                                //arraylist에서 지워줌
+                                mArrayList.remove(i);
+
+                                deleteListSize = mArrayList.size();
+
+                                //count 변수를 감소시키고 총조원 수를 다시 나타냄
+                                count--;
+                                membercount.setText(String.valueOf(count + 1));
+
+                            }
+                        }
                     }
 
+                    //바뀐 상태를 변경해줌
+                    mAdapter.notifyDataSetChanged();
                 }
+
+                if (listSizeCheck==deleteListSize){
+                    Toast.makeText(ProjectAdd.this, "삭제된 조원이 없습니다.", Toast.LENGTH_LONG).show();
+                }
+                else
+                    Toast.makeText(ProjectAdd.this, "삭제 완료", Toast.LENGTH_LONG).show();
 
             }
         });
