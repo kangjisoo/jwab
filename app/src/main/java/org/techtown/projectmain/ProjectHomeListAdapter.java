@@ -1,21 +1,37 @@
 package org.techtown.projectmain;
 
 import android.app.Person;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeListAdapter.ViewHolder> {
+public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeListAdapter.ViewHolder>
+        implements ItemTouchHelperListener{
     ArrayList<ProjectHomeList> items = new ArrayList<ProjectHomeList>();
+    Context context;
+    public ProjectHomeListAdapter(Context context){
+        this.context = context;
+    }
+
+    public ProjectHomeListAdapter() {
+
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView textView, textView2;
@@ -34,7 +50,7 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
 
     @NonNull
     @Override
-    //뷰객체 만들어줌
+    //LayoutInflater를 이용해서 원하는 레이아웃을 띄워줌
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View itemView = inflater.inflate(R.layout.project_home_project_item, viewGroup, false);
@@ -66,4 +82,37 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
     public void setItem(int position, ProjectHomeList item){
         items.set(position, item);
     }
-}
+    @Override public boolean onItemMove(int from_position, int to_position) {
+        //이동할 객체 저장
+         ProjectHomeList projectHomeList = items.get(from_position);
+         //이동할 객체 삭제
+         items.remove(from_position);
+         //이동하고 싶은 position에 추가
+         items.add(to_position,projectHomeList);
+         //Adapter에 데이터 이동알림
+         notifyItemMoved(from_position,to_position);
+         return true;
+    }
+    @Override public void onItemSwipe(int position) {
+        items.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    @Override
+    public void onLeftClick(int position, RecyclerView.ViewHolder viewHolder) {
+
+    }
+
+    //오른쪽 버튼 누르면 아이템 삭제
+     @Override
+     public void onRightClick(final int position, RecyclerView.ViewHolder viewHolder) {
+
+                         items.remove(position);
+                         notifyItemRemoved(position);
+
+
+     }
+
+     }
+
+

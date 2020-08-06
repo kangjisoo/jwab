@@ -1,6 +1,7 @@
 package org.techtown.projectmain;
 
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +32,8 @@ import java.util.Arrays;
 
 public class ProjectHomeFragment0 extends Fragment {
     ImageButton imageButton;
+    ItemTouchHelper helper;
+    RecyclerView recyclerView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +45,7 @@ public class ProjectHomeFragment0 extends Fragment {
 
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.project_home_list, container, false);
 
-        RecyclerView recyclerView = (RecyclerView)rootView.findViewById(R.id.project_home_list_recyclerView);
+        recyclerView = (RecyclerView)rootView.findViewById(R.id.project_home_list_recyclerView);
 
         //LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -136,6 +140,10 @@ public class ProjectHomeFragment0 extends Fragment {
             String[]splited = projectName.split("@");
 
             Log.e("projectNameTest= ", Arrays.toString(splited));
+            //ItemTouchHelper 생성
+            helper = new ItemTouchHelper(new ItemTouchHelperCallback(adapter));
+            //RecyclerView에 ItemTouchHelper 붙이기
+            helper.attachToRecyclerView(recyclerView);
 
             for(int i = 1; i < splited.length; i++){
                 adapter.addItem(new ProjectHomeList(splited[i], "kangjisoo"));
@@ -145,4 +153,14 @@ public class ProjectHomeFragment0 extends Fragment {
         }
 
     }
+    private void setUpRecyclerView(){
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent,
+                               @NonNull RecyclerView.State state) {
+                helper.onDraw(c,parent, state);
+            }
+        });
+    }
+
 }
