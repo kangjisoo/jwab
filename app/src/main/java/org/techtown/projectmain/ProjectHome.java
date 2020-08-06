@@ -55,16 +55,20 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.project_home_slide_menu);
-
+        //상단바
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //아이디 프로필에 띄우기
+        //프로필에 사용자 ID 띄우기
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         TextView navUserId = (TextView) headerView.findViewById(R.id.profile_email);
         navUserId.setText(MainActivity.getsId());
+        //프로필에 사용자 이름 띄우는 DB
+        getNameDB getnameDB = new getNameDB();
+        getnameDB.execute();
 
+        //슬라이드메뉴
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -86,9 +90,6 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         //가장 처음에 나오는 액티비티(아무것도 누르지 않은 상태)
         getSupportFragmentManager().beginTransaction().add(R.id.container, fragment0).commit();
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment0).commit();
-
-
-
 
         //하단바
        BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
@@ -185,6 +186,66 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
             }
             getSupportFragmentManager().beginTransaction().replace(R.id.container, curFragment).commit();
         }
+
+    //프로필에 사용자 이름 띄우는 DB
+    public class getNameDB extends AsyncTask<Void, Integer, Void> {
+        String data = "";
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+
+            /* 인풋 파라메터값 생성 */
+            String id = MainActivity.getsId();
+
+            //param = id=id
+            String param = "id=" + id + "";
+
+            //Check param
+            Log.e("POST.param", param);
+
+            try {
+                /* 서버연결 */
+                URL url = new URL(
+                        "http://rtemd.suwon.ac.kr/guest/getName.php");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                /* 서버 -> 안드로이드 파라메터값 전달 */
+                InputStream is = null;
+                BufferedReader in = null;
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ((line = in.readLine()) != null) {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+
+                /* 서버에서 응답 */
+                Log.e("getName : ", data);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            View headerView = navigationView.getHeaderView(0);
+            TextView navUserName = (TextView) headerView.findViewById(R.id.profile_name);
+            navUserName.setText(data);
+            return null;
+        }
+    }
 
 }
 

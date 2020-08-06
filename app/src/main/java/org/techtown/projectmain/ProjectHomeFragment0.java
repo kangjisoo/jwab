@@ -49,6 +49,14 @@ public class ProjectHomeFragment0 extends Fragment {
         ProjectHomeListAdapter adapter = new ProjectHomeListAdapter();
         recyclerView.setAdapter(adapter);
 
+        imageButton = (ImageButton) rootView.findViewById(R.id.imageButton2);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ProjectAdd.class);
+                startActivity(intent);
+            }
+        });
         MyProjectDB m = new MyProjectDB();
         m.execute();
 
