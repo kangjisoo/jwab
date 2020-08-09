@@ -1,5 +1,6 @@
 package org.techtown.projectmain;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.AsyncTask;
@@ -34,6 +35,7 @@ public class ProjectHomeFragment0 extends Fragment {
     ImageButton imageButton;
     ItemTouchHelper helper;
     RecyclerView recyclerView;
+    //Context context;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +52,7 @@ public class ProjectHomeFragment0 extends Fragment {
         //LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        ProjectHomeListAdapter adapter = new ProjectHomeListAdapter();
+        ProjectHomeListAdapter adapter = new ProjectHomeListAdapter(getActivity());
         recyclerView.setAdapter(adapter);
 
         imageButton = (ImageButton) rootView.findViewById(R.id.imageButton2);
@@ -67,6 +69,7 @@ public class ProjectHomeFragment0 extends Fragment {
         return rootView;
 
     }
+
 
     //로그인 된 ID에 맞는 프로젝트 찾기
     public class MyProjectDB extends AsyncTask<Void, Integer, Void> {
@@ -126,7 +129,7 @@ public class ProjectHomeFragment0 extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            ProjectHomeListAdapter adapter = new ProjectHomeListAdapter();
+            ProjectHomeListAdapter adapter = new ProjectHomeListAdapter(getActivity());
             RecyclerView recyclerView = getView().findViewById(R.id.project_home_list_recyclerView);
 
 

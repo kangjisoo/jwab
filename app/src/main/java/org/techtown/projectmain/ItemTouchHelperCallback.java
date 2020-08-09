@@ -1,25 +1,40 @@
 package org.techtown.projectmain;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import org.techtown.projectmain.ProjectHomeFragment0;
+
+import org.techtown.loginactivity.MainActivity;
 
 enum ButtonsState{ GONE, LEFT_VISIBLE, RIGHT_VISIBLE }
 
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
+
+    private static int val=0;
     private ItemTouchHelperListener listener;
     private boolean swipeBack = false;
     private ButtonsState buttonsShowedState = ButtonsState.GONE;
     private static final float buttonWidth = 115;
     private RectF buttonInstance = null;
     private RecyclerView.ViewHolder currenrtItemViewHolder = null;
-    public ItemTouchHelperCallback(ItemTouchHelperListener listener) { this.listener = listener; }
+
+    public ItemTouchHelperCallback(ItemTouchHelperListener listener) { this.listener = listener;
+    }
 
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
@@ -139,19 +154,19 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
             swipeBack = false;
 
                 if(listener != null && buttonInstance != null && buttonInstance.contains(event.getX(), event.getY())){
-                    if(buttonsShowedState == ButtonsState.LEFT_VISIBLE){
-                        listener.onLeftClick(viewHolder.getAdapterPosition(), viewHolder);
-                    }
-                    else if(buttonsShowedState == ButtonsState.RIGHT_VISIBLE){
+                    if(buttonsShowedState == ButtonsState.RIGHT_VISIBLE){
+                       val=1;
                         listener.onRightClick(viewHolder.getAdapterPosition(), viewHolder);
-                    }
-                }
+                                    }
+                                }
+
                 buttonsShowedState = ButtonsState.GONE;
                 currenrtItemViewHolder = null;
-                return false;
+                return true;
             }
         });
     }
+
     private void setItemsClickable(RecyclerView recyclerView, boolean isClickable){
         for(int i = 0; i < recyclerView.getChildCount(); i++){
             recyclerView.getChildAt(i).setClickable(isClickable);

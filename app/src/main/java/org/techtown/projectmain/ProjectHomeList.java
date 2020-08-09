@@ -1,5 +1,7 @@
 package org.techtown.projectmain;
 
+import android.content.Context;
+
 public class ProjectHomeList {
     String projectName;
     String person;
