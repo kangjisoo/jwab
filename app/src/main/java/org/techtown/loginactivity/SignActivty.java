@@ -155,11 +155,11 @@ public class SignActivty extends AppCompatActivity {
     //회원가입시 아이디 중복 확인 체크하는 클래스
     public class doublecheckDB extends AsyncTask<Void, Integer, Void> {
         //data를 onPostExecute에서 사용할 수 있도록 전역변수로 설정
+
         String data="";
 
         @Override
         protected Void doInBackground(Void... unused) {
-
 
             /* 인풋 파라메터값 생성 */
             String param = "u_id=" + sid + "";
@@ -243,18 +243,12 @@ public class SignActivty extends AppCompatActivity {
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
-
                                 // finish();
-
-
                             }
                         });
                 AlertDialog dialog = alertBuilder.create();
                 dialog.show();
-
             }
-
 
             //그외 다른 값이 들어오면 사용중인 아이디가 있음
             else if (data.equals("0"))
@@ -322,6 +316,7 @@ public class SignActivty extends AppCompatActivity {
             /* 인풋 파라메터값 생성 */
 
             String param = "u_name=" + sname + "&u_phone=" + sphone + "&u_id=" + sid + "&u_pw=" + spw + "&u_pwck=" + spwck + "";
+            Log.e("POST", param);
             try {
                 /* 서버연결 */
                 URL url = new URL(

@@ -36,18 +36,12 @@ public class ProjectPersonAdapter extends RecyclerView.Adapter<ProjectPersonAdap
             this.checkBox = (CheckBox) itemView.findViewById(R.id.project_person_item_checkbox);
 
         }
-
-
     }
 
     public ProjectPersonAdapter(ArrayList<ProjectPerson> list) {
         this.mlist = list;
 
     }
-    // public void setItem(Member item){
-    //   membernum.setText(item.getMembers());
-    //  findidorphone.setText(item.getSearchId());
-    //}
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -64,8 +58,6 @@ public class ProjectPersonAdapter extends RecyclerView.Adapter<ProjectPersonAdap
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
 
         final ProjectPerson projectPerson = mlist.get(position);
-        String context = "<b>lalalla</b>";
-
 
         viewHolder.membernum.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
         viewHolder.findidorphone.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
@@ -77,9 +69,6 @@ public class ProjectPersonAdapter extends RecyclerView.Adapter<ProjectPersonAdap
         viewHolder.findidorphone.setText(projectPerson.getSearchId());
 
 
-        //만약에 체크박스가 선택되어 있으면 true 선택되어 있지 않으면 false
-        //viewHolder.checkBox.setClickable(true);
-        //viewHolder.checkBox.setFocusable(false);
 
 
         //체크박스의 리스너를 초기화 하면서 리스트를 스크롤을 내렸을 때 체크박스가 선택해제되는것을 방지
@@ -89,6 +78,7 @@ public class ProjectPersonAdapter extends RecyclerView.Adapter<ProjectPersonAdap
         viewHolder.checkBox.setTag(viewHolder);
 
         //체크박스가 선택되었을때 실행되는 리스너, 선택된 상태를 설정해준다*
+        //만약에 체크박스가 선택되어 있으면 true 선택되어 있지 않으면 false
         viewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -102,13 +92,5 @@ public class ProjectPersonAdapter extends RecyclerView.Adapter<ProjectPersonAdap
         return (null != mlist ? mlist.size() : 0);
     }
 
-
-
-
-
-//    public void checkedConfirm(int position) {
-//        ProjectPerson projectPerson = mlist.get(position);
-//        ViewHolder.checkBox.setChecked(projectPerson.isChecked());
-//    }
 }
 

@@ -1,6 +1,8 @@
 package org.techtown.projectmain;
 
+import org.techtown.loginactivity.MainActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -9,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +21,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.navigation.NavigationView;
 
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
@@ -40,6 +45,11 @@ public class ProjectAdd extends AppCompatActivity {
 
     //리스트에 추가할 번호 변수
     private int count =0;
+    private String value;
+    private EditText projectName;
+    private String nameValue;
+    private String myId;
+
 
     //insert_text창에서 String형으로 받아올 변수
     String stridPhone=null;
@@ -47,7 +57,9 @@ public class ProjectAdd extends AppCompatActivity {
     boolean alreadyExistIdCheck = true;
     TextView membercount;
     EditText insertText;
-    CheckBox allCheckBox;
+    boolean allCheckBoxYesOrNo;
+    Button makeButton;
+
 
 
 
@@ -58,9 +70,12 @@ public class ProjectAdd extends AppCompatActivity {
 
         //총 조원의 수를 나타내기 위해 textview를 받은 변수 (전역 변수로 설정한 이유는 삭제 버튼을 클릭했을 때도 실행, 추가 버튼을 눌렀을 때도 실행되야하기 때문)
         membercount = (TextView) findViewById(R.id.project_add_membercountview);
-        //allCheckBox = (CheckBox)findViewById(R.id.project_add_allcheckbox);
-        //allCheckBox.setChecked(false);
 
+        //프로젝트 이름
+        projectName = (EditText)findViewById(R.id.project_add_name);
+
+        //로그인된 자신의 아이디
+        myId = MainActivity.getsId();
 
 
         //리싸이클러뷰를 xml파일에 리싸이클러뷰에 연동
@@ -75,7 +90,6 @@ public class ProjectAdd extends AppCompatActivity {
         mArrayList = new ArrayList<>();
 
         //person어뎁터를 배열로 만들기
-        //mAdapter = new ProjectPersonAdapter(mArrayList);
         mAdapter = new ProjectPersonAdapter(mArrayList);
         recyclerView.setAdapter(mAdapter);
 
@@ -106,7 +120,6 @@ public class ProjectAdd extends AppCompatActivity {
                     dbDataCheck = "-2";
                     alreadyExistIdCheck = false;
                 }
-
             }
         });
 
@@ -119,7 +132,6 @@ public class ProjectAdd extends AppCompatActivity {
                 //arraylist 사이즈를 저장
                 int listSizeCheck = mArrayList.size();
                 int deleteListSize = mArrayList.size();
-
 
                 //리스트에 있는 만큼 for문 돌리기
                 for (int j = 0; j<=listSizeCheck;j++) {
@@ -142,11 +154,12 @@ public class ProjectAdd extends AppCompatActivity {
                                 //arraylist에서 지워줌
                                 mArrayList.remove(i);
 
+                                //리스트 사이즈를 비교하기 위해
                                 deleteListSize = mArrayList.size();
 
                                 //count 변수를 감소시키고 총조원 수를 다시 나타냄
                                 count--;
-                                membercount.setText(String.valueOf(count + 1));
+                                membercount.setText(String.valueOf(mArrayList.size()));
 
                             }
                         }
@@ -164,6 +177,100 @@ public class ProjectAdd extends AppCompatActivity {
 
             }
         });
+
+
+        //전체선택 체크박스를 체크할 때 발생하는 리스너
+        final CheckBox allCheckBox = (CheckBox)findViewById(R.id.project_add_allcheckbox);
+        allCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+
+                //전체선택 체크박스가 체크되어 있을 때 전체 리스트의 체크박스를 true로 설정
+                if (allCheckBox.isChecked() == true) {
+                    for (int i = 0; i < mArrayList.size(); i++) {
+                        ProjectPerson allCheck = mArrayList.get(i);
+                        allCheck.setChecked(true);
+
+                        //새로 리스트에 조원이 추가될 때 전체선택 체크 박스가 체크되어 있으면 true상태의 멤버가 추가되야 하기 때문에 확인용 변수
+                        allCheckBoxYesOrNo=true;
+                    }
+
+                }
+
+                //전체선택 체크박스가 해제되었을 때 전체 리스트의 체크박스를 false로 설정
+                else{
+                    for (int i =0; i<mArrayList.size();i++){
+                        ProjectPerson allcheck = mArrayList.get(i);
+                        allcheck.setChecked(false);
+                        allCheckBoxYesOrNo=false;
+                    }
+                }
+
+                //변경값 적용
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
+        //만들기 버튼 클릭시 수행되는 리스너
+        makeButton=(Button)findViewById(R.id.project_add_makebutton);
+        makeButton.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+
+                //프로젝트 이름이 비어 있느지 확인하기 위해
+                nameValue=(String)projectName.getText().toString();
+                final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(ProjectAdd.this);
+
+                //dialog에 textview를 넣어주기 위해
+                final EditText projectPassword = new EditText(ProjectAdd.this);
+                alertBuilder
+                        .setTitle("알림")
+                        .setMessage("프로젝트의 비밀번호를 생성해주세요")
+                        .setCancelable(true)
+                        .setView(projectPassword)
+
+                        //확인 버튼 클릭시
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (nameValue.length()==0){
+                                    Toast.makeText(ProjectAdd.this,"프로젝트 이름을 입력해주세요",Toast.LENGTH_LONG).show();
+                                   // dialog.dismiss();
+                                }
+                                else {
+                                    value = projectPassword.getText().toString();
+                                    if (value.length()==0) {
+                                        Toast.makeText(ProjectAdd.this, "비밀번호를 입력해주세요", Toast.LENGTH_LONG).show();
+                                    }
+                                    else {
+                                        Log.v("TAG", "확인 버튼 클릭");
+                                        Log.v("ProjectPw : ", value);
+
+                                        MakeProjectDB makeProjectDB = new MakeProjectDB();
+                                        makeProjectDB.execute();
+
+                                        finish();
+                                    }
+                                }
+                            }
+                        });
+
+                //취소 버튼 클릭시
+                alertBuilder
+                        .setNeutralButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                Log.v("TAG : ","취소버튼");
+                                dialogInterface.dismiss();
+                            }
+                        });
+
+                AlertDialog dialog = alertBuilder.create();
+                dialog.show();
+            }
+        });
+
     }
 
 
@@ -259,25 +366,27 @@ public class ProjectAdd extends AppCompatActivity {
 
 
                     //membercount.setText(count);라고 쓰면 오류남 count가 string형이 아니기 때문에
-                    membercount.setText(String.valueOf(count+1));
+                    membercount.setText(String.valueOf(mArrayList.size()+1));
 
 
-                    //카운트를 추가 시키고 member로 아래 목록을 리싸이클러뷰에 띄우기
-                    ProjectPerson newMember = new ProjectPerson("조원 #" + (count+1), stridPhone, false );
-                    //newMember.setChecked(newMember.isChecked());
-                    //배열에 newMember값을 추가
-                    mArrayList.add(newMember);
 
-
-                    Toast.makeText(ProjectAdd.this, " " + count , Toast.LENGTH_LONG).show();
-
+                    //전체선택 체크박스 체크되어 있으면 true상태로 추가
+                    if (allCheckBoxYesOrNo==false) {
+                        //카운트를 추가 시키고 member로 아래 목록을 리싸이클러뷰에 띄우기
+                        ProjectPerson newMember = new ProjectPerson("조원", stridPhone, false);
+                        mArrayList.add(newMember);
+                    }
+                    else
+                    {
+                        ProjectPerson newMember = new ProjectPerson("조원", stridPhone, true);
+                        mArrayList.add(newMember);
+                    }
 
                     //어느 위치에 삽입할지를 정해줌 count 위치에 삽입함으로써 리스트 밑에 삽입
                     //0을 넣으면 위에 삽입
                     mAdapter.notifyItemInserted(count);
                     count++;
 
-                    // mAdapter.notifyDataSetChanged();
 
                     //추가 되고 난 후 insert창을 비워줌줌
                     insertText.getText().clear();
@@ -302,18 +411,72 @@ public class ProjectAdd extends AppCompatActivity {
             else
             {
                 Log.e("RESULT", "알 수 없는 에러 ERRCODE = " + data);
-                 Toast.makeText(ProjectAdd.this, "시스템 오류 입니다. 잠시후 다시 시도해 주세요", Toast.LENGTH_LONG).show();
+                Toast.makeText(ProjectAdd.this, "시스템 오류 입니다. 잠시후 다시 시도해 주세요", Toast.LENGTH_LONG).show();
                 finish();
             }
         }
-
-
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-            Log.e("onItemClick", "클릭 -> "+position);
-            //mAdapter.checkedConfirm(position);
-            mAdapter.notifyDataSetChanged();
-        }
-
     }
 
+
+    //DB에 프로젝트 만들기 위한 스레드
+    public class MakeProjectDB extends AsyncTask<Void, Integer, Void> {
+        String data = "";
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+
+            String partner[] = new String[count];
+            String param = "u_member=";
+
+            for (int i = 0; i<count; i++) {
+                partner[i] = mArrayList.get(i).getSearchId();
+                param = param.concat(partner[i])+",";
+
+            }
+               param= param.concat("&u_projectTitle=" + nameValue + "&u_howManyMembers=" + count+ "&u_projectPw=" + value + "");
+
+                Log.e("POST", param);
+                try {
+
+                    /* 서버연결 */
+                    URL url = new URL(
+                            "http://rtemd.suwon.ac.kr/guest/createProject.php");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    conn.setRequestMethod("POST");
+                    conn.setDoInput(true);
+                    conn.connect();
+
+                    /* 안드로이드 -> 서버 파라메터값 전달 */
+                    OutputStream outs = conn.getOutputStream();
+                    outs.write(param.getBytes("UTF-8"));
+                    outs.flush();
+                    outs.close();
+
+                    /* 서버 -> 안드로이드 파라메터값 전달 */
+                    InputStream is = null;
+                    BufferedReader in = null;
+
+                    is = conn.getInputStream();
+                    in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                    String line = null;
+                    StringBuffer buff = new StringBuffer();
+                    while ((line = in.readLine()) != null) {
+                        buff.append(line + "\n");
+                    }
+                    data = buff.toString().trim();
+
+                    /* 서버에서 응답 */
+                    Log.e("RECV DATA", data);
+
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            return null;
+        }
+    }
 }
