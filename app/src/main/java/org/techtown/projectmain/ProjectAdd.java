@@ -61,8 +61,6 @@ public class ProjectAdd extends AppCompatActivity {
     Button makeButton;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -223,9 +221,11 @@ public class ProjectAdd extends AppCompatActivity {
 
                 //dialog에 textview를 넣어주기 위해
                 final EditText projectPassword = new EditText(ProjectAdd.this);
+                String message = "※공백이나 특수문자는 사용할 수 없습니다.※";
+
                 alertBuilder
-                        .setTitle("알림")
-                        .setMessage("프로젝트의 비밀번호를 생성해주세요")
+                        .setTitle("프로젝트의 비밀번호를 생성해주세요")
+                        .setMessage("※공백이나 특수문자는 사용할 수 없습니다.※")
                         .setCancelable(true)
                         .setView(projectPassword)
 
@@ -233,14 +233,29 @@ public class ProjectAdd extends AppCompatActivity {
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
+                                //프로젝트이름이 비어있는지 확인
                                 if (nameValue.length()==0){
                                     Toast.makeText(ProjectAdd.this,"프로젝트 이름을 입력해주세요",Toast.LENGTH_LONG).show();
                                    // dialog.dismiss();
                                 }
-                                else {
+
+                                //프로젝트 이름의 공백과 특수문자 유무확인
+                                else if (spaceCheck(nameValue)||specialCharacters(nameValue)){
+                                    Toast.makeText(ProjectAdd.this,"프로젝트 이름에 공백이나 특수문자가 존재합니다 ",Toast.LENGTH_LONG).show();
+                                }
+
+                                //비어있지 않으면서 공백과 특수문자가 없다면 실행
+                                else{
                                     value = projectPassword.getText().toString();
                                     if (value.length()==0) {
                                         Toast.makeText(ProjectAdd.this, "비밀번호를 입력해주세요", Toast.LENGTH_LONG).show();
+                                    }
+                                    else if (spaceCheck(value)) {
+                                        Toast.makeText(ProjectAdd.this, "비밀번호에 공백이 존재합니다 다시 입력해주세요", Toast.LENGTH_LONG).show();
+                                    }
+                                    else if (specialCharacters(value)){
+                                        Toast.makeText(ProjectAdd.this, "비밀번호에 특수문자가 존재합니다 다시 입력해주세요", Toast.LENGTH_LONG).show();
                                     }
                                     else {
                                         Log.v("TAG", "확인 버튼 클릭");
@@ -273,7 +288,27 @@ public class ProjectAdd extends AppCompatActivity {
 
     }
 
+    //공백이 있는지 없는지 검출해주는 메소드(공백이 있으면 true 없으면 false)
+    public boolean spaceCheck(String spaceCheck)
+    {
+        for(int i = 0 ; i < spaceCheck.length() ; i++)
+        {
+            if(spaceCheck.charAt(i) == ' ')
+                return true;
+        }
+        return false;
+    }
 
+    //특수문자가 있는지 확인해주는 메소드(있으면 false 없으면 true)
+    public boolean specialCharacters(String str) {
+        boolean result;
+
+            result = str.matches("[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힝]*");
+            if (result==true)
+                return false;
+            else
+                return true;
+    }
     //추가 버튼을 눌렀을때 아이디가 존재하는 아이디인지 아닌지 확인하기 위해 php와 연결하여 db를 조사
     public class FindMyMemberDB extends AsyncTask<Void, Integer, Void> {
         String data = "";
@@ -362,9 +397,6 @@ public class ProjectAdd extends AppCompatActivity {
 
                 if (alreadyExistIdCheck==false) {
 
-                    //Toast.makeText(ProjectAdd.this, "추가", Toast.LENGTH_LONG).show();
-
-
                     //membercount.setText(count);라고 쓰면 오류남 count가 string형이 아니기 때문에
                     membercount.setText(String.valueOf(mArrayList.size()+1));
 
@@ -425,14 +457,20 @@ public class ProjectAdd extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... unused) {
 
+            //param값이 하나만 넘어가는 것 같아 param하나의 조원과 프로젝트 이름, 총조원수, 프로젝트비밀번호를 한꺼번에 넘겨줌
             String partner[] = new String[count];
             String param = "u_member=";
 
             for (int i = 0; i<count; i++) {
+
+                //조원의 아이디를 받아와 배열에 저장
                 partner[i] = mArrayList.get(i).getSearchId();
+
+                //u_member=조원1아이디,조원2아이디,조원3아이디....
                 param = param.concat(partner[i])+",";
 
             }
+                //u_member=조원1아이디,조원2아이디,조원3아이디....&u_projectTitle=프로젝트이름&u_howManyMembers=총조원수&u_projectPw=비밀번호
                param= param.concat("&u_projectTitle=" + nameValue + "&u_howManyMembers=" + count+ "&u_projectPw=" + value + "");
 
                 Log.e("POST", param);
