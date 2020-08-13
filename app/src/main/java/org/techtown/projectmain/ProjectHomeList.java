@@ -1,10 +1,9 @@
 package org.techtown.projectmain;
 
-import android.content.Context;
-
 public class ProjectHomeList {
     String projectName;
     String person;
+    String key;
 
     public ProjectHomeList(String projectName, String person){
         this.projectName = projectName;
@@ -26,4 +25,8 @@ public class ProjectHomeList {
     public void setPerson(String person) {
         this.person = person;
     }
+
+    public String getKey(){return key;}
+
+    public void setKey(String key){this.key = key; }
 }

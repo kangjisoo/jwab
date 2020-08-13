@@ -1,6 +1,5 @@
 package org.techtown.projectmain;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,8 +18,6 @@ import androidx.fragment.app.Fragment;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import org.techtown.loginactivity.FragmentCallback;
 import org.techtown.loginactivity.MainActivity;
@@ -34,10 +31,10 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
+//ProjectHome메인
 
 public class ProjectHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentCallback {
-    ProjectHomeFragment0 fragment0; //로그인 후 첫화면
+    ProjectHomeRecyclerView fragment0; //로그인 후 첫화면
     ProjectHomeFragment1 fragment1;
     ProjectHomeFragment2 fragment2;
     ProjectHomeFragment3 fragment3;
@@ -78,7 +75,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         NavigationView navigationView2 = findViewById(R.id.nav_view);
         navigationView2.setNavigationItemSelectedListener(this);
 
-        fragment0 = new ProjectHomeFragment0();
+        fragment0 = new ProjectHomeRecyclerView();
         fragment1 = new ProjectHomeFragment1();
         fragment2 = new ProjectHomeFragment2();
         fragment3 = new ProjectHomeFragment3();
@@ -158,6 +155,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
             return true;
         }
 
+        //각 프래그먼트 상단 이름
         @Override
         public void onFragmentSelected (int position, Bundle bundle){
             Fragment curFragment = null;
@@ -248,42 +246,3 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
     }
 
 }
-
-/* 기존에 있던 코드
-        setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
-                .setDrawerLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_activity2, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
-    }
-}
-*/

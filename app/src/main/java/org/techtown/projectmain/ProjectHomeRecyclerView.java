@@ -1,15 +1,12 @@
 package org.techtown.projectmain;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
@@ -30,9 +27,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+//리사이클러뷰의 Main
 
-public class ProjectHomeFragment0 extends Fragment {
-    ImageButton imageButton;
+public class ProjectHomeRecyclerView extends Fragment {
+    ImageButton imageButton;    //플러스버튼
     ItemTouchHelper helper;
     RecyclerView recyclerView;
     //Context context;
@@ -45,17 +43,16 @@ public class ProjectHomeFragment0 extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.project_home_list, container, false);
+        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.project_home_recycler, container, false);
 
         recyclerView = (RecyclerView)rootView.findViewById(R.id.project_home_list_recyclerView);
-
-        //LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         ProjectHomeListAdapter adapter = new ProjectHomeListAdapter(getActivity());
         recyclerView.setAdapter(adapter);
 
-        imageButton = (ImageButton) rootView.findViewById(R.id.imageButton2);
+        //플러스 버튼 누르면 프로젝트생성 액티비티로 전환
+        imageButton = (ImageButton) rootView.findViewById(R.id.plusButton);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,14 +68,14 @@ public class ProjectHomeFragment0 extends Fragment {
     }
 
 
-    //로그인 된 ID에 맞는 프로젝트 찾기
+    //로그인 된 ID에 맞는 프로젝트 가져오기
     public class MyProjectDB extends AsyncTask<Void, Integer, Void> {
         String data = "";
 
         @Override
         protected Void doInBackground(Void... unused) {
             String param = "param1=" + MainActivity.getsId() + "";
-            //String param = "param1=z100444";
+
             Log.e("POST", param);
             try {
 
@@ -112,10 +109,7 @@ public class ProjectHomeFragment0 extends Fragment {
                 data = buff.toString().trim();
 
                 /* 서버에서 응답 */
-                Log.e("RECV DATA", data);
-
-                //db에서 존재하는 아이디를 찾았을때 data 0을 출력
-
+                Log.e("MyProjectDB DATA", data);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -132,38 +126,53 @@ public class ProjectHomeFragment0 extends Fragment {
             ProjectHomeListAdapter adapter = new ProjectHomeListAdapter(getActivity());
             RecyclerView recyclerView = getView().findViewById(R.id.project_home_list_recyclerView);
 
-
-
             /* 서버에서 응답 */
-            Log.e("RECV DATA", data);
+            Log.e("ProjectNameString", data);
+            String projectNameString = data;
 
-            // AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
-
-            String projectName = data;
-            String[]splited = projectName.split("@");
+            //String으로 받아온 프로젝트 이름을 "@"로 구분
+            String[]splited = projectNameString.split("@");
+            //projectName 추출
+            String projectName[] = new String[splited.length+1];
 
             Log.e("projectNameTest= ", Arrays.toString(splited));
+
             //ItemTouchHelper 생성
             helper = new ItemTouchHelper(new ItemTouchHelperCallback(adapter));
             //RecyclerView에 ItemTouchHelper 붙이기
             helper.attachToRecyclerView(recyclerView);
 
             for(int i = 1; i < splited.length; i++){
-                adapter.addItem(new ProjectHomeList(splited[i], "kangjisoo"));
+                int index, index2, index3;
+
+                String inn[] = new String[splited.length];
+                int countMember[] = new int[splited.length];
+                String imsi[]=new String[splited.length];
+
+                //prjket를 구분하는"_", countMember를 구분하는 "/"
+                index = splited[i].indexOf("_");
+                index2 = splited[i].indexOf("/");
+                projectName[i] = splited[i].substring(0,index);
+                
+                imsi[i] = splited[i].substring(index+1);
+                index3 = imsi[i].indexOf("/");
+                Log.e("imsiTest ", imsi[i]);
+
+                inn[i]=imsi[i].substring(0,index3);
+                Log.e("projectNameTest2= ", inn[i]);
+                countMember[i] =  Integer.parseInt(splited[i].substring(index2+1))-1;
+
+                //카드뷰에 프로젝트 이름과 인원수 입력
+                adapter.addItem(new ProjectHomeList(projectName[i], MainActivity.getsId() +"님 외 " + countMember[i] +"명"));
+                adapter.items.get(i-1).setKey(inn[i]);
+
+
             }
+
             recyclerView.setAdapter(adapter);
 
         }
 
-    }
-    private void setUpRecyclerView(){
-        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent,
-                               @NonNull RecyclerView.State state) {
-                helper.onDraw(c,parent, state);
-            }
-        });
     }
 
 }

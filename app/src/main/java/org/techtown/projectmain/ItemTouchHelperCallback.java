@@ -1,25 +1,14 @@
 package org.techtown.projectmain;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import org.techtown.projectmain.ProjectHomeFragment0;
-
-import org.techtown.loginactivity.MainActivity;
 
 enum ButtonsState{ GONE, LEFT_VISIBLE, RIGHT_VISIBLE }
 
