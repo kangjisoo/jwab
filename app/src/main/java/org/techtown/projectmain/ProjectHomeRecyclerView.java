@@ -153,7 +153,7 @@ public class ProjectHomeRecyclerView extends Fragment {
                 index = splited[i].indexOf("_");
                 index2 = splited[i].indexOf("/");
                 projectName[i] = splited[i].substring(0,index);
-                
+
                 imsi[i] = splited[i].substring(index+1);
                 index3 = imsi[i].indexOf("/");
                 Log.e("imsiTest ", imsi[i]);
