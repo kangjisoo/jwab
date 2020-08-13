@@ -63,14 +63,6 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <Button
-                        android:id="@+id/project_person_item_invitebutton"
-                        android:layout_width="30dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:text="초대"
-                        app:layout_constraintTop_toTopOf="parent" />
                 </LinearLayout>
 
             </LinearLayout>
