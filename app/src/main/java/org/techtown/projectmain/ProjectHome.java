@@ -103,18 +103,12 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
 
                             case R.id.tab2:
                                 Toast.makeText(getApplicationContext(), "두번째 탭 선택", Toast.LENGTH_LONG).show();
-                                onFragmentSelected(4, null);
-                                getSupportFragmentManager().beginTransaction().replace(R.id.container, bottom_menu2).commit();
-                                return true;
-
-                            case R.id.tab3:
-                                Toast.makeText(getApplicationContext(), "세번째 탭 선택", Toast.LENGTH_LONG).show();
                                 onFragmentSelected(5, null);
                                 getSupportFragmentManager().beginTransaction().replace(R.id.container, bottom_menu3).commit();
                                 return true;
 
-                            case R.id.tab4:
-                                Toast.makeText(getApplicationContext(), "네번째 탭 선택", Toast.LENGTH_LONG).show();
+                            case R.id.tab3:
+                                Toast.makeText(getApplicationContext(), "세번째 탭 선택", Toast.LENGTH_LONG).show();
                                 onFragmentSelected(6, null);
                                 getSupportFragmentManager().beginTransaction().replace(R.id.container, bottom_menu4).commit();
                                 return true;
