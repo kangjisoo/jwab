@@ -132,7 +132,7 @@ public class ProjectHomeRecyclerView extends Fragment {
 
             //String으로 받아온 프로젝트 이름을 "@"로 구분
             String[]splited = projectNameString.split("@");
-            //projectName 추출
+            //projectName만을 추출
             String projectName[] = new String[splited.length+1];
 
             Log.e("projectNameTest= ", Arrays.toString(splited));
@@ -143,6 +143,7 @@ public class ProjectHomeRecyclerView extends Fragment {
             helper.attachToRecyclerView(recyclerView);
 
             for(int i = 1; i < splited.length; i++){
+                //각각 나눌 번호를 저장할 index번호
                 int index, index2, index3;
 
                 String inn[] = new String[splited.length];
@@ -152,14 +153,25 @@ public class ProjectHomeRecyclerView extends Fragment {
                 //prjket를 구분하는"_", countMember를 구분하는 "/"
                 index = splited[i].indexOf("_");
                 index2 = splited[i].indexOf("/");
+
+                //substring(0,index) -> 처음부터 index까지만 출력
+                //ex) splited[0]=프로젝트1_0/3 --> 프로젝트 이름: 프로젝트1, projectKey: 0, 총조원 수 : 3명
+                //projectName[0] = 1
                 projectName[i] = splited[i].substring(0,index);
 
+                //substring(index+1) -> 찾은 문자부터 끝까지 출력
+                //imsi[0] = 0/3
                 imsi[i] = splited[i].substring(index+1);
+
+                //imsi에서 "/"찾기
                 index3 = imsi[i].indexOf("/");
                 Log.e("imsiTest ", imsi[i]);
 
+                //inn[0] = 0
                 inn[i]=imsi[i].substring(0,index3);
                 Log.e("projectNameTest2= ", inn[i]);
+
+                //조원의 총 수를 String 형으로 받아와 int형으로 변환 후 -1 (누구님 외 몇명)
                 countMember[i] =  Integer.parseInt(splited[i].substring(index2+1))-1;
 
                 //카드뷰에 프로젝트 이름과 인원수 입력

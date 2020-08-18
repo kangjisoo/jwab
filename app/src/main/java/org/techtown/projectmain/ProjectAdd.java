@@ -48,7 +48,7 @@ public class ProjectAdd extends AppCompatActivity {
     private String value;
     private EditText projectName;
     private String nameValue;
-    private String myId;
+
 
 
     //insert_text창에서 String형으로 받아올 변수
@@ -59,7 +59,7 @@ public class ProjectAdd extends AppCompatActivity {
     EditText insertText;
     boolean allCheckBoxYesOrNo;
     Button makeButton;
-
+    private String myId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +109,9 @@ public class ProjectAdd extends AppCompatActivity {
                     Toast.makeText(ProjectAdd.this,"추가할 조원의 아이디를 입력해주세요",Toast.LENGTH_LONG).show();
                 }
 
+                else if (stridPhone.equals(myId)){
+                    Toast.makeText(ProjectAdd.this,"본인 아이디는 자동으로 추가됩니다.",Toast.LENGTH_LONG).show();
+                }
                 //비어있지 않으면 실행
                 else {
                     FindMyMemberDB findMyMemberDB = new FindMyMemberDB();
@@ -469,9 +472,12 @@ public class ProjectAdd extends AppCompatActivity {
                 //u_member=조원1아이디,조원2아이디,조원3아이디....
                 param = param.concat(partner[i])+",";
 
+
             }
+                param = param.concat(myId)+",";
+
                 //u_member=조원1아이디,조원2아이디,조원3아이디....&u_projectTitle=프로젝트이름&u_howManyMembers=총조원수&u_projectPw=비밀번호
-               param= param.concat("&u_projectTitle=" + nameValue + "&u_howManyMembers=" + count+ "&u_projectPw=" + value + "");
+               param= param.concat("&u_projectTitle=" + nameValue + "&u_howManyMembers=" + (count+1)+ "&u_projectPw=" + value + "");
 
                 Log.e("POST", param);
                 try {
