@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -21,6 +22,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     private static final float buttonWidth = 115;
     private RectF buttonInstance = null;
     private RecyclerView.ViewHolder currenrtItemViewHolder = null;
+
 
     public ItemTouchHelperCallback(ItemTouchHelperListener listener) { this.listener = listener;
     }

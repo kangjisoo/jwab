@@ -34,6 +34,7 @@ public class ProjectHomeRecyclerView extends Fragment {
     ItemTouchHelper helper;
     RecyclerView recyclerView;
     //Context context;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
