@@ -23,7 +23,7 @@
         </activity>
         <activity
             android:name="org.techtown.projectmain.ProjectHome"
-            android:theme="@style/AppTheme.NoActionBar" />
+           />
         <activity
             android:name=".SignActivty"
             android:label="회원가입"
@@ -36,6 +36,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="org.techtown.calender.DefaultCalendarActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
