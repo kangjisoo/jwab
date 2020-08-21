@@ -71,7 +71,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.login_activity);
 
         et_id = (EditText) findViewById(R.id.editTextTextEmailAddress);
         et_pw = (EditText) findViewById(R.id.editTextTextPassword);

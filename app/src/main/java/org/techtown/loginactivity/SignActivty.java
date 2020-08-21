@@ -12,10 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,7 +22,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.jar.Attributes;
 
 public class SignActivty extends AppCompatActivity {
     final Context context = this;
@@ -44,7 +40,7 @@ public class SignActivty extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_activty);
+        setContentView(R.layout.login_activity_sign);
 
         NameText = (EditText) findViewById(R.id.NameText);
         PhoneText = (EditText) findViewById(R.id.PhoneText);
