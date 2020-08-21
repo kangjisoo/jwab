@@ -21,6 +21,14 @@
             android:label="프로젝트 만들기"
             >
         </activity>
+
+        <activity android:name="org.techtown.projectinner.InnerMainRecycler"
+            android:label="projectInner">
+
+        </activity>
+
+
+
         <activity
             android:name="org.techtown.projectmain.ProjectHome"
            />
@@ -29,7 +37,11 @@
             android:label="회원가입"
             android:theme="@style/Theme.AppCompat.Dialog" />
 
-        <activity android:name=".MainActivity">
+
+
+
+        <activity
+            android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

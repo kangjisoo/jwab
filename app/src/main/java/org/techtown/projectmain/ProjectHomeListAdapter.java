@@ -1,8 +1,10 @@
 package org.techtown.projectmain;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,10 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
+import org.techtown.projectinner.InnerList;
+import org.techtown.projectinner.InnerMainRecycler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,6 +36,7 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
     private String name;
     private String key;
     ArrayList<ProjectHomeList> items = new ArrayList<ProjectHomeList>();
+    InnerMainRecycler innerMainRecycler;
 
     Context context;
 
@@ -39,20 +44,31 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
         this.context = context;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        static TextView textView, textView2;
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView textView, textView2;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.project_name);
+            itemView.setOnClickListener(new View.OnClickListener(){
+            @Override
+                public void onClick(View v){
+                innerMainRecycler = new InnerMainRecycler();
+                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().
+                        replace(R.id.container, innerMainRecycler).commit();
+
+                Log.e("ClickTest","Ok");
+            }
+
+        });
+        textView = itemView.findViewById(R.id.project_name);
             textView2 = itemView.findViewById(R.id.project_person);
         }
-
         public void setItem(ProjectHomeList item) {
             textView.setText(item.getProjectName());
             textView2.setText(item.getPerson());
-             }
         }
+    }
 
     @NonNull
     @Override
