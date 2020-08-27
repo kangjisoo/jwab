@@ -33,6 +33,8 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
     private String name;
     private String key;
     ArrayList<ProjectHomeList> items = new ArrayList<ProjectHomeList>();
+    private static String projectNameImsi;
+    private static String see;
     InnerMainRecycler innerMainRecycler;
 
     Context context;
@@ -41,16 +43,24 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
         this.context = context;
     }
 
+    public static String getProjectNameImsi(){return projectNameImsi;}
+    public static String getSee(){return see;}
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView textView, textView2;
 
         public ViewHolder(View itemView) {
             super(itemView);
+
+            //itemView클릭 시 InnerMainRecycler로 화면 전환
             itemView.setOnClickListener(new View.OnClickListener(){
             @Override
                 public void onClick(View v){
                 innerMainRecycler = new InnerMainRecycler();
+                //클릭한 아이템의 position을 찾아 프로젝트이름과 키값 저장
+               projectNameImsi= items.get(ViewHolder.super.getAdapterPosition()).getProjectName();
+              see = items.get(ViewHolder.super.getAdapterPosition()).getKey();
+
                 ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().
                         replace(R.id.container, innerMainRecycler).commit();
 
@@ -58,8 +68,9 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
             }
 
         });
-        textView = itemView.findViewById(R.id.project_name);
-            textView2 = itemView.findViewById(R.id.project_person);
+
+        textView = itemView.findViewById(R.id.person_name);
+            textView2 = itemView.findViewById(R.id.person_message);
         }
         public void setItem(ProjectHomeList item) {
             textView.setText(item.getProjectName());
@@ -99,7 +110,6 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
     public boolean onItemMove(int from_position, int to_position) {
         //이동할 객체 저장
         ProjectHomeList projectHomeList = items.get(from_position);
-
 
         //이동할 객체 삭제
         items.remove(from_position);

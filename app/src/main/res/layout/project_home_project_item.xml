@@ -32,13 +32,13 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/project_name"
+                    android:id="@+id/person_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="프로젝트 이름"
                     android:textSize="30dp"/>
                 <TextView
-                    android:id="@+id/project_person"
+                    android:id="@+id/person_message"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="구성원"

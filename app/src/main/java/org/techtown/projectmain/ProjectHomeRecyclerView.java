@@ -7,16 +7,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
+import org.techtown.projectinner.InnerMainRecycler;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,7 +39,7 @@ public class ProjectHomeRecyclerView extends Fragment {
     ImageButton imageButton;    //플러스버튼
     ItemTouchHelper helper;
     RecyclerView recyclerView;
-    //Context context;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -122,7 +128,7 @@ public class ProjectHomeRecyclerView extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
+        public void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             ProjectHomeListAdapter adapter = new ProjectHomeListAdapter(getActivity());
             RecyclerView recyclerView = getView().findViewById(R.id.project_home_list_recyclerView);
@@ -132,7 +138,7 @@ public class ProjectHomeRecyclerView extends Fragment {
             String projectNameString = data;
 
             //String으로 받아온 프로젝트 이름을 "@"로 구분
-            String[]splited = projectNameString.split("@");
+            String[] splited = projectNameString.split("@");
             //projectName만을 추출
             String projectName[] = new String[splited.length+1];
 
@@ -181,8 +187,10 @@ public class ProjectHomeRecyclerView extends Fragment {
 
 
             }
-
             recyclerView.setAdapter(adapter);
+
+
+
 
         }
 

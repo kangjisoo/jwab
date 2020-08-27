@@ -49,8 +49,6 @@ public class ProjectAdd extends AppCompatActivity {
     private EditText projectName;
     private String nameValue;
 
-
-
     //insert_text창에서 String형으로 받아올 변수
     String stridPhone=null;
     String dbDataCheck="-2";
