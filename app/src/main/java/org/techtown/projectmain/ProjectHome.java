@@ -1,5 +1,6 @@
 package org.techtown.projectmain;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import org.techtown.loginactivity.FragmentCallback;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
+import org.techtown.projectinner.InnerMainRecycler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -46,6 +48,10 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
 
     DrawerLayout drawer;
     Toolbar toolbar;
+    public static String t1;
+    public static String getsName(){return t1;}
+
+
 
 
     @Override
@@ -61,6 +67,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         View headerView = navigationView.getHeaderView(0);
         TextView navUserId = (TextView) headerView.findViewById(R.id.profile_email);
         navUserId.setText(MainActivity.getsId());
+
         //프로필에 사용자 이름 띄우는 DB
         getNameDB getnameDB = new getNameDB();
         getnameDB.execute();
@@ -231,10 +238,17 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             View headerView = navigationView.getHeaderView(0);
             TextView navUserName = (TextView) headerView.findViewById(R.id.profile_name);
             navUserName.setText(data);
+            t1 = navUserName.getText().toString();
+
+
+
+
+
             return null;
         }
     }

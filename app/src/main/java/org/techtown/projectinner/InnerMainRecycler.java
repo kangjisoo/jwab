@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
+import org.techtown.projectmain.ProjectHome;
 import org.techtown.projectmain.ProjectHomeList;
 import org.techtown.projectmain.ProjectHomeListAdapter;
 import org.techtown.projectmain.ProjectHomeRecyclerView;
@@ -38,9 +39,9 @@ import org.techtown.projectmain.ProjectHomeListAdapter;
 
 
 public class InnerMainRecycler extends Fragment {
-    private String[] splited;
     private String personIdString;
     RecyclerView recyclerView;
+    public String[] splited2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,8 +61,6 @@ public class InnerMainRecycler extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-
-        recyclerView.setAdapter(adapter);
         InnerDB innerDB = new InnerDB();
         innerDB.execute();
 
@@ -72,7 +71,8 @@ public class InnerMainRecycler extends Fragment {
         public class InnerDB extends AsyncTask<Void, Integer, Void> {
             String data = "";
 
-        @Override
+
+            @Override
         protected Void doInBackground(Void... unused) {
             //선택된 프로젝트 이름과 key값 받아옴
           String pname=  ProjectHomeListAdapter.getProjectNameImsi();
@@ -127,12 +127,13 @@ public class InnerMainRecycler extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            InnerListAdapter adapter = new InnerListAdapter(getActivity());
-            RecyclerView recyclerView = getView().findViewById(R.id.inner_recycler);
 
             /* 서버에서 응답 */
             Log.e("PersonID ", data);
             personIdString = data;
+
+            //GetNameDB에서 내 아이디와 팀원들의 아이디를 비교 연산하기 위해 splited2사용
+            splited2 = personIdString.split("@");
 
             GetNameDB getNameDB= new GetNameDB();
             getNameDB.execute();
@@ -213,8 +214,20 @@ public class InnerMainRecycler extends Fragment {
             //personName만을 추출
             for(int i = 1; i < splited.length; i++){
 
+                //로그인 된 아이디와 이름을 비교하여 나의 프로필이면 제일 상단의 카드뷰에 내 프로필 삽입
+                /*네비게이션뷰의 이름과 splited[i]를 비교, 네비게이션뷰의 아이디와 프로젝트에 삽입된 아이디를 and 연산하여
+                true이면 맨 위 카드뷰인 my_name에 내 닉네임 삽입*/
+                String userName = ProjectHome.getsName();
+                if((userName.equals(splited[i])) && (MainActivity.getsId().equals(splited2[i]))){
+                    TextView myName = getView().findViewById(R.id.my_name);
+                    myName.setText(splited[i]);
+                    continue;
+                }
+                //나의 프로필과 맞지 않으면 리사이클러뷰의 아이템에 삽입
                 adapter.addItem(new InnerList(splited[i],"ㅎㅇ"));
             }
+
+
             recyclerView.setAdapter(adapter);
 
         }
