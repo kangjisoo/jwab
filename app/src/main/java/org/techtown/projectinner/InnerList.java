@@ -4,6 +4,25 @@ public class InnerList {
     String personName;
     String message;
     String key;
+    String myName;
+    String myMessage;
+
+    public String getMyName() {
+        return myName;
+    }
+
+    public void setMyName(String myName) {
+        this.myName = myName;
+    }
+
+    public String getMyMessage() {
+        return myMessage;
+    }
+
+    public void setMyMessage(String myMessage) {
+        this.myMessage = myMessage;
+    }
+
 
     public InnerList(String personName, String message){
         this.personName = personName;
