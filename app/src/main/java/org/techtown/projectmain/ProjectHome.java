@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -62,6 +64,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         //프로필에 사용자 ID 띄우기
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
@@ -81,6 +84,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
 
         NavigationView navigationView2 = findViewById(R.id.nav_view);
         navigationView2.setNavigationItemSelectedListener(this);
+
 
         fragment0 = new ProjectHomeRecyclerView();
         fragment1 = new ProjectHomeFragment1();
@@ -126,6 +130,31 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         );
     }   //onCreate() 끝
 
+    //툴바 오른쪽 버튼
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //return super.onCreateOptionsMenu(menu);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.inner_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                // User chose the "Settings" item, show the app settings UI...
+                Toast.makeText(getApplicationContext(), "캘린더 클릭됨", Toast.LENGTH_LONG).show();
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                Toast.makeText(getApplicationContext(), "게시판 클릭됨", Toast.LENGTH_LONG).show();
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
         @Override
         public void onBackPressed () {
             if (drawer.isDrawerOpen(GravityCompat.START)) {
