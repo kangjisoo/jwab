@@ -24,9 +24,13 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 
 import org.techtown.loginactivity.R;
+import org.techtown.projectmain.ProjectAdd;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,10 +49,13 @@ public class innercalendar extends AppCompatActivity {
     private RadioButton cal_rb_single, cal_rb_mutiple;
     private ArrayList<calendar_item> calendar_item_ArrayList;
     private boolean radioSingleOrMulti =true;
-    private Calendar todaCal,ddayCal;
-    private long position=0;
+    private Calendar todaCal,ddayCal,calendarCurrent;
+    private int sYear, sMonth, sDay, eYear, eMonth, eDay;
     //-----
     ArrayList<CalendarDay> dates = new ArrayList<>();
+
+
+
 
     Calendar calendar;
     //현재 날짜, 마감날짜, 시작날짜, 디데이 카운트 저장 변수
@@ -75,16 +82,13 @@ public class innercalendar extends AppCompatActivity {
         cal_rb_mutiple = findViewById(R.id.cal_rb_multiple);
         calendar_item_ArrayList = new ArrayList<>();
 
-
+        //점찍는 클래스 실행
+        ApiSimulator apiSimulator = new ApiSimulator();
+        apiSimulator.execute();
 
         //오늘 날짜 저장
-        final Calendar calendarCurrent = Calendar.getInstance();
-        currentDay = calendarCurrent.getTimeInMillis()/86400000;
-
-
-
-        //빨간 점 찍는 이벤트 실행
-
+        calendarCurrent = Calendar.getInstance();
+        calendarCurrent.getTime();
 
         //라디오버튼 클릭 이벤트
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -115,20 +119,17 @@ public class innercalendar extends AppCompatActivity {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
 
-                ApiSimulator apiSimulator = new ApiSimulator();
-                apiSimulator.execute();
+                radio_bt_check_single(date.getYear(),date.getMonth(),date.getDay());
+                Log.e("선택된 날짜",date.getYear()+""+date.getMonth()+""+date.getDay()+"");
 
 
-                diaryTextView.setVisibility(View.VISIBLE);
-                save_Btn.setVisibility(View.VISIBLE);
-                contextEditText.setVisibility(View.VISIBLE);
-                textView2.setVisibility(View.INVISIBLE);
-                cha_Btn.setVisibility(View.INVISIBLE);
-                del_Btn.setVisibility(View.INVISIBLE);
-                diaryTextView.setText(String.format("%d / %d / %d",date.getYear(),date.getMonth(),date.getDay()));
-                contextEditText.setText("");
-                checkDay(date.getYear(),date.getMonth(),date.getDay(),"userID");
-                Log.e("진짜 짜증나게 하네",date.getYear()+""+date.getMonth()+""+date.getDay()+"");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+
+                currentDay = calendarCurrent.getTimeInMillis()/86400000;
+                Log.e("현재날짜", simpleDateFormat.format(calendarCurrent.getTime())+"");
+
+
             }
         });
 
@@ -146,6 +147,10 @@ public class innercalendar extends AppCompatActivity {
                 contextEditText.setVisibility(View.INVISIBLE);
                 textView2.setVisibility(View.VISIBLE);
 
+                //저장누르면 빨간점 표시 해주는 클래스 실행
+                ApiSimulator apiSimulator = new ApiSimulator();
+                apiSimulator.execute();
+
             }
         });
     }
@@ -154,7 +159,7 @@ public class innercalendar extends AppCompatActivity {
     public void radio_bt_check_single(int year, int month, int dayOfMonth) {
 
         if (radioSingleOrMulti == true) {
-            diaryTextView.setText(String.format("%d / %d / %d", year, month+1, dayOfMonth) + "\n" + "-오늘의 할 일 List-");
+            diaryTextView.setText(String.format("%d / %d / %d", year, month, dayOfMonth) + "\n" + "-오늘의 할 일 List-");
             diaryTextView.setVisibility(View.VISIBLE);
             save_Btn.setVisibility(View.VISIBLE);
             contextEditText.setVisibility(View.VISIBLE);
@@ -166,7 +171,7 @@ public class innercalendar extends AppCompatActivity {
 
         } else {
 
-            diaryTextView.setText(String.format("%d / %d / %d", year, month + 1, dayOfMonth) + "\n");
+            diaryTextView.setText(String.format("%d / %d / %d", year, month, dayOfMonth) + "\n");
             diaryTextView.setVisibility(View.VISIBLE);
 
             save_Btn.setVisibility(View.INVISIBLE);
@@ -174,6 +179,41 @@ public class innercalendar extends AppCompatActivity {
             textView2.setVisibility(View.INVISIBLE);
             cha_Btn.setVisibility(View.INVISIBLE);
             del_Btn.setVisibility(View.INVISIBLE);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            if (today==0) {
+                todaCal = Calendar.getInstance();
+                todaCal.set(year,month-1,dayOfMonth);
+               Log.e("시작날짜", simpleDateFormat.format(todaCal.getTime())+"");
+                today=todaCal.getTimeInMillis()/86400000; //->(24 * 60 * 60 * 1000) 24시간 60분 60초 * (ms초->초 변환 1000)
+
+                sYear = year;
+                sMonth = month-1;
+                sDay = dayOfMonth;
+              //  Log.e("현재날짜", simpleDateFormat.format(currentDay)+"");
+            }
+            else{
+                    ddayCal = Calendar.getInstance();
+                    ddayCal.set(year, month-1, dayOfMonth);
+                    dday = ddayCal.getTimeInMillis()/86400000;
+                    Log.e("프로젝트 기간 확인", simpleDateFormat.format(ddayCal.getTime())+"");
+
+                    if (dday<=currentDay){
+                      Toast.makeText(this,"이미 만료된 프로젝트기간 입니다.",Toast.LENGTH_LONG).show();
+                       Log.e("만료 프로젝트 기간 확인", simpleDateFormat.format(ddayCal.getTime())+"");
+                     }
+                    else {
+                        count = dday - currentDay;
+                        Log.e("남은 D-day기간은?", count + "");
+
+                        long projectCount = dday-today;
+                        eYear = year;
+                        eMonth = month-1;
+                        eDay = dayOfMonth;
+                        ProjectTermCheck(projectCount,sYear, sMonth,sDay,eYear,eMonth,eDay);
+
+                    }
+
+            }
 
 //            Calendar c = Calendar.getInstance();
 //            c.set(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_WEEK_IN_MONTH);
@@ -182,12 +222,22 @@ public class innercalendar extends AppCompatActivity {
         }
     }
 
-    //선택한 날짜에 자료가 입력될때
-    public void  checkDay(int cYear,int cMonth,int cDay,String userID){
-        fname=""+userID+cYear+"-"+cMonth+"-"+cDay+".txt";//저장할 파일 이름설정
+    public void ProjectTermCheck(long projectCount, int sYear, int sMonth, int sDay, int eYear, int eMonth, int eDay){
+        ArrayList<CalendarDay> termDates = new ArrayList<>();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendarCheck = Calendar.getInstance();
+        for (int i=0 ;i<= projectCount; i++){
 
-        CalendarDay day = CalendarDay.from(cYear,cMonth,cDay);
-        dates.add(day);
+            
+//            CalendarDay days = CalendarDay.from(,(calendar.get(Calendar.MONTH)+1),i);
+//            termDates.add(days);
+//
+       }
+    }
+
+    //선택한 날짜에 자료가 입력될때
+    public void  checkDay(final int cYear, final int cMonth, final int cDay, String userID){
+        fname=""+userID+cYear+"-"+cMonth+"-"+cDay+".txt";//저장할 파일 이름설정
 
         FileInputStream fis=null;   //FileStream fis 변수
 
@@ -221,8 +271,6 @@ public class innercalendar extends AppCompatActivity {
                 cha_Btn.setVisibility(View.VISIBLE);
                 del_Btn.setVisibility(View.VISIBLE);
 
-
-
                 //수정버튼 클릭 이벤트
                 cha_Btn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -253,11 +301,13 @@ public class innercalendar extends AppCompatActivity {
                         cha_Btn.setVisibility(View.INVISIBLE);
                         del_Btn.setVisibility(View.INVISIBLE);
                         removeDiary(fname);
-                        // Log.e("삭제하는 거",fname+"");
 
+                        //삭제누르면 빨간점 삭제
+                        ApiSimulator apiSimulator = new ApiSimulator();
+                        apiSimulator.execute();
+                        // Log.e("삭제하는 거",fname+"");
                     }
                 });
-
             }
 
         }catch (Exception e){
@@ -283,7 +333,6 @@ public class innercalendar extends AppCompatActivity {
             fos.write((content).getBytes());
             fos.close();
             deleteFile(fname);
-
 
         }catch (Exception e){
             e.printStackTrace();
@@ -311,40 +360,68 @@ public class innercalendar extends AppCompatActivity {
        @Override
         //List<CalendarDay>
       protected List<CalendarDay> doInBackground(@NonNull Void... voids) {
-           try {
-             Thread.sleep(2000);
 
-            } catch (InterruptedException e) {
-               e.printStackTrace();
-           }
+           //쓰레드 잠시후에 시작하게 해주는
+//           try {
+//             Thread.sleep(2000);
+//
+//            } catch (InterruptedException e) {
+//               e.printStackTrace();
+//           }
 
-       Calendar calendarPre = Calendar.getInstance();
+        //오늘 날짜
        Calendar calendar = Calendar.getInstance();
-       calendarPre.add(Calendar.MONTH, -2);
+
+       //빨간점 표시할 날짜 저장배열
        ArrayList<CalendarDay> dates = new ArrayList<>();
-//          for (int i = 0; i < 30; i++) {
-////
-//
-//
+
+       //한달값만 출력
+          for (int i = 1; i <= 31; i++) {
+
+//              File files = new File("userID"+calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+i+".txt");
+//              if(files.exists()==true) {
+//                  CalendarDay day = CalendarDay.from(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)+1),i);
+//                  dates.add(day);
+////파일이 있을시
+//              } else {
+////파일이 없을시
+//              }
+
+              FileInputStream ffos = null;
+
+              try {
+                  //파일을 읽기
+                  ffos = openFileInput("userID"+calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+i+".txt");
+                  int story  = ffos.read();
+
+                  //존재하는 파일에 내용이 있을 때 배열에 추가
+                  if(story>=-1){
+                      CalendarDay day = CalendarDay.from(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)+1),i);
+                      dates.add(day);
+                  }
+
+              } catch (FileNotFoundException e) {
+                  e.printStackTrace();
+              } catch (IOException e) {
+                  e.printStackTrace();
+              }
+
+//          파일을 열지 않고 확인해 보기 위해 시험 해본 코드 하지만 되지 않음
+//              ""+userID+cYear+"-"+cMonth+"-"+cDay+".txt"
 //                 CalendarDay day = CalendarDay.from(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)+1),i+1);
 //              if (textView2.getText()!=null){
 //                  Log.e("텍스트가 안비어져있다냐",textView2.getText()+"");
-////                  if (dates.get(i)==day){
-////                      break;
-////                  }
-////                  else {
+//                 if (dates.get(i)==day){
+//                      break;
+//                 }
+//                 else {
 //                    //  dates.add(day);
-//
-////
-//
-////                  }
-//           }
+//                 }
+           }
 //            //  Log.e("캘린더 이봐",calendar.get(Calendar.YEAR)+" "+calendar.get(Calendar.MONTH)+" "+calendar.get(Calendar.DAY_OF_MONTH));
 //             // calendar.add(Calendar.DAY_OF_MONTH, +5);
 
-
-            Log.e("캘린더 이봐 자네 신사답게 행동해",dates+"");
-
+            Log.e("빨간점 표시할 날짜 배열",dates+"");
             return dates;
      }
 
@@ -355,10 +432,10 @@ public class innercalendar extends AppCompatActivity {
            if (isFinishing()) {
                return;
           }
+            calendarView.removeDecorators();
+            calendarView.addDecorator(new CalendarEventDecorator(Color.RED, calendarDays,innercalendar.this));
 
-           calendarView.addDecorator(new CalendarEventDecorator(Color.RED, calendarDays,innercalendar.this));
-            }
+       }
     }
 
 }
-
