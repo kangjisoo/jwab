@@ -9,6 +9,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -62,7 +65,8 @@ public class InnerMainRecycler extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
+        //툴바의 옵션메뉴 동작
+        setHasOptionsMenu(true);
 
         InnerListAdapter adapter = new InnerListAdapter(getActivity());
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.inner_project, container, false);
@@ -77,6 +81,28 @@ public class InnerMainRecycler extends Fragment {
         innerDB.execute();
 
         return rootView;
+    }
+
+    //툴바 오른쪽 메뉴 설정(캘린더, 게시판...)
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    super.onCreateOptionsMenu(menu, inflater);
+    inflater.inflate(R.menu.inner_menu, menu);
+}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case R.id.action_settings1:
+                //Toast.makeText(getApplicationContext(), "캘린더 클릭됨", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),"캘린더 클릭됨",Toast.LENGTH_LONG).show();
+                return true;
+
+            default:
+                //Toast.makeText(getApplicationContext(), "게시판 클릭됨", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),"게시판 클릭됨",Toast.LENGTH_LONG).show();
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     //선택된 프로젝트에 속한 팀원들의 id를 가져오는 DB
