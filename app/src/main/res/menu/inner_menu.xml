@@ -4,18 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <!-- "Mark Favorite", should appear as action button if possible -->
-    <item
-        android:id="@+id/action_settings"
-        android:title="환경설정"
-        android:icon="@drawable/ic_settings_black_24dp"
-        app:showAsAction="ifRoom"/>
+
 
     <!-- Settings, should always be in the overflow -->
-    <item android:id="@+id/action_settings2"
+    <item android:id="@+id/action_settings1"
         android:title="캘린더"
         app:showAsAction="never"/>
 
-    <item android:id="@+id/action_settings3"
+    <item android:id="@+id/action_settings2"
         android:title="게시판"
         app:showAsAction="never"/>
 

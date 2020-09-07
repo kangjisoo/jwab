@@ -1,5 +1,8 @@
 package org.techtown.projectmain;
 
+import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,6 +28,7 @@ import androidx.appcompat.widget.Toolbar;
 import org.techtown.loginactivity.FragmentCallback;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
+
 import org.techtown.projectinner.InnerMainRecycler;
 
 import java.io.BufferedReader;
@@ -35,6 +39,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 //ProjectHome메인
 
 public class ProjectHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentCallback {
@@ -130,31 +135,20 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         );
     }   //onCreate() 끝
 
-    //툴바 오른쪽 버튼
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //return super.onCreateOptionsMenu(menu);
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.inner_menu, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        //return super.onOptionsItemSelected(item);
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                // User chose the "Settings" item, show the app settings UI...
-                Toast.makeText(getApplicationContext(), "캘린더 클릭됨", Toast.LENGTH_LONG).show();
-                return true;
+    //현재 액티비티가 실행중인지 구하기
+    private boolean isActivityTop(){
+        ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> info;
+        info = activityManager.getRunningTasks(1);
 
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                Toast.makeText(getApplicationContext(), "게시판 클릭됨", Toast.LENGTH_LONG).show();
-                return super.onOptionsItemSelected(item);
-
+        if(info.get(0).topActivity.getClassName().equals(InnerMainRecycler.class.getClass().getName())) {
+            return true;
+        } else {
+            return false;
         }
     }
+
+
         @Override
         public void onBackPressed () {
             if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -201,16 +195,16 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
                 toolbar.setTitle("세 번째 화면");
             } else if (position == 3) {
                 curFragment = fragment0;
-                toolbar.setTitle("첫 번째 탭");
+                toolbar.setTitle("프로젝트 홈");
             } else if (position == 4) {
                 curFragment = bottom_menu2;
                 toolbar.setTitle("두 번째 탭");
             } else if (position == 5) {
                 curFragment = bottom_menu3;
-                toolbar.setTitle("세 번째 탭");
+                toolbar.setTitle("게시판");
             }else if (position == 6) {
                 curFragment = bottom_menu4;
-                toolbar.setTitle("네 번째 탭");
+                toolbar.setTitle("알림");
             }
             getSupportFragmentManager().beginTransaction().replace(R.id.container, curFragment).commit();
         }

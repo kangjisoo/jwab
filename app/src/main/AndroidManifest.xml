@@ -21,6 +21,11 @@
             android:label="프로젝트 만들기"
             >
         </activity>
+        <activity
+            android:name="org.techtown.board.BoardMainRecycler"
+            android:label="게시판이에용"
+            tools:ignore="Instantiatable">
+        </activity>
 
         <activity
             android:name="org.techtown.projectmain.ProjectHome"

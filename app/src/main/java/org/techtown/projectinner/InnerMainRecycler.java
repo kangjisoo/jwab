@@ -2,6 +2,7 @@ package org.techtown.projectinner;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.techtown.board.BoardMainRecycler;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 import org.techtown.projectmain.ItemTouchHelperCallback;
@@ -43,6 +45,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.channels.InterruptedByTimeoutException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -50,12 +53,17 @@ import org.techtown.projectmain.ProjectHomeListAdapter;
 
 //프로젝트에 들어갔을 때 보이는 사용자들의 프로필
 public class InnerMainRecycler extends Fragment {
+    Context context;
+    BoardMainRecycler boardMainRecycler;
     private String personIdString;
     RecyclerView recyclerView;
     private String[] splited2;
     private String message;
     private String pname;
     private String pkey;
+
+    BoardMainRecycler board = new BoardMainRecycler();
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,12 +103,17 @@ public class InnerMainRecycler extends Fragment {
             case R.id.action_settings1:
                 //Toast.makeText(getApplicationContext(), "캘린더 클릭됨", Toast.LENGTH_LONG).show();
                 Toast.makeText(getContext(),"캘린더 클릭됨",Toast.LENGTH_LONG).show();
+
                 return true;
 
             default:
                 //Toast.makeText(getApplicationContext(), "게시판 클릭됨", Toast.LENGTH_LONG).show();
                 Toast.makeText(getContext(),"게시판 클릭됨",Toast.LENGTH_LONG).show();
-                return super.onOptionsItemSelected(item);
+                boardMainRecycler = new BoardMainRecycler();
+
+                Intent intent = new Intent(getContext(), BoardMainRecycler.class);
+                startActivity(intent);
+                return true;
 
         }
     }

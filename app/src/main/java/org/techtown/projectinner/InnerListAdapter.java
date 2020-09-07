@@ -1,8 +1,6 @@
 package org.techtown.projectinner;
 
 import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import org.techtown.loginactivity.R;
-
-
-
 import java.util.ArrayList;
 
 public class InnerListAdapter  extends RecyclerView.Adapter<InnerListAdapter.ViewHolder> {
@@ -53,13 +48,7 @@ public class InnerListAdapter  extends RecyclerView.Adapter<InnerListAdapter.Vie
         public ViewHolder(View itemView) {
             super(itemView);
 
-//            itemView.setOnClickListener(new View.OnClickListener(){
-//                @Override
-//                public void onClick(View v){
-//
-//                }
-//
-//            });
+
             textView = itemView.findViewById(R.id.person_name);
             textView2 = itemView.findViewById(R.id.person_message);
 
