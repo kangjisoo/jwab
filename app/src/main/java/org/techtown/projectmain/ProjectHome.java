@@ -1,8 +1,14 @@
 package org.techtown.projectmain;
 
+import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -23,6 +29,8 @@ import org.techtown.loginactivity.FragmentCallback;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 
+import org.techtown.projectinner.InnerMainRecycler;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +39,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 //ProjectHome메인
 
 public class ProjectHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentCallback {
@@ -46,6 +55,10 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
 
     DrawerLayout drawer;
     Toolbar toolbar;
+    public static String t1;
+    public static String getsName(){return t1;}
+
+
 
 
     @Override
@@ -56,11 +69,13 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         //프로필에 사용자 ID 띄우기
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         TextView navUserId = (TextView) headerView.findViewById(R.id.profile_email);
         navUserId.setText(MainActivity.getsId());
+
         //프로필에 사용자 이름 띄우는 DB
         getNameDB getnameDB = new getNameDB();
         getnameDB.execute();
@@ -74,6 +89,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
 
         NavigationView navigationView2 = findViewById(R.id.nav_view);
         navigationView2.setNavigationItemSelectedListener(this);
+
 
         fragment0 = new ProjectHomeRecyclerView();
         fragment1 = new ProjectHomeFragment1();
@@ -118,6 +134,20 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
                 }
         );
     }   //onCreate() 끝
+
+    //현재 액티비티가 실행중인지 구하기
+    private boolean isActivityTop(){
+        ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> info;
+        info = activityManager.getRunningTasks(1);
+
+        if(info.get(0).topActivity.getClassName().equals(InnerMainRecycler.class.getClass().getName())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
         @Override
         public void onBackPressed () {
@@ -165,16 +195,16 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
                 toolbar.setTitle("세 번째 화면");
             } else if (position == 3) {
                 curFragment = fragment0;
-                toolbar.setTitle("첫 번째 탭");
+                toolbar.setTitle("프로젝트 홈");
             } else if (position == 4) {
                 curFragment = bottom_menu2;
                 toolbar.setTitle("두 번째 탭");
             } else if (position == 5) {
                 curFragment = bottom_menu3;
-                toolbar.setTitle("세 번째 탭");
+                toolbar.setTitle("게시판");
             }else if (position == 6) {
                 curFragment = bottom_menu4;
-                toolbar.setTitle("네 번째 탭");
+                toolbar.setTitle("알림");
             }
             getSupportFragmentManager().beginTransaction().replace(R.id.container, curFragment).commit();
         }
@@ -231,10 +261,17 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             View headerView = navigationView.getHeaderView(0);
             TextView navUserName = (TextView) headerView.findViewById(R.id.profile_name);
             navUserName.setText(data);
+            t1 = navUserName.getText().toString();
+
+
+
+
+
             return null;
         }
     }

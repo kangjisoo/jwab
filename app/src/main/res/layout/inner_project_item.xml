@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -35,14 +35,15 @@
                     android:id="@+id/person_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="프로젝트 이름"
+                    android:text="조원의 닉네임"
                     android:textSize="30dp"/>
+
                 <TextView
                     android:id="@+id/person_message"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="구성원"
-                    android:textSize="20dp"/>
+                    android:text="상태메시지"
+                    android:textSize="20dp" />
             </LinearLayout>
 
         </LinearLayout>
