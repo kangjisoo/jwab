@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.techtown.board.BoardMainRecycler;
+import org.techtown.calendar.innercalendar;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 import org.techtown.projectmain.ItemTouchHelperCallback;
@@ -103,7 +104,8 @@ public class InnerMainRecycler extends Fragment {
             case R.id.action_settings1:
                 //Toast.makeText(getApplicationContext(), "캘린더 클릭됨", Toast.LENGTH_LONG).show();
                 Toast.makeText(getContext(),"캘린더 클릭됨",Toast.LENGTH_LONG).show();
-
+                Intent intent = new Intent(getContext(), innercalendar.class);
+                startActivity(intent);
                 return true;
 
             default:
@@ -111,8 +113,8 @@ public class InnerMainRecycler extends Fragment {
                 Toast.makeText(getContext(),"게시판 클릭됨",Toast.LENGTH_LONG).show();
                 boardMainRecycler = new BoardMainRecycler();
 
-                Intent intent = new Intent(getContext(), BoardMainRecycler.class);
-                startActivity(intent);
+                Intent intent2 = new Intent(getContext(), BoardMainRecycler.class);
+                startActivity(intent2);
                 return true;
 
         }
