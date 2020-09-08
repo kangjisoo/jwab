@@ -236,11 +236,15 @@ public class innercalendar extends AppCompatActivity {
 
                     termstore_bt.setVisibility(View.VISIBLE);
 
+                    //기간 저장 버튼 클릭이벤트
                     termstore_bt.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
 
                             Toast.makeText(innercalendar.this, "기간 저장 완료!", Toast.LENGTH_LONG).show();
+                            TermDB termDB = new TermDB();
+                            termDB.execute();
+
                             TermFullOrEmpty();
                         }
                     });
@@ -262,6 +266,7 @@ public class innercalendar extends AppCompatActivity {
             terminit_bt.setVisibility(View.VISIBLE);
             termstore_bt.setVisibility(View.INVISIBLE);
 
+            //기간 초기화 버튼 눌렀을 때 이벤트
             terminit_bt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -524,6 +529,7 @@ public class innercalendar extends AppCompatActivity {
     }
 
 
+    //기간 날짜를 DB에 저장하는 클래스
     public class TermDB extends AsyncTask<Void, Integer, Void> {
         String data = "";
 
