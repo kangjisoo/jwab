@@ -439,7 +439,7 @@ public class ProjectAdd extends AppCompatActivity {
             //입력창이 비어 있으면 data -1을 출력
             else if (data.equals("-1")){
                 Log.e("RESULT", "입력창이 빈칸");
-                 Toast.makeText(ProjectAdd.this, "입력창이 비어 있음", Toast.LENGTH_LONG).show();
+                Toast.makeText(ProjectAdd.this, "입력창이 비어 있음", Toast.LENGTH_LONG).show();
             }
 
             //다른 값이 들어가면 출력되는 문

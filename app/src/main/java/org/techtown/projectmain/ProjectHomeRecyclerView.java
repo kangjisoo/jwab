@@ -152,6 +152,7 @@ public class ProjectHomeRecyclerView extends Fragment {
                 String imsi[]=new String[splited.length];
 
                 //prjket를 구분하는"_", countMember를 구분하는 "/"
+                //indexOf 몇번째에 있는지 알려주는 메소드
                 index = splited[i].indexOf("_");
                 index2 = splited[i].indexOf("/");
 

@@ -23,9 +23,9 @@
 
     <string name="horizontal">Horizontal</string>
     <string name="vertical">Vertical</string>
-    <string name="single">Single</string>
+    <string name="single">메모</string>
     <string name="multiple">여러날짜 선택</string>
-    <string name="range">Multiple</string>
+    <string name="range">기간</string>
     <string name="none">취소</string>
 
     <!-- MENU -->
