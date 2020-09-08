@@ -24,7 +24,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 
 import org.techtown.loginactivity.R;
-import org.techtown.projectmain.ProjectAdd;
+import org.techtown.projectinner.InnerMainRecycler;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -527,12 +527,16 @@ public class innercalendar extends AppCompatActivity {
     public class TermDB extends AsyncTask<Void, Integer, Void> {
         String data = "";
 
+        String pname = InnerMainRecycler.getPname();
+        String pkey = InnerMainRecycler.getPkey();
+
+
         @Override
         protected Void doInBackground(Void... unused) {
 
             //param값이 하나만 넘어가는 것 같아 param하나의 조원과 프로젝트 이름, 총조원수, 프로젝트비밀번호를 한꺼번에 넘겨줌
 
-            String param = "u_Term=" + sYear+"-"+sMonth+"-"+sDay+"~"+eYear+"-"+eMonth+"-"+eDay+"";
+            String param = "&u_term=" + sYear+"-"+sMonth+"-"+sDay+"~"+eYear+"-"+eMonth+"-"+eDay+"&u_projectTableName="+pname+"_"+pkey+"";
             Log.e("POST", param);
 
             try {

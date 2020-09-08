@@ -60,11 +60,16 @@ public class InnerMainRecycler extends Fragment {
     RecyclerView recyclerView;
     private String[] splited2;
     private String message;
-    private String pname;
-    private String pkey;
+    private static String  pname;
+    private static String  pkey;
 
     BoardMainRecycler board = new BoardMainRecycler();
-
+    public static String  getPname(){
+        return pname;
+    }
+    public static String getPkey(){
+        return pkey;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
