@@ -24,11 +24,15 @@
 
 
         <activity android:name="org.techtown.projectinner.InnerMainRecycler"
-            android:label="projectInner">
+            android:label="projectInner"
+            tools:ignore="Instantiatable">
 
         </activity>
 
+        <activity
+            android:name="org.techtown.board.BoardMainRecycler">
 
+        </activity>
 
         <activity
             android:name="org.techtown.projectmain.ProjectHome"
@@ -50,19 +54,10 @@
             </intent-filter>
         </activity>
 
-       <activity android:name="org.techtown.calendar.innercalendar">
-           <intent-filter>
-               <action android:name="android.intent.action.MAIN" />
-               <category android:name="android.intent.category.LAUNCHER" />
-           </intent-filter>
-       </activity>
+       <activity
+           android:name="org.techtown.calendar.innercalendar">
 
-        <activity android:name="org.techtown.calendar.silhum">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+       </activity>
 
     </application>
 
