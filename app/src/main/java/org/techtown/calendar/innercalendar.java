@@ -59,6 +59,7 @@ public class innercalendar extends AppCompatActivity {
     private boolean radioSingleOrMulti = true;
     private Calendar todaCal, ddayCal, calendarCurrent;
     private int sYear, sMonth, sDay, eYear, eMonth, eDay;
+    private boolean already;
     //-----
     ArrayList<CalendarDay> termDates;
 
@@ -97,6 +98,15 @@ public class innercalendar extends AppCompatActivity {
         calendarCurrent = Calendar.getInstance();
         calendarCurrent.getTime();
 
+        //기간 DB에서 가져와서 표시하는 클래스 실행
+        GetTermDB getTermDB = new GetTermDB();
+        getTermDB.execute();
+
+
+        //이게 먼저 실행되는 이유가 뭐야 대체;;;;;
+        Log.e("씨빠!!",already+"");
+
+
 
         //라디오버튼 클릭 이벤트
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -113,13 +123,6 @@ public class innercalendar extends AppCompatActivity {
 
             }
         });
-
-        //로그인 및 회원가입 엑티비티에서 이름을 받아옴
-//         Intent intent=getIntent();
-//        String namey=intent.getStringExtra("userName");
-//        final String userID=intent.getStringExtra("userID");
-//        textView9.setText(namey+"님의 달력 일기장");
-
 
         //캘린더 클릭이벤트
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
@@ -140,7 +143,7 @@ public class innercalendar extends AppCompatActivity {
             }
         });
 
-        //저장 클릭 이벤트
+        //일정 저장 클릭 이벤트
         save_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -197,57 +200,58 @@ public class innercalendar extends AppCompatActivity {
 
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-            if (today == 0) {
-                todaCal = Calendar.getInstance();
-                todaCal.set(year, month - 1, dayOfMonth);
-                Log.e("시작날짜", simpleDateFormat.format(todaCal.getTime()) + "");
+                if (today == 0) {
+                    todaCal = Calendar.getInstance();
+                    todaCal.set(year, month - 1, dayOfMonth);
+                    Log.e("시작날짜", simpleDateFormat.format(todaCal.getTime()) + "");
 
-                today = todaCal.getTimeInMillis() / 86400000; //->(24 * 60 * 60 * 1000) 24시간 60분 60초 * (ms초->초 변환 1000)
+                    today = todaCal.getTimeInMillis() / 86400000; //->(24 * 60 * 60 * 1000) 24시간 60분 60초 * (ms초->초 변환 1000)
 
-                sYear = year;
-                sMonth = month;
-                sDay = dayOfMonth;
+                    sYear = year;
+                    sMonth = month;
+                    sDay = dayOfMonth;
 
-                //  Log.e("현재날짜", simpleDateFormat.format(currentDay)+"");
-            } else {
-                ddayCal = Calendar.getInstance();
-                ddayCal.set(year, month - 1, dayOfMonth);
-                dday = ddayCal.getTimeInMillis() / 86400000;
-                Log.e("프로젝트 기간 확인", simpleDateFormat.format(ddayCal.getTime()) + "");
+                    //  Log.e("현재날짜", simpleDateFormat.format(currentDay)+"");
+                }
+                else {
+                    ddayCal = Calendar.getInstance();
+                    ddayCal.set(year, month - 1, dayOfMonth);
+                    dday = ddayCal.getTimeInMillis() / 86400000;
+                    Log.e("프로젝트 기간 확인", simpleDateFormat.format(ddayCal.getTime()) + "");
 
-                if (dday <= currentDay) {
-                    Toast.makeText(this, "이미 만료된 프로젝트기간 입니다.", Toast.LENGTH_LONG).show();
-                    Log.e("만료 프로젝트 기간 확인", simpleDateFormat.format(ddayCal.getTime()) + "");
-                } else {
-                    count = dday - currentDay;
-                    Log.e("남은 D-day기간은?", count + "");
+                    if (dday <= currentDay) {
+                        Toast.makeText(this, "이미 만료된 프로젝트기간 입니다.", Toast.LENGTH_LONG).show();
+                        Log.e("만료 프로젝트 기간 확인", simpleDateFormat.format(ddayCal.getTime()) + "");
+                    } else {
+                        count = dday - currentDay;
+                        Log.e("남은 D-day기간은?", count + "");
 
-                    long projectCount = dday - today;
+                        long projectCount = dday - today;
 
-                    ProjectTermCheck(projectCount, sYear, sMonth, sDay);
+                        ProjectTermCheck(projectCount, sYear, sMonth, sDay);
 
-                    eYear= year;
-                    eMonth= month;
-                    eDay=dayOfMonth;
+                        eYear = year;
+                        eMonth = month;
+                        eDay = dayOfMonth;
 
-                    TermDisplay termDisplay = new TermDisplay();
-                    termDisplay.execute();
+                        TermDisplay termDisplay = new TermDisplay();
+                        termDisplay.execute();
 
 
-                    termstore_bt.setVisibility(View.VISIBLE);
+                        termstore_bt.setVisibility(View.VISIBLE);
 
-                    //기간 저장 버튼 클릭이벤트
-                    termstore_bt.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
+                        //기간 저장 버튼 클릭이벤트
+                        termstore_bt.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
 
-                            Toast.makeText(innercalendar.this, "기간 저장 완료!", Toast.LENGTH_LONG).show();
-                            TermDB termDB = new TermDB();
-                            termDB.execute();
+                                Toast.makeText(innercalendar.this, "기간 저장 완료!", Toast.LENGTH_LONG).show();
+                                TermDB termDB = new TermDB();
+                                termDB.execute();
 
-                            TermFullOrEmpty();
-                        }
-                    });
+                                TermFullOrEmpty();
+                            }
+                        });
                 }
             }
         }
@@ -284,9 +288,15 @@ public class innercalendar extends AppCompatActivity {
                     eDay =0;
 
                     termDates = copyTermDates;
-                    Log.e("뭐가 잘못된거야 -- ", termDates + "");
+
+                    already=false;
+                    //기간 초기화를 시키면 빨간점다시 불러와줌
                     ApiSimulator apiSimulator = new ApiSimulator();
                     apiSimulator.execute();
+
+                    //DB에서 기간을 null값으로 바꿔주기 위해
+                    TermInitDB termInitDB = new TermInitDB();
+                    termInitDB.execute();
 
                 }
             });
@@ -508,6 +518,7 @@ public class innercalendar extends AppCompatActivity {
     }
 
 
+    //프로젝트 기간 달력에 표시해주는 클래스
     private class TermDisplay extends AsyncTask<Void, Void, List<CalendarDay>> {
 
         @Override
@@ -528,7 +539,6 @@ public class innercalendar extends AppCompatActivity {
         }
     }
 
-
     //기간 날짜를 DB에 저장하는 클래스
     public class TermDB extends AsyncTask<Void, Integer, Void> {
         String data = "";
@@ -540,8 +550,7 @@ public class innercalendar extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... unused) {
 
-            //param값이 하나만 넘어가는 것 같아 param하나의 조원과 프로젝트 이름, 총조원수, 프로젝트비밀번호를 한꺼번에 넘겨줌
-
+            //기간과 선택된 프로젝트테이블 이름을 넘겨줌
             String param = "&u_term=" + sYear+"-"+sMonth+"-"+sDay+"~"+eYear+"-"+eMonth+"-"+eDay+"&u_projectTableName="+pname+"_"+pkey+"";
             Log.e("POST", param);
 
@@ -588,4 +597,172 @@ public class innercalendar extends AppCompatActivity {
             return null;
         }
     }
+
+    //기간 날짜를 DB에서 초기화 시키는 클래스
+    public class TermInitDB extends AsyncTask<Void, Integer, Void> {
+        String data = "";
+
+        String pname = InnerMainRecycler.getPname();
+        String pkey = InnerMainRecycler.getPkey();
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+
+
+            String param = "&u_projectTableName="+pname+"_"+pkey+"";
+            Log.e("POST", param);
+
+            try {
+
+                /* 서버연결 */
+                URL url = new URL(
+                        "http://rtemd.suwon.ac.kr/guest/deleteTerm.php");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                /* 서버 -> 안드로이드 파라메터값 전달 */
+                InputStream is = null;
+                BufferedReader in = null;
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ((line = in.readLine()) != null) {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+
+                /* 서버에서 응답 */
+                Log.e("RECV DATA", data);
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+    }
+
+    //기간 날짜를 DB에서 가져오는 클래스
+    public class GetTermDB extends AsyncTask<Void, Integer, Void> {
+        String datas = "";
+
+        String pname = InnerMainRecycler.getPname();
+        String pkey = InnerMainRecycler.getPkey();
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+
+
+            String param ="&u_projectTableName=" + pname + "_" + pkey + "";
+            Log.e("POST", param);
+
+            try {
+
+                /* 서버연결 */
+                URL url = new URL(
+                        "http://rtemd.suwon.ac.kr/guest/getTerm.php");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                /* 서버 -> 안드로이드 파라메터값 전달 */
+                InputStream is = null;
+                BufferedReader in = null;
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ((line = in.readLine()) != null) {
+                    buff.append(line + "\n");
+                }
+                datas = buff.toString().trim();
+
+                /* 서버에서 응답 */
+                Log.e("RECV DATA", datas);
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            /* 서버에서 응답 */
+            Log.e("RECV DATA", datas);
+
+            if (datas.equals("0")){
+                Log.e("Project Term Empty!", "기간이 설정되어 있지 않음");
+            }
+
+            else if (datas!="0"){
+
+
+                runOnUiThread(new Runnable(){
+                    @Override public void run() {
+
+                String saveData = datas;
+                Calendar dateCheck;
+                long dateCompare1, dateCompare2, countNum;
+                String[] division = saveData.split("~");
+                Log.e("division= ", Arrays.toString(division));
+
+                String[] getStartDate = division[0].split("-");
+                String[] getEndDate = division[1].split("-");
+
+                Log.e("getStartDate= ", Arrays.toString(getStartDate));
+                Log.e("getEndDate= ", Arrays.toString(getEndDate));
+
+                dateCheck = Calendar.getInstance();
+                dateCheck.set(Integer.parseInt(getStartDate[0]),Integer.parseInt(getStartDate[1]),Integer.parseInt(getStartDate[2]));
+                dateCompare1 = dateCheck.getTimeInMillis() / 86400000;
+
+                dateCheck.set(Integer.parseInt(getEndDate[0]),Integer.parseInt(getEndDate[1]),Integer.parseInt(getEndDate[2]));
+                dateCompare2 = dateCheck.getTimeInMillis() / 86400000;
+                countNum = dateCompare2-dateCompare1;
+
+
+                ProjectTermCheck(countNum, Integer.parseInt(getStartDate[0]),Integer.parseInt(getStartDate[1]),Integer.parseInt(getStartDate[2]));
+                already=true;
+
+                Log.e("여기왜 트루 안되냐 썅",already+"");
+                TermDisplay termDisplay = new TermDisplay();
+                termDisplay.execute();
+
+            }
+                });
+            }
+
+        }
+    }
+
 }

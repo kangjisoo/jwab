@@ -261,16 +261,16 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            runOnUiThread(new Runnable(){
+                @Override public void run() {
 
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            View headerView = navigationView.getHeaderView(0);
-            TextView navUserName = (TextView) headerView.findViewById(R.id.profile_name);
-            navUserName.setText(data);
-            t1 = navUserName.getText().toString();
-
-
-
-
+                    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                    View headerView = navigationView.getHeaderView(0);
+                    TextView navUserName = (TextView) headerView.findViewById(R.id.profile_name);
+                    navUserName.setText(data);
+                    t1 = navUserName.getText().toString();
+                }
+                });
 
             return null;
         }
