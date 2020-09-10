@@ -19,7 +19,6 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
-
 import org.techtown.loginactivity.R;
 import org.techtown.projectinner.InnerMainRecycler;
 
@@ -40,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-
 
 
 public class innercalendar extends AppCompatActivity {
