@@ -59,7 +59,6 @@ public class innercalendar extends AppCompatActivity {
     private boolean radioSingleOrMulti = true;
     private Calendar todaCal, ddayCal, calendarCurrent;
     private int sYear, sMonth, sDay, eYear, eMonth, eDay;
-    private boolean already;
     //-----
     ArrayList<CalendarDay> termDates;
 
@@ -90,6 +89,9 @@ public class innercalendar extends AppCompatActivity {
         cal_rb_mutiple = findViewById(R.id.cal_rb_multiple);
         calendar_item_ArrayList = new ArrayList<>();
 
+        //라디오 버튼 기본값으로 메모 선택
+        radioGroup.check(cal_rb_single.getId());
+
         //점찍는 클래스 실행
         ApiSimulator apiSimulator = new ApiSimulator();
         apiSimulator.execute();
@@ -102,12 +104,6 @@ public class innercalendar extends AppCompatActivity {
         GetTermDB getTermDB = new GetTermDB();
         getTermDB.execute();
 
-
-        //이게 먼저 실행되는 이유가 뭐야 대체;;;;;
-        Log.e("씨빠!!",already+"");
-
-
-
         //라디오버튼 클릭 이벤트
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -118,9 +114,7 @@ public class innercalendar extends AppCompatActivity {
                 } else if (i == R.id.cal_rb_multiple) {
                     Toast.makeText(innercalendar.this, "multiple", Toast.LENGTH_LONG).show();
                     radioSingleOrMulti = false;
-
                 }
-
             }
         });
 
@@ -173,6 +167,7 @@ public class innercalendar extends AppCompatActivity {
     //라디오 버튼 single선택
     public void radio_bt_check_single(int year, int month, int dayOfMonth) {
 
+        //라디오버튼 메모가 클릭될 때
         if (radioSingleOrMulti == true) {
             diaryTextView.setText(String.format("%d / %d / %d", year, month, dayOfMonth) + "\n" + "-오늘의 할 일 List-");
             diaryTextView.setVisibility(View.VISIBLE);
@@ -186,7 +181,10 @@ public class innercalendar extends AppCompatActivity {
             contextEditText.setText("");
             checkDay(year, month, dayOfMonth, "userID");
 
-        } else {
+        }
+
+        //라디오 버튼 기간이 선택됐을 때
+        else {
 
             diaryTextView.setText(String.format("%d / %d / %d", year, month, dayOfMonth) + "\n");
             diaryTextView.setVisibility(View.VISIBLE);
@@ -200,6 +198,7 @@ public class innercalendar extends AppCompatActivity {
 
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+            //기간 날짜가 입력되어 있지 않을 때
                 if (today == 0) {
                     todaCal = Calendar.getInstance();
                     todaCal.set(year, month - 1, dayOfMonth);
@@ -211,48 +210,65 @@ public class innercalendar extends AppCompatActivity {
                     sMonth = month;
                     sDay = dayOfMonth;
 
+                    Toast.makeText(this,"시작날짜 : "+ simpleDateFormat.format(todaCal.getTime()),Toast.LENGTH_LONG).show();
                     //  Log.e("현재날짜", simpleDateFormat.format(currentDay)+"");
                 }
+
+                //시작날짜는 저장 됐을 때
                 else {
-                    ddayCal = Calendar.getInstance();
-                    ddayCal.set(year, month - 1, dayOfMonth);
-                    dday = ddayCal.getTimeInMillis() / 86400000;
-                    Log.e("프로젝트 기간 확인", simpleDateFormat.format(ddayCal.getTime()) + "");
 
-                    if (dday <= currentDay) {
-                        Toast.makeText(this, "이미 만료된 프로젝트기간 입니다.", Toast.LENGTH_LONG).show();
-                        Log.e("만료 프로젝트 기간 확인", simpleDateFormat.format(ddayCal.getTime()) + "");
-                    } else {
-                        count = dday - currentDay;
-                        Log.e("남은 D-day기간은?", count + "");
+                    //마감 날짜가 저장 되지 않았을 때
+                    if (dday==0) {
+                        ddayCal = Calendar.getInstance();
+                        ddayCal.set(year, month - 1, dayOfMonth);
+                        dday = ddayCal.getTimeInMillis() / 86400000;
+                        Log.e("프로젝트 기간 확인", simpleDateFormat.format(ddayCal.getTime()) + "");
 
-                        long projectCount = dday - today;
+                        //마감날짜가 오늘 날짜 보다 이전일 때
+                        if (dday <= currentDay) {
+                            Toast.makeText(this, "이미 만료된 프로젝트기간 입니다.", Toast.LENGTH_LONG).show();
+                            Log.e("만료 프로젝트 기간 확인", simpleDateFormat.format(ddayCal.getTime()) + "");
+                        }
 
-                        ProjectTermCheck(projectCount, sYear, sMonth, sDay);
+                        // 올바른 마감 날짜가 들어 갔을 때
+                        else {
+                            count = dday - currentDay;
+                            Log.e("남은 D-day기간은?", count + "");
 
-                        eYear = year;
-                        eMonth = month;
-                        eDay = dayOfMonth;
+                            long projectCount = dday - today;
 
-                        TermDisplay termDisplay = new TermDisplay();
-                        termDisplay.execute();
+                            ProjectTermCheck(projectCount, sYear, sMonth, sDay);
+
+                            eYear = year;
+                            eMonth = month;
+                            eDay = dayOfMonth;
+
+                            TermDisplay termDisplay = new TermDisplay();
+                            termDisplay.execute();
 
 
-                        termstore_bt.setVisibility(View.VISIBLE);
+                            termstore_bt.setVisibility(View.VISIBLE);
+                            Toast.makeText(this,"마감날짜 : "+ simpleDateFormat.format(ddayCal.getTime()),Toast.LENGTH_LONG).show();
 
-                        //기간 저장 버튼 클릭이벤트
-                        termstore_bt.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
+                            //기간 저장 버튼 클릭이벤트
+                            termstore_bt.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
 
-                                Toast.makeText(innercalendar.this, "기간 저장 완료!", Toast.LENGTH_LONG).show();
-                                TermDB termDB = new TermDB();
-                                termDB.execute();
+                                    Toast.makeText(innercalendar.this, "기간 저장 완료!", Toast.LENGTH_LONG).show();
+                                    TermDB termDB = new TermDB();
+                                    termDB.execute();
 
-                                TermFullOrEmpty();
-                            }
-                        });
-                }
+                                    TermFullOrEmpty();
+                                }
+                            });
+                        }
+                    }
+
+                    //마감날짜, 시작 날짜 다 정해져 있을때
+                    else{
+                        TermFullOrEmpty();
+                    }
             }
         }
 
@@ -289,7 +305,6 @@ public class innercalendar extends AppCompatActivity {
 
                     termDates = copyTermDates;
 
-                    already=false;
                     //기간 초기화를 시키면 빨간점다시 불러와줌
                     ApiSimulator apiSimulator = new ApiSimulator();
                     apiSimulator.execute();
@@ -720,41 +735,55 @@ public class innercalendar extends AppCompatActivity {
             /* 서버에서 응답 */
             Log.e("RECV DATA", datas);
 
+            //DB에서 받아온 값이 0이면 기간이 정해져있지 않음
             if (datas.equals("0")){
                 Log.e("Project Term Empty!", "기간이 설정되어 있지 않음");
             }
 
+            //0이 아니면 기간이 정해져있는 것
             else if (datas!="0"){
 
 
+                //ui오류가 나서 써준 것
                 runOnUiThread(new Runnable(){
                     @Override public void run() {
 
                 String saveData = datas;
                 Calendar dateCheck;
                 long dateCompare1, dateCompare2, countNum;
+
+                //2020-09-10~2020-0915  --> [2020-09-10],[2020-09-15]
+                //나눠서 배열에 저장
                 String[] division = saveData.split("~");
                 Log.e("division= ", Arrays.toString(division));
 
+                //2020-09-10  -->  [2020, 09, 10]
                 String[] getStartDate = division[0].split("-");
+                //2020-09-15  --> [2020, 09, 15]
                 String[] getEndDate = division[1].split("-");
 
                 Log.e("getStartDate= ", Arrays.toString(getStartDate));
                 Log.e("getEndDate= ", Arrays.toString(getEndDate));
 
                 dateCheck = Calendar.getInstance();
+
+                //시작 날짜와 마감날짜를 계산
                 dateCheck.set(Integer.parseInt(getStartDate[0]),Integer.parseInt(getStartDate[1]),Integer.parseInt(getStartDate[2]));
                 dateCompare1 = dateCheck.getTimeInMillis() / 86400000;
+                today=dateCompare1;
+
 
                 dateCheck.set(Integer.parseInt(getEndDate[0]),Integer.parseInt(getEndDate[1]),Integer.parseInt(getEndDate[2]));
                 dateCompare2 = dateCheck.getTimeInMillis() / 86400000;
+                dday =dateCompare2;
+
+                //시작날짜와 마감날짜 차이
                 countNum = dateCompare2-dateCompare1;
 
-
+                //메소드에 입력
                 ProjectTermCheck(countNum, Integer.parseInt(getStartDate[0]),Integer.parseInt(getStartDate[1]),Integer.parseInt(getStartDate[2]));
-                already=true;
 
-                Log.e("여기왜 트루 안되냐 썅",already+"");
+                //캘린더 화면에 표시
                 TermDisplay termDisplay = new TermDisplay();
                 termDisplay.execute();
 
