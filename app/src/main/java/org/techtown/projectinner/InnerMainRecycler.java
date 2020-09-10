@@ -252,8 +252,9 @@ public class InnerMainRecycler extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+
             InnerListAdapter adapter = new InnerListAdapter(getActivity());
-            RecyclerView recyclerView = getView().findViewById(R.id.inner_recycler);
+            RecyclerView recyclerView = getActivity().findViewById(R.id.inner_recycler);
 
             //사용자들의 이름을 personNameString에 저장(@이름_상메@이름_상메@이름_상메@...)
             String personNameString = data;
@@ -265,7 +266,7 @@ public class InnerMainRecycler extends Fragment {
 
             String[] onlyName = new String[splited.length];
             String[] splitedMessage = new String[splited.length];
-            
+
 
             //personName만을 추출
             for (int i = 1; i < splited.length; i++) {
@@ -331,6 +332,7 @@ public class InnerMainRecycler extends Fragment {
             });
 
             recyclerView.setAdapter(adapter);
+
             //상태메시지를 변경하지 않았을 시 호출되는 DB
             myMessageDB myMessageDB = new myMessageDB();
             myMessageDB.execute();

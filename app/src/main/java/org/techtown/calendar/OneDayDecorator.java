@@ -29,14 +29,14 @@ public class OneDayDecorator implements DayViewDecorator {
     @Override
     public void decorate(DayViewFacade view) {
         view.addSpan(new StyleSpan(Typeface.BOLD));
-        view.addSpan(new RelativeSizeSpan(1.4f));
-        view.addSpan(new ForegroundColorSpan(Color.GREEN));
+        //view.addSpan(new RelativeSizeSpan(1.4f));
+        view.addSpan(new ForegroundColorSpan(Color.MAGENTA));
     }
 
     /**
      * We're changing the internals, so make sure to call {@linkplain MaterialCalendarView#invalidateDecorators()}
      */
     public void setDate(Date date) {
-        // this.date = CalendarDay.from(date);
+         this.date = CalendarDay.from(date.getYear(),date.getMonth(),date.getDay());
     }
 }

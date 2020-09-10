@@ -44,7 +44,10 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+
+
 public class innercalendar extends AppCompatActivity {
+
 
     private String fname = null;
     private String str = null;
@@ -63,7 +66,6 @@ public class innercalendar extends AppCompatActivity {
     ArrayList<CalendarDay> termDates;
 
 
-    Calendar calendar;
     //현재 날짜, 마감날짜, 시작날짜, 디데이 카운트 저장 변수
     private long currentDay, dday, today = 0, count;
 
@@ -93,8 +95,13 @@ public class innercalendar extends AppCompatActivity {
         radioGroup.check(cal_rb_single.getId());
 
         //점찍는 클래스 실행
-        ApiSimulator apiSimulator = new ApiSimulator();
-        apiSimulator.execute();
+        runOnUiThread(new Runnable() {
+                          @Override
+                          public void run() {
+                              ApiSimulator apiSimulator = new ApiSimulator();
+                              apiSimulator.execute();
+                          }
+                      });
 
         //오늘 날짜 저장
         calendarCurrent = Calendar.getInstance();
@@ -104,15 +111,16 @@ public class innercalendar extends AppCompatActivity {
         GetTermDB getTermDB = new GetTermDB();
         getTermDB.execute();
 
+
         //라디오버튼 클릭 이벤트
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if (i == R.id.cal_rb_single) {
-                    Toast.makeText(innercalendar.this, "single", Toast.LENGTH_LONG).show();
+                    Toast.makeText(innercalendar.this, "메모", Toast.LENGTH_LONG).show();
                     radioSingleOrMulti = true;
                 } else if (i == R.id.cal_rb_multiple) {
-                    Toast.makeText(innercalendar.this, "multiple", Toast.LENGTH_LONG).show();
+                    Toast.makeText(innercalendar.this, "기간", Toast.LENGTH_LONG).show();
                     radioSingleOrMulti = false;
                 }
             }
@@ -334,7 +342,6 @@ public class innercalendar extends AppCompatActivity {
 
             //2020-09-07 -> 2020, 09, 07을 각각 배열에 저장(-을 기준으로 분활)
             termArray = simpleDateFormat.format(calendarStartCheck.getTime()).split("-");
-            Log.e("진짜 값이 들어가야하는 변수", termArray[0] + termArray[1] + termArray[2] + "");
 
             //Integer.parseInt(String s) -> string형을 int형으로 변환
             CalendarDay days = CalendarDay.from(Integer.parseInt(termArray[0]), Integer.parseInt(termArray[1]), Integer.parseInt(termArray[2]));
@@ -346,7 +353,7 @@ public class innercalendar extends AppCompatActivity {
 
         ApiSimulator apiSimulator = new ApiSimulator();
         apiSimulator.execute();
-        Log.e("기간 배열 봐보자 여기여기~~", termDates + "");
+        Log.e("기간 배열 ", termDates + "");
 
     }
 
@@ -527,8 +534,10 @@ public class innercalendar extends AppCompatActivity {
             if (isFinishing()) {
                 return;
             }
+
             calendarView.removeDecorators();
             calendarView.addDecorator(new CalendarEventDecorator(Color.RED, calendarDays, innercalendar.this));
+
         }
     }
 
@@ -543,14 +552,22 @@ public class innercalendar extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(@NonNull List<CalendarDay> calendarDays) {
+        protected void onPostExecute(@NonNull final List<CalendarDay> calendarDays) {
+
             super.onPostExecute(calendarDays);
 
-            if (isFinishing()) {
-                return;
-            }
+            //ui오류가 나서 써준 것
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (isFinishing()) {
+                        return;
+                    }
 
-            calendarView.addDecorator(new TermEventDecorator(Color.DKGRAY, calendarDays, innercalendar.this));
+                    calendarView.addDecorator(new TermEventDecorator(Color.DKGRAY, calendarDays, innercalendar.this));
+                }
+            });
+
         }
     }
 
