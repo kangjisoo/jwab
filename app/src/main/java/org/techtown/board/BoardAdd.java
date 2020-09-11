@@ -2,6 +2,7 @@ package org.techtown.board;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -37,18 +38,30 @@ public class BoardAdd extends AppCompatActivity {
     private ScrollView board_scrollView;
     private EditText board_text;
 
-    private static final int PICK_FROM_ALBUM = 1;
     private Boolean isPermission = true;
     private File tempFile;
-    Button image;
+
+    Button image_bt;
+    ImageView image1, image2, image3, image4, image5;
+    ArrayList imageListUri = new ArrayList();
+    private static final int PICK_FROM_ALBUM = 1;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.board_add);
         tedPermission();
+
         //스크롤뷰와 스크롤뷰 안의 텍스트 객체화
+        image1 = (ImageView)findViewById(R.id.board_imageView1);
+        image2 = (ImageView)findViewById(R.id.board_imageView2);
+        image3 = (ImageView)findViewById(R.id.board_imageView3);
+        image4 = (ImageView)findViewById(R.id.board_imageView4);
+        image5 = (ImageView)findViewById(R.id.board_imageView5);
+
         board_scrollView = (ScrollView) findViewById(R.id.board_scrollView);
         board_text = (EditText) findViewById(R.id.board_textView);
+
         //텍스트에 스크롤 선언
         board_text.setMovementMethod(new ScrollingMovementMethod());
         board_text.setFocusableInTouchMode(true);
@@ -62,12 +75,16 @@ public class BoardAdd extends AppCompatActivity {
             }
         });
 
-        image = (Button) findViewById(R.id.board_add_picture);
-        image.setOnClickListener(new View.OnClickListener() {
+        image_bt = (Button) findViewById(R.id.board_add_picture);
+
+        image_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+//                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, PICK_FROM_ALBUM);
             }
         });
@@ -79,8 +96,12 @@ public class BoardAdd extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK) {
             Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
+            image1.setImageResource(0);
+            image2.setImageResource(0);
+            image3.setImageResource(0);
+            image4.setImageResource(0);
 
-            if(tempFile != null) {
+            if (tempFile != null) {
                 if (tempFile.exists()) {
                     if (tempFile.delete()) {
                         Log.e("TAG", tempFile.getAbsolutePath() + " 삭제 성공");
@@ -88,54 +109,78 @@ public class BoardAdd extends AppCompatActivity {
                     }
                 }
             }
-
             return;
         }
-        if (requestCode == PICK_FROM_ALBUM) {
 
+
+        if (requestCode == PICK_FROM_ALBUM) {
             Uri photoUri = data.getData();
+            ClipData clipData = data.getClipData();
+            if(clipData!=null)
+            {
+                for(int i = 0; i < clipData.getItemCount(); i++)
+                {
+                    if(i<clipData.getItemCount()){
+                        Uri urione =  clipData.getItemAt(i).getUri();
+                        switch (i){
+                            case 0:
+                                image1.setImageURI(urione);
+                                break;
+                            case 1:
+                                image2.setImageURI(urione);
+                                break;
+                            case 2:
+                                image3.setImageURI(urione);
+                                break;
+                            case 3:
+                                image4.setImageURI(urione);
+                                break;
+                            case 4:
+                                image5.setImageURI(urione);
+                                break;
+                        }
+                    }
+                }
+            }
+            else if(photoUri != null)
+            {
+                image1.setImageURI(photoUri);
+            }
 
             Cursor cursor = null;
 
-            try {
-
-                /*
-                 *  Uri 스키마를
-                 *  content:/// 에서 file:/// 로  변경한다.
-                 */
-                String[] proj = { MediaStore.Images.Media.DATA };
-
-                assert photoUri != null;
-                cursor = getContentResolver().query(photoUri, proj, null, null, null);
-
-                assert cursor != null;
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-
-                cursor.moveToFirst();
-
-                tempFile = new File(cursor.getString(column_index));
-
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
-            }
-
-            setImage();
+//            try {
+//                String[] proj = { MediaStore.Images.Media.DATA };
+//
+//                assert photoUri != null;
+//                cursor = getContentResolver().query(photoUri, proj, null, null, null);
+//
+//                assert cursor != null;
+//                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//
+//                cursor.moveToFirst();
+//
+//                tempFile = new File(cursor.getString(column_index));
+//
+//            } finally {
+//                if (cursor != null) {
+//                    cursor.close();
+//                }
+//            }
+//
+//            setImage();
 
         }
-    }
+        }
 
     private void setImage() {
 
-        ImageView imageView = findViewById(R.id.board_imageView);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
+            Log.d("TAG", "setImage : " + tempFile.getAbsolutePath());
+            image1.setImageBitmap(originalBm);
+            tempFile = null;
 
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
-        Log.d("TAG", "setImage : " + tempFile.getAbsolutePath());
-        imageView.setImageBitmap(originalBm);
-        Log.e("이미지테스또","ㅋㅋㅋㅋㅋㅋㅋㅋ");
-        tempFile = null;
     }
 
     //권한설정
