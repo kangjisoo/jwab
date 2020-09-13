@@ -253,8 +253,10 @@ public class InnerMainRecycler extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
+
             InnerListAdapter adapter = new InnerListAdapter(getActivity());
             RecyclerView recyclerView = getActivity().findViewById(R.id.inner_recycler);
+
 
             //사용자들의 이름을 personNameString에 저장(@이름_상메@이름_상메@이름_상메@...)
             String personNameString = data;
