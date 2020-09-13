@@ -60,7 +60,7 @@ public class innercalendar extends AppCompatActivity {
     private Calendar todaCal, ddayCal, calendarCurrent;
     private int sYear, sMonth, sDay, eYear, eMonth, eDay;
 
-    private String termA;
+    private int checkMyTerm;
     //-----
     ArrayList<CalendarDay> termDates;
 
@@ -95,11 +95,11 @@ public class innercalendar extends AppCompatActivity {
 
         //점찍는 클래스 실행
         runOnUiThread(new Runnable() {
-                          @Override
-                          public void run() {
-                              ApiSimulator apiSimulator = new ApiSimulator();
-                              apiSimulator.execute();
-                          }
+            @Override
+            public void run() {
+                ApiSimulator apiSimulator = new ApiSimulator();
+                apiSimulator.execute();
+            }
         });
 
         //오늘 날짜 저장
@@ -107,7 +107,7 @@ public class innercalendar extends AppCompatActivity {
         calendarCurrent.getTime();
 
         //기간 DB에서 가져와서 표시하는 클래스 실행
-        final GetTermDB getTermDB = new GetTermDB();
+        GetTermDB getTermDB = new GetTermDB();
         getTermDB.execute();
 
 
@@ -116,18 +116,20 @@ public class innercalendar extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if (i == R.id.cal_rb_single) {
+                    terminit_bt.setVisibility(View.INVISIBLE);
+                    termstore_bt.setVisibility(View.INVISIBLE);
+
                     Toast.makeText(innercalendar.this, "메모", Toast.LENGTH_LONG).show();
                     radioSingleOrMulti = true;
-                    GetTermDB getTermDB = new GetTermDB();
-                    getTermDB.execute();
 
+                    //
                     if (today!=0&&dday==0){
                         today=0;
 
                     }
 
-                    if (termA.equals("NULL") || termA.equals("0")) {
 
+                    if (checkMyTerm==0){
                         ArrayList<CalendarDay> copyTermDates = new ArrayList<>();
                         today = 0;
                         dday = 0;
@@ -145,14 +147,17 @@ public class innercalendar extends AppCompatActivity {
                         ApiSimulator apiSimulator = new ApiSimulator();
                         apiSimulator.execute();
 
-                        TermDisplay termDisplay = new TermDisplay();
-                        termDisplay.execute();
+                        GetTermDB getTermDB2 = new GetTermDB();
+                        getTermDB2.execute();
+
                     }
 
 
                 } else if (i == R.id.cal_rb_multiple) {
                     Toast.makeText(innercalendar.this, "기간", Toast.LENGTH_LONG).show();
                     radioSingleOrMulti = false;
+                    terminit_bt.setVisibility(View.INVISIBLE);
+                    termstore_bt.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -285,12 +290,11 @@ public class innercalendar extends AppCompatActivity {
                             TermDisplay termDisplay = new TermDisplay();
                             termDisplay.execute();
 
-                            termstore_bt.setVisibility(View.VISIBLE);
-                            Toast.makeText(this,"마감날짜 : "+ simpleDateFormat.format(ddayCal.getTime()),Toast.LENGTH_LONG).show();
+                        termstore_bt.setVisibility(View.VISIBLE);
+                        Toast.makeText(this,"마감날짜 : "+ simpleDateFormat.format(ddayCal.getTime()),Toast.LENGTH_LONG).show();
 
                             //기간 저장 버튼 클릭이벤트
                             termstore_bt.setOnClickListener(new View.OnClickListener() {
-
                                 @Override
                                 public void onClick(View view) {
 
@@ -298,12 +302,13 @@ public class innercalendar extends AppCompatActivity {
                                     TermDB termDB = new TermDB();
                                     termDB.execute();
 
-                                    //초기화버튼 활성화
-                                    TermFullOrEmpty();
-                                }
-                            });
-                        }
+                                checkMyTerm=1;
+                                //초기화버튼 활성화
+                                TermFullOrEmpty();
+                            }
+                        });
                     }
+                }
 
                     //마감날짜, 시작 날짜 다 정해져 있을때
                     else{
@@ -325,7 +330,6 @@ public class innercalendar extends AppCompatActivity {
             del_Btn.setVisibility(View.INVISIBLE);
             terminit_bt.setVisibility(View.VISIBLE);
             termstore_bt.setVisibility(View.INVISIBLE);
-
 
             //기간 초기화 버튼 눌렀을 때 이벤트
             terminit_bt.setOnClickListener(new View.OnClickListener() {
@@ -354,6 +358,7 @@ public class innercalendar extends AppCompatActivity {
                     TermInitDB termInitDB = new TermInitDB();
                     termInitDB.execute();
 
+                    checkMyTerm=0;
                     terminit_bt.setVisibility(View.INVISIBLE);
 
                 }
@@ -595,17 +600,11 @@ public class innercalendar extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-
                     if (isFinishing()) {
                         return;
                     }
 
-                    if (calendarDays==null){
-
-                    }
-                    else {
-                        calendarView.addDecorator(new TermEventDecorator(Color.DKGRAY, calendarDays, innercalendar.this));
-                    }
+                    calendarView.addDecorator(new TermEventDecorator(Color.DKGRAY, calendarDays, innercalendar.this));
                 }
             });
 
@@ -731,7 +730,7 @@ public class innercalendar extends AppCompatActivity {
 
     //기간 날짜를 DB에서 가져오는 클래스
     public class GetTermDB extends AsyncTask<Void, Integer, Void> {
-        String datas11 = "";
+        String datas = "";
 
         String pname = InnerMainRecycler.getPname();
         String pkey = InnerMainRecycler.getPkey();
@@ -771,10 +770,10 @@ public class innercalendar extends AppCompatActivity {
                 while ((line = in.readLine()) != null) {
                     buff.append(line + "\n");
                 }
-                datas11 = buff.toString().trim();
+                datas = buff.toString().trim();
 
                 /* 서버에서 응답 */
-                Log.e("RECV DATA", datas11);
+                Log.e("RECV DATA", datas);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -791,22 +790,22 @@ public class innercalendar extends AppCompatActivity {
             super.onPostExecute(aVoid);
 
             /* 서버에서 응답 */
-            Log.e("RECV DATA", datas11);
-            termA = datas11;
+            Log.e("RECV DATA", datas);
+
             //DB에서 받아온 값이 0이면 기간이 정해져있지 않음
-            if (datas11.equals("0")){
+            if (datas.equals("0")){
                 Log.e("Project Term Empty!", "기간이 설정되어 있지 않음");
             }
-            else if(datas11.equals("NULL")){
 
-            }
             //0이 아니면 기간이 정해져있는 것
-            else if (datas11!="0"||datas11!="NULL"){
+            else if (datas!="0"){
+
 
                 //ui오류가 나서 써준 것
+                runOnUiThread(new Runnable(){
+                    @Override public void run() {
 
-
-                String saveData = datas11;
+                String saveData = datas;
                 Calendar dateCheck;
                 long dateCompare1, dateCompare2, countNum;
 
@@ -845,6 +844,8 @@ public class innercalendar extends AppCompatActivity {
                 TermDisplay termDisplay = new TermDisplay();
                 termDisplay.execute();
 
+            }
+                });
             }
 
         }
