@@ -59,6 +59,7 @@ public class innercalendar extends AppCompatActivity {
     private Calendar todaCal, ddayCal, calendarCurrent;
     private int sYear, sMonth, sDay, eYear, eMonth, eDay;
 
+    //기간 저장 버튼이 눌렸는지 확인해주는 변수
     private int checkMyTerm;
     //-----
     ArrayList<CalendarDay> termDates;
@@ -120,13 +121,13 @@ public class innercalendar extends AppCompatActivity {
                     Toast.makeText(innercalendar.this, "메모", Toast.LENGTH_LONG).show();
                     radioSingleOrMulti = true;
 
-                    //
+                    //기간에서 시작 날짜를 눌렀는데 라디오 버튼 메모를 눌렀을때 기간초기화
                     if (today!=0&&dday==0){
                         today=0;
 
                     }
 
-
+                    //기간은 선택됐는데 저장을 안눌렀을 시 초기화
                     if (checkMyTerm==0){
                         ArrayList<CalendarDay> copyTermDates = new ArrayList<>();
                         today = 0;
@@ -151,6 +152,7 @@ public class innercalendar extends AppCompatActivity {
                     }
 
 
+                    //라디오 버튼 기간 선택
                 } else if (i == R.id.cal_rb_multiple) {
                     Toast.makeText(innercalendar.this, "기간", Toast.LENGTH_LONG).show();
                     radioSingleOrMulti = false;
@@ -309,7 +311,16 @@ public class innercalendar extends AppCompatActivity {
 
                 //마감날짜, 시작 날짜 다 정해져 있을때
                 else{
-                    TermFullOrEmpty();
+                    //저장버튼이 안눌렸는데 다른 날짜 선택시
+                    if(checkMyTerm==0){
+                        termstore_bt.setVisibility(View.VISIBLE);
+                        terminit_bt.setVisibility(View.INVISIBLE);
+                    }
+
+                    //처음에 저장된 기간이 있을 시
+                    else {
+                        TermFullOrEmpty();
+                    }
                 }
             }
         }

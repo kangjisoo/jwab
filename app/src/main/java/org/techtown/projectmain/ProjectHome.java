@@ -1,14 +1,11 @@
 package org.techtown.projectmain;
 
-import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -170,14 +167,27 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
                 Toast.makeText(this, "두 번째 메뉴 선택됨", Toast.LENGTH_LONG).show();
                 onFragmentSelected(1, null);
             } else if (id == R.id.menu3) {
-                Toast.makeText(this, "세 번째 메뉴 선택됨", Toast.LENGTH_LONG).show();
-                onFragmentSelected(2, null);
+                Toast.makeText(this, "로그아웃", Toast.LENGTH_LONG).show();
+                //onFragmentSelected(2, null);
+
+                logOut(ProjectHome.this);
             }
 
             drawer.closeDrawer(GravityCompat.START);
 
             return true;
         }
+
+        //로그아웃 메소드(전에 있는 모든 엑티비티를 끄고 로그인 화면으로 이동)
+    public static void logOut(Activity act) {
+
+        //전있던 엑티비티 종료
+        act.finish();
+        Intent i = new Intent(act, MainActivity.class );
+        i.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP );
+        i.putExtra( "KILL", true );
+        act.startActivity(i);
+    };
 
         //각 프래그먼트 상단 이름
         @Override
