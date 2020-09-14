@@ -84,12 +84,6 @@
             </LinearLayout>
         </ScrollView>
 
-        <View
-            android:id="@+id/board_line2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="95dp"
@@ -142,6 +136,12 @@
             </ScrollView>
 
         </LinearLayout>
+
+        <View
+            android:id="@+id/board_line2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
 
         <LinearLayout
             android:layout_width="match_parent"
