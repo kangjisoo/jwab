@@ -311,6 +311,7 @@ public class innercalendar extends AppCompatActivity {
 
                 //마감날짜, 시작 날짜 다 정해져 있을때
                 else{
+
                     //저장버튼이 안눌렸는데 다른 날짜 선택시
                     if(checkMyTerm==0){
                         termstore_bt.setVisibility(View.VISIBLE);
@@ -321,6 +322,7 @@ public class innercalendar extends AppCompatActivity {
                     else {
                         TermFullOrEmpty();
                     }
+
                 }
             }
         }
