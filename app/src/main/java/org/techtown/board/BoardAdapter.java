@@ -8,7 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import org.techtown.loginactivity.R;
-import org.techtown.projectinner.InnerList;
 
 
 import java.util.ArrayList;

@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.method.ScrollingMovementMethod;
@@ -16,19 +17,19 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
 import org.techtown.loginactivity.R;
-import org.techtown.projectmain.ProjectAdd;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -42,22 +43,24 @@ public class BoardAdd extends AppCompatActivity {
     private File tempFile;
 
     Button image_bt;
-    ImageView image1, image2, image3, image4, image5;
+    ImageView image, image1, image2, image3, image4, image5;
     ArrayList imageListUri = new ArrayList();
     private static final int PICK_FROM_ALBUM = 1;
+
 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.board_add);
+
         tedPermission();
 
-        //스크롤뷰와 스크롤뷰 안의 텍스트 객체화
-        image1 = (ImageView)findViewById(R.id.board_imageView1);
-        image2 = (ImageView)findViewById(R.id.board_imageView2);
-        image3 = (ImageView)findViewById(R.id.board_imageView3);
-        image4 = (ImageView)findViewById(R.id.board_imageView4);
-        image5 = (ImageView)findViewById(R.id.board_imageView5);
+        image1 = (ImageView)findViewById(R.id.imageView1);
+        image2 = (ImageView)findViewById(R.id.imageView2);
+        image3 = (ImageView)findViewById(R.id.imageView3);
+        image4 = (ImageView)findViewById(R.id.imageView4);
+        image5 = (ImageView)findViewById(R.id.imageView5);
+
 
         board_scrollView = (ScrollView) findViewById(R.id.board_scrollView);
         board_text = (EditText) findViewById(R.id.board_textView);
@@ -88,18 +91,19 @@ public class BoardAdd extends AppCompatActivity {
                 startActivityForResult(intent, PICK_FROM_ALBUM);
             }
         });
-    }//onCreate() 끝
 
-
-
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (resultCode != Activity.RESULT_OK) {
-            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
             image1.setImageResource(0);
             image2.setImageResource(0);
             image3.setImageResource(0);
             image4.setImageResource(0);
+            image5.setImageResource(0);
+
+            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
 
             if (tempFile != null) {
                 if (tempFile.exists()) {
@@ -116,13 +120,11 @@ public class BoardAdd extends AppCompatActivity {
         if (requestCode == PICK_FROM_ALBUM) {
             Uri photoUri = data.getData();
             ClipData clipData = data.getClipData();
-            if(clipData!=null)
-            {
-                for(int i = 0; i < clipData.getItemCount(); i++)
-                {
-                    if(i<clipData.getItemCount()){
-                        Uri urione =  clipData.getItemAt(i).getUri();
-                        switch (i){
+            if (clipData != null) {
+                for (int i = 0; i < clipData.getItemCount(); i++) {
+                    if (i < clipData.getItemCount()) {
+                        Uri urione = clipData.getItemAt(i).getUri();
+                        switch (i) {
                             case 0:
                                 image1.setImageURI(urione);
                                 break;
@@ -141,48 +143,21 @@ public class BoardAdd extends AppCompatActivity {
                         }
                     }
                 }
-            }
-            else if(photoUri != null)
-            {
+            } else if (photoUri != null) {
                 image1.setImageURI(photoUri);
             }
 
             Cursor cursor = null;
-
-//            try {
-//                String[] proj = { MediaStore.Images.Media.DATA };
-//
-//                assert photoUri != null;
-//                cursor = getContentResolver().query(photoUri, proj, null, null, null);
-//
-//                assert cursor != null;
-//                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//
-//                cursor.moveToFirst();
-//
-//                tempFile = new File(cursor.getString(column_index));
-//
-//            } finally {
-//                if (cursor != null) {
-//                    cursor.close();
-//                }
-//            }
-//
-//            setImage();
-
         }
-        }
-
+    }
     private void setImage() {
 
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
-            Log.d("TAG", "setImage : " + tempFile.getAbsolutePath());
-            image1.setImageBitmap(originalBm);
-            tempFile = null;
-
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
+        Log.d("TAG", "setImage : " + tempFile.getAbsolutePath());
+        image1.setImageBitmap(originalBm);
+        tempFile = null;
     }
-
     //권한설정
     private void tedPermission() {
         PermissionListener permissionListener = new PermissionListener() {
@@ -205,4 +180,3 @@ public class BoardAdd extends AppCompatActivity {
                 .check();
     }
 }
-

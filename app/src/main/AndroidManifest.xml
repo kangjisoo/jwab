@@ -27,6 +27,11 @@
             >
         </activity>
 
+        <activity
+            android:name="org.techtown.board.BoardAdd"
+            >
+        </activity>
+
 
         <activity android:name="org.techtown.projectinner.InnerMainRecycler"
             android:label="projectInner"
@@ -36,10 +41,6 @@
 
         <activity
             android:name="org.techtown.board.BoardMainRecycler">
-        </activity>
-
-        <activity
-            android:name="org.techtown.board.BoardAdd">
         </activity>
 
         <activity

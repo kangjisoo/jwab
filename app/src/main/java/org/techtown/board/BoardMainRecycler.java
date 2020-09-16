@@ -18,7 +18,7 @@ import org.techtown.projectmain.ProjectAdd;
 import org.techtown.projectmain.ProjectHome;
 
 
-public class BoardMainRecycler extends AppCompatActivity {
+public class BoardMainRecycler extends ProjectHome {
     RecyclerView recyclerView;
     ImageButton imageButton;
     @Override
