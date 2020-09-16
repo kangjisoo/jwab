@@ -90,7 +90,10 @@ public class LadderGameMain extends AppCompatActivity {
                 }
 
                 else{
-                    LadderGameThis ladderGameThis =new LadderGameThis(memberCount,4);
+                    LadderGameThis ladderGameThis =new LadderGameThis(4,4);
+                    ladderGameThis.drawLine(0,0);
+                    ladderGameThis.drawLine(3,0);
+
 
                 }
             }

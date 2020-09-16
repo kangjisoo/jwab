@@ -21,12 +21,13 @@ public class LadderGameStart extends View {
         paint.setColor( Color.BLACK );
 
         int num = LadderGameMain.GetMemberCount();
+
         for (int i =0; i<num;i++){
             canvas.drawLine( i * 40, 0, i * 40, 500, paint );
 
         }
         LadderGameThis ladderGameThis = new LadderGameThis(LadderGameMain.GetMemberCount(),15);
-        ladderGameThis.drawLine(LadderGameMain.GetMemberCount(),2);
+        ladderGameThis.drawLine(LadderGameMain.GetMemberCount(),0);
     }
 
 }

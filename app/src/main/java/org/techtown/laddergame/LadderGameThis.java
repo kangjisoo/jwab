@@ -3,6 +3,7 @@ package org.techtown.laddergame;
 public class LadderGameThis {
 
     boolean[][] points;
+
     LadderGameThis(int lineCount, int rows){
         points = new boolean[rows][lineCount];
     }
@@ -10,9 +11,10 @@ public class LadderGameThis {
     void drawLine(int row, int order){
 
         points[row][order] = true;
+        points[row][order+1]=true;
 
         //points[row][order] =true;
-       // points[row][order+1]=true;
+
     }
 
     int run(int source){
