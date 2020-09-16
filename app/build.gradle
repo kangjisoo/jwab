@@ -46,7 +46,8 @@ dependencies {
     implementation "androidx.core:core-ktx:+"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
     implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
-
+//ted permission
+    implementation "gun0912.ted:tedpermission:2.1.0"
 
 }
 repositories {

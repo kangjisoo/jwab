@@ -55,11 +55,11 @@ public class innercalendar extends AppCompatActivity {
     private RadioGroup radioGroup;
 
     private RadioButton cal_rb_single, cal_rb_mutiple;
-    private ArrayList<calendar_item> calendar_item_ArrayList;
     private boolean radioSingleOrMulti = true;
     private Calendar todaCal, ddayCal, calendarCurrent;
     private int sYear, sMonth, sDay, eYear, eMonth, eDay;
 
+    //기간 저장 버튼이 눌렸는지 확인해주는 변수
     private int checkMyTerm;
     //-----
     ArrayList<CalendarDay> termDates;
@@ -88,7 +88,6 @@ public class innercalendar extends AppCompatActivity {
         radioGroup = findViewById(R.id.cal_radio_group);
         cal_rb_single = findViewById(R.id.cal_rb_single);
         cal_rb_mutiple = findViewById(R.id.cal_rb_multiple);
-        calendar_item_ArrayList = new ArrayList<>();
 
         //라디오 버튼 기본값으로 메모 선택
         radioGroup.check(cal_rb_single.getId());
@@ -107,7 +106,7 @@ public class innercalendar extends AppCompatActivity {
         calendarCurrent.getTime();
 
         //기간 DB에서 가져와서 표시하는 클래스 실행
-        GetTermDB getTermDB = new GetTermDB();
+        final GetTermDB getTermDB = new GetTermDB();
         getTermDB.execute();
 
 
@@ -122,13 +121,13 @@ public class innercalendar extends AppCompatActivity {
                     Toast.makeText(innercalendar.this, "메모", Toast.LENGTH_LONG).show();
                     radioSingleOrMulti = true;
 
-                    //
+                    //기간에서 시작 날짜를 눌렀는데 라디오 버튼 메모를 눌렀을때 기간초기화
                     if (today!=0&&dday==0){
                         today=0;
 
                     }
 
-
+                    //기간은 선택됐는데 저장을 안눌렀을 시 초기화
                     if (checkMyTerm==0){
                         ArrayList<CalendarDay> copyTermDates = new ArrayList<>();
                         today = 0;
@@ -153,6 +152,7 @@ public class innercalendar extends AppCompatActivity {
                     }
 
 
+                    //라디오 버튼 기간 선택
                 } else if (i == R.id.cal_rb_multiple) {
                     Toast.makeText(innercalendar.this, "기간", Toast.LENGTH_LONG).show();
                     radioSingleOrMulti = false;
@@ -220,8 +220,6 @@ public class innercalendar extends AppCompatActivity {
             textView2.setVisibility(View.INVISIBLE);
             cha_Btn.setVisibility(View.INVISIBLE);
             del_Btn.setVisibility(View.INVISIBLE);
-            terminit_bt.setVisibility(View.INVISIBLE);
-            termstore_bt.setVisibility(View.INVISIBLE);
             contextEditText.setText("");
             checkDay(year, month, dayOfMonth, "userID");
 
@@ -243,64 +241,65 @@ public class innercalendar extends AppCompatActivity {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
             //기간 날짜가 입력되어 있지 않을 때
-                if (today == 0) {
-                    todaCal = Calendar.getInstance();
-                    todaCal.set(year, month - 1, dayOfMonth);
-                    Log.e("시작날짜", simpleDateFormat.format(todaCal.getTime()) + "");
+            if (today == 0) {
+                todaCal = Calendar.getInstance();
+                todaCal.set(year, month - 1, dayOfMonth);
+                Log.e("시작날짜", simpleDateFormat.format(todaCal.getTime()) + "");
 
-                    today = todaCal.getTimeInMillis() / 86400000; //->(24 * 60 * 60 * 1000) 24시간 60분 60초 * (ms초->초 변환 1000)
+                today = todaCal.getTimeInMillis() / 86400000; //->(24 * 60 * 60 * 1000) 24시간 60분 60초 * (ms초->초 변환 1000)
 
-                    sYear = year;
-                    sMonth = month;
-                    sDay = dayOfMonth;
+                sYear = year;
+                sMonth = month;
+                sDay = dayOfMonth;
 
-                    Toast.makeText(this,"시작날짜 : "+ simpleDateFormat.format(todaCal.getTime()),Toast.LENGTH_LONG).show();
-                    //  Log.e("현재날짜", simpleDateFormat.format(currentDay)+"");
-                }
+                Toast.makeText(this,"시작날짜 : "+ simpleDateFormat.format(todaCal.getTime()),Toast.LENGTH_LONG).show();
+                //  Log.e("현재날짜", simpleDateFormat.format(currentDay)+"");
+            }
 
-                //시작날짜는 저장 됐을 때
-                else {
+            //시작날짜는 저장 됐을 때
+            else {
 
-                    //마감 날짜가 저장 되지 않았을 때
-                    if (dday==0) {
-                        ddayCal = Calendar.getInstance();
-                        ddayCal.set(year, month - 1, dayOfMonth);
-                        dday = ddayCal.getTimeInMillis() / 86400000;
-                        Log.e("프로젝트 기간 확인", simpleDateFormat.format(ddayCal.getTime()) + "");
+                //마감 날짜가 저장 되지 않았을 때
+                if (dday==0) {
+                    ddayCal = Calendar.getInstance();
+                    ddayCal.set(year, month - 1, dayOfMonth);
+                    dday = ddayCal.getTimeInMillis() / 86400000;
+                    Log.e("프로젝트 기간 확인", simpleDateFormat.format(ddayCal.getTime()) + "");
 
-                        //마감날짜가 오늘 날짜 보다 이전일 때
-                        if (dday <= currentDay) {
-                            Toast.makeText(this, "이미 만료된 프로젝트기간 입니다.", Toast.LENGTH_LONG).show();
-                            Log.e("만료 프로젝트 기간 확인", simpleDateFormat.format(ddayCal.getTime()) + "");
-                        }
+                    //마감날짜가 오늘 날짜 보다 이전일 때
+                    if (dday <= currentDay) {
+                        Toast.makeText(this, "이미 만료된 프로젝트기간 입니다.", Toast.LENGTH_LONG).show();
+                        Log.e("만료 프로젝트 기간 확인", simpleDateFormat.format(ddayCal.getTime()) + "");
+                    }
 
-                        // 올바른 마감 날짜가 들어 갔을 때
-                        else {
-                            count = dday - currentDay;
-                            Log.e("남은 D-day기간은?", count + "");
+                    // 올바른 마감 날짜가 들어 갔을 때
+                    else {
+                        count = dday - currentDay;
+                        Log.e("남은 D-day기간은?", count + "");
 
-                            long projectCount = dday - today;
+                        long projectCount = dday - today;
 
-                            ProjectTermCheck(projectCount, sYear, sMonth, sDay);
+                        ProjectTermCheck(projectCount, sYear, sMonth, sDay);
 
-                            eYear = year;
-                            eMonth = month;
-                            eDay = dayOfMonth;
+                        eYear = year;
+                        eMonth = month;
+                        eDay = dayOfMonth;
 
-                            TermDisplay termDisplay = new TermDisplay();
-                            termDisplay.execute();
+                        TermDisplay termDisplay = new TermDisplay();
+                        termDisplay.execute();
 
                         termstore_bt.setVisibility(View.VISIBLE);
                         Toast.makeText(this,"마감날짜 : "+ simpleDateFormat.format(ddayCal.getTime()),Toast.LENGTH_LONG).show();
 
-                            //기간 저장 버튼 클릭이벤트
-                            termstore_bt.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
+                        //기간 저장 버튼 클릭이벤트
+                        termstore_bt.setOnClickListener(new View.OnClickListener() {
 
-                                    Toast.makeText(innercalendar.this, "기간 저장 완료!", Toast.LENGTH_LONG).show();
-                                    TermDB termDB = new TermDB();
-                                    termDB.execute();
+                            @Override
+                            public void onClick(View view) {
+
+                                Toast.makeText(innercalendar.this, "기간 저장 완료!", Toast.LENGTH_LONG).show();
+                                TermDB termDB = new TermDB();
+                                termDB.execute();
 
                                 checkMyTerm=1;
                                 //초기화버튼 활성화
@@ -310,10 +309,21 @@ public class innercalendar extends AppCompatActivity {
                     }
                 }
 
-                    //마감날짜, 시작 날짜 다 정해져 있을때
-                    else{
+                //마감날짜, 시작 날짜 다 정해져 있을때
+                else{
+
+                    //저장버튼이 안눌렸는데 다른 날짜 선택시
+                    if(checkMyTerm==0){
+                        termstore_bt.setVisibility(View.VISIBLE);
+                        terminit_bt.setVisibility(View.INVISIBLE);
+                    }
+
+                    //처음에 저장된 기간이 있을 시
+                    else {
                         TermFullOrEmpty();
                     }
+
+                }
             }
         }
 
@@ -330,6 +340,7 @@ public class innercalendar extends AppCompatActivity {
             del_Btn.setVisibility(View.INVISIBLE);
             terminit_bt.setVisibility(View.VISIBLE);
             termstore_bt.setVisibility(View.INVISIBLE);
+
 
             //기간 초기화 버튼 눌렀을 때 이벤트
             terminit_bt.setOnClickListener(new View.OnClickListener() {
@@ -600,11 +611,17 @@ public class innercalendar extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+
                     if (isFinishing()) {
                         return;
                     }
 
-                    calendarView.addDecorator(new TermEventDecorator(Color.DKGRAY, calendarDays, innercalendar.this));
+                    if (calendarDays==null){
+
+                    }
+                    else {
+                        calendarView.addDecorator(new TermEventDecorator(Color.DKGRAY, calendarDays, innercalendar.this));
+                    }
                 }
             });
 
@@ -730,7 +747,7 @@ public class innercalendar extends AppCompatActivity {
 
     //기간 날짜를 DB에서 가져오는 클래스
     public class GetTermDB extends AsyncTask<Void, Integer, Void> {
-        String datas = "";
+        String datas11 = "";
 
         String pname = InnerMainRecycler.getPname();
         String pkey = InnerMainRecycler.getPkey();
@@ -770,10 +787,11 @@ public class innercalendar extends AppCompatActivity {
                 while ((line = in.readLine()) != null) {
                     buff.append(line + "\n");
                 }
-                datas = buff.toString().trim();
+                datas11 = buff.toString().trim();
+
 
                 /* 서버에서 응답 */
-                Log.e("RECV DATA", datas);
+                Log.e("RECV DATA", datas11);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -790,22 +808,23 @@ public class innercalendar extends AppCompatActivity {
             super.onPostExecute(aVoid);
 
             /* 서버에서 응답 */
-            Log.e("RECV DATA", datas);
+            Log.e("RECV DATA", datas11);
 
             //DB에서 받아온 값이 0이면 기간이 정해져있지 않음
-            if (datas.equals("0")){
+            if (datas11.equals("0")){
                 Log.e("Project Term Empty!", "기간이 설정되어 있지 않음");
             }
+            else if(datas11.equals("NULL")){
 
+            }
             //0이 아니면 기간이 정해져있는 것
-            else if (datas!="0"){
+            else if (datas11!="0"||datas11!="NULL"){
 
-
+                checkMyTerm=1;
                 //ui오류가 나서 써준 것
-                runOnUiThread(new Runnable(){
-                    @Override public void run() {
 
-                String saveData = datas;
+
+                String saveData = datas11;
                 Calendar dateCheck;
                 long dateCompare1, dateCompare2, countNum;
 
@@ -844,8 +863,6 @@ public class innercalendar extends AppCompatActivity {
                 TermDisplay termDisplay = new TermDisplay();
                 termDisplay.execute();
 
-            }
-                });
             }
 
         }
