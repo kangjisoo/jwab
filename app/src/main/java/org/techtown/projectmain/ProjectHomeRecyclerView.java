@@ -7,22 +7,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
-import org.techtown.projectinner.InnerMainRecycler;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -59,7 +53,7 @@ public class ProjectHomeRecyclerView extends Fragment {
         recyclerView.setAdapter(adapter);
 
         //플러스 버튼 누르면 프로젝트생성 액티비티로 전환
-        imageButton = (ImageButton) rootView.findViewById(R.id.plusButton);
+        imageButton = (ImageButton) rootView.findViewById(R.id.ladderGamePlusButton);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
