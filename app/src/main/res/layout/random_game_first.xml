@@ -64,8 +64,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/gameListRecyclerView"
-        android:layout_width="289dp"
-        android:layout_height="264dp"
+        android:layout_width="268dp"
+        android:layout_height="270dp"
         android:layout_marginStart="20dp"
 
 

@@ -97,6 +97,10 @@ public class RandomGameFirst extends AppCompatActivity {
             public void onClick(View v) {
                 String titleName = randomGameTitleView.getText().toString();
 
+                for (int i =0; i<=rArrayList.size(); i++){
+
+                    rArrayList.set(i,rArrayList.get(i));
+                }
 
                 //제목이 빈칸이거나 공백만 있을 경우
                 if (titleName.equals("")|| titleName.trim().equals("")){
