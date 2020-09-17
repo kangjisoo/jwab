@@ -53,7 +53,7 @@
 
 
 
-        <activity android:name="org.techtown.laddergame.LadderGameMain">
+        <activity android:name="org.techtown.randomgame.RandomGameFirst">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 

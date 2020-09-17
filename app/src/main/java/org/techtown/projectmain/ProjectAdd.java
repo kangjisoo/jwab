@@ -405,6 +405,7 @@ public class ProjectAdd extends AppCompatActivity {
 
                     //전체선택 체크박스 체크되어 있으면 true상태로 추가
                     if (allCheckBoxYesOrNo==false) {
+
                         //카운트를 추가 시키고 member로 아래 목록을 리싸이클러뷰에 띄우기
                         ProjectPerson newMember = new ProjectPerson("조원", stridPhone, false);
                         mArrayList.add(newMember);

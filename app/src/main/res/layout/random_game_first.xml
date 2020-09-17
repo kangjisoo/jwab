@@ -10,7 +10,7 @@
         android:id="@+id/textView"
         android:layout_width="145dp"
         android:layout_height="65dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="56dp"
         android:gravity="center"
         android:text="랜덤 뽑기"
         android:textSize="30dp"
@@ -25,13 +25,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
         android:layout_marginLeft="52dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="56dp"
         android:gravity="center"
         android:text="뽑을 사람"
         android:textSize="15dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/randomGameTitleView" />
 
     <TextView
         android:id="@+id/textView12"
@@ -39,13 +39,96 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
         android:layout_marginLeft="52dp"
-        android:text="뽑기 목록"
         android:gravity="center"
+        android:text="뽑기 목록"
         android:textSize="15dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/ch_Bt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11"
-        app:layout_constraintVertical_bias="0.213" />
+        app:layout_constraintVertical_bias="0.274" />
+
+    <TextView
+        android:id="@+id/memberCountView"
+        android:layout_width="41dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="56dp"
+        android:gravity="center"
+        android:text="0"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/memberMinusBt"
+        app:layout_constraintTop_toBottomOf="@+id/randomGameTitleView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/gameListRecyclerView"
+        android:layout_width="289dp"
+        android:layout_height="264dp"
+        android:layout_marginStart="20dp"
+
+
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="56dp"
+        android:background="@drawable/border"
+        app:layout_constraintStart_toEndOf="@+id/textView12"
+        app:layout_constraintTop_toBottomOf="@+id/memberCountView" />
+
+
+    <Button
+        android:id="@+id/ch_Bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="확인"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gameListRecyclerView" />
+
+    <Button
+        android:id="@+id/listAddBt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="@+id/gameListRecyclerView"
+        app:layout_constraintEnd_toEndOf="@+id/gameListRecyclerView" />
+
+    <EditText
+        android:id="@+id/randomGameTitleView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="뽑기 제목"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <ImageButton
+        android:id="@+id/memberMinusBt"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginLeft="55dp"
+        android:layout_marginTop="53dp"
+        app:layout_constraintStart_toEndOf="@+id/textView11"
+        app:layout_constraintTop_toBottomOf="@+id/randomGameTitleView"
+        app:srcCompat="@drawable/minus" />
+
+    <ImageButton
+        android:id="@+id/memberPlusBt"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="53dp"
+        app:layout_constraintStart_toEndOf="@+id/memberCountView"
+        app:layout_constraintTop_toBottomOf="@+id/randomGameTitleView"
+        app:srcCompat="@drawable/plus" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
