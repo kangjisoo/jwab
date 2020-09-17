@@ -11,7 +11,6 @@ public class ProjectPerson {
     public ProjectPerson(String members, String searchId) {
         this.members = members;
         this.searchId = searchId;
-
     }
 
     public ProjectPerson(String members, String searchId, boolean isChecked){
