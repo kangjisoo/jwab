@@ -2,6 +2,7 @@ package org.techtown.randomgame;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
@@ -71,9 +72,8 @@ public class RandomGameFirst extends AppCompatActivity {
 
                 RandomGameList newList = new RandomGameList("");
                 rArrayList.add(newList);
-
-                rAdapter.notifyItemInserted(listCount);
                 listCount++;
+                rAdapter.notifyDataSetChanged();
 
             }
         });
@@ -92,21 +92,28 @@ public class RandomGameFirst extends AppCompatActivity {
             }
         });
 
+        //확인버튼 클릭
         ch_Bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String titleName = randomGameTitleView.getText().toString();
-
-                for (int i =0; i<=rArrayList.size(); i++){
-
-                    rArrayList.set(i,rArrayList.get(i));
-                }
 
                 //제목이 빈칸이거나 공백만 있을 경우
                 if (titleName.equals("")|| titleName.trim().equals("")){
                     Toast.makeText(RandomGameFirst.this, "제목을 입력해주세요!",Toast.LENGTH_LONG).show();
                 } else if (numOfMember>listCount || numOfMember<listCount){
                     Toast.makeText(RandomGameFirst.this, "사람 수 :"+ numOfMember +"  뽑을 목록 : "+listCount +"\n"+"수가 일치 해야 합니다.",Toast.LENGTH_LONG).show();
+                }else {
+                    //뽑기 목록값에 빈칸이 있을 경우 메세지 출력
+                    for (int i = 0; i < listCount; i++) {
+
+                        if (rArrayList.get(i).getRandomGameListItem().equals("")) {
+                            Toast.makeText(RandomGameFirst.this, i + "번째 뽑기 목록이 비어있습니다. 적어주세요", Toast.LENGTH_LONG).show();
+                        } else {
+                            //모든 조건 완료, 화면 전환
+                        }
+
+                    }
                 }
 
             }
