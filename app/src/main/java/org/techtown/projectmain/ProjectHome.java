@@ -132,18 +132,6 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         );
     }   //onCreate() 끝
 
-    //현재 액티비티가 실행중인지 구하기
-    private boolean isActivityTop(){
-        ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        List<ActivityManager.RunningTaskInfo> info;
-        info = activityManager.getRunningTasks(1);
-
-        if(info.get(0).topActivity.getClassName().equals(InnerMainRecycler.class.getClass().getName())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
 
         @Override
