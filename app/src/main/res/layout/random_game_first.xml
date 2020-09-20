@@ -87,14 +87,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gameListRecyclerView" />
 
-    <Button
-        android:id="@+id/listAddBt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="@+id/gameListRecyclerView"
-        app:layout_constraintEnd_toEndOf="@+id/gameListRecyclerView" />
-
     <EditText
         android:id="@+id/randomGameTitleView"
         android:layout_width="wrap_content"
@@ -130,5 +122,15 @@
         app:layout_constraintStart_toEndOf="@+id/memberCountView"
         app:layout_constraintTop_toBottomOf="@+id/randomGameTitleView"
         app:srcCompat="@drawable/plus" />
+
+    <ImageButton
+        android:id="@+id/listAddBt"
+        android:layout_width="47dp"
+        android:layout_height="46dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/gameListRecyclerView"
+        app:layout_constraintEnd_toEndOf="@+id/gameListRecyclerView"
+        app:srcCompat="@drawable/listplusbt" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
