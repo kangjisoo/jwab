@@ -6,14 +6,21 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.techtown.loginactivity.R;
+
+import java.util.ArrayList;
 
 public class RandomGameSecond extends AppCompatActivity {
     private TextView randomGameSecondTitle;
     private RecyclerView resultRecyclerView;
     private Button resultBt, reshuffleBt;
+    private ArrayList<RandomGameList> sArrayList;
+    private RandomGameSecondAdapter sAdapter;
+    private RandomGameList sList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -25,6 +32,22 @@ public class RandomGameSecond extends AppCompatActivity {
         resultBt = findViewById(R.id.resultBt);
         reshuffleBt = findViewById(R.id.reshuffleBt);
 
+        LinearLayoutManager layoutManager =
+                new LinearLayoutManager(this);
+
+        sArrayList = new ArrayList<>();
+        sAdapter = new RandomGameSecondAdapter(sArrayList);
+        resultRecyclerView.setAdapter(sAdapter);
+
+        resultRecyclerView.setLayoutManager(layoutManager);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(resultRecyclerView.getContext(),
+                layoutManager.getOrientation());
+        resultRecyclerView.addItemDecoration(dividerItemDecoration);
+
+        RandomGameList randomGameList = new RandomGameList("");
+        sArrayList.add(randomGameList);
+        sAdapter.notifyDataSetChanged();
 
         //결과보기 버튼 클릭
         resultBt.setOnClickListener(new View.OnClickListener() {

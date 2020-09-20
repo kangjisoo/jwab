@@ -1,6 +1,7 @@
 package org.techtown.randomgame;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,15 +24,16 @@ import java.util.ArrayList;
 public class RandomGameFirst extends AppCompatActivity {
 
     private EditText randomGameTitleView;
-    private ImageButton memberMinus, memberPlus;
+    private ImageButton memberMinus, memberPlus,listAddBt;
     private TextView memberCountView;
     private RecyclerView gameListRecyclerView;
-    private Button ch_Bt, listAddBt;
+    private Button ch_Bt;
     private int numOfMember=0;
     private int maxOfMember=20;
     private ArrayList<RandomGameList> rArrayList;
     private RandomGameAdapter rAdapter;
     private int listCount=0;
+    private static String whatTitleName;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -49,7 +51,6 @@ public class RandomGameFirst extends AppCompatActivity {
 
         memberCountView.setText(Integer.toString(numOfMember));
         memberMinus.setEnabled(false);
-
 
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this);
@@ -110,13 +111,18 @@ public class RandomGameFirst extends AppCompatActivity {
                         if (rArrayList.get(i).getRandomGameListItem().equals("")) {
                             Toast.makeText(RandomGameFirst.this, i + "번째 뽑기 목록이 비어있습니다. 적어주세요", Toast.LENGTH_LONG).show();
                         } else {
+                            whatTitleName = randomGameTitleView.getText().toString();
                             //모든 조건 완료, 화면 전환
+                            Intent intent = new Intent(
+                                    getApplicationContext(), // 현재 화면의 제어권자
+                                    RandomGameSecond.class); // 다음 넘어갈 클래스 지정
+                            startActivity(intent); // 다음 화면으로 넘어간다
+                        }
+
                         }
 
                     }
                 }
-
-            }
         });
     }
 

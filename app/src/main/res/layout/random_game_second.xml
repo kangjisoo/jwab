@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/randomGameSecondTitle"
+        android:layout_width="156dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="127dp"
+        android:layout_marginLeft="127dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="128dp"
+        android:layout_marginRight="128dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/resultRecyclerView"
+        android:layout_width="409dp"
+        android:layout_height="498dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/randomGameSecondTitle" />
+
+    <Button
+        android:id="@+id/reshuffleBt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="162dp"
+        android:layout_marginLeft="162dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="161dp"
+        android:layout_marginRight="161dp"
+        android:text="다시섞기"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resultRecyclerView" />
+
+    <Button
+        android:id="@+id/resultBt"
+        android:layout_width="325dp"
+        android:layout_height="492dp"
+        android:background="@color/cardview_dark_background"
+        android:text="결과보기"
+        android:textSize="30dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/resultRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/resultRecyclerView" />
+</androidx.constraintlayout.widget.ConstraintLayout>
