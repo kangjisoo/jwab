@@ -12,7 +12,7 @@ import org.techtown.loginactivity.R;
 import java.util.ArrayList;
 
 public class RandomGameSecondAdapter extends RecyclerView.Adapter<RandomGameSecondAdapter.ViewHolder> {
-    private ArrayList<RandomGameList> sRandomLists;
+    private ArrayList<RandomGameData> sRandomLists;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -28,7 +28,7 @@ public class RandomGameSecondAdapter extends RecyclerView.Adapter<RandomGameSeco
         }
     }
 
-    public RandomGameSecondAdapter(ArrayList<RandomGameList> resultListAdapter) {
+    public RandomGameSecondAdapter(ArrayList<RandomGameData> resultListAdapter) {
         this.sRandomLists = resultListAdapter;
     }
 
@@ -43,11 +43,11 @@ public class RandomGameSecondAdapter extends RecyclerView.Adapter<RandomGameSeco
     }
 
     public void onBindViewHolder(RandomGameSecondAdapter.ViewHolder viewHolder, int position) {
-        RandomGameList randomGameList = sRandomLists.get(position);
+        RandomGameData randomGameData = sRandomLists.get(position);
 
         for (int i =0; i<=getItemCount();i++){
             viewHolder.countNum.setText(Integer.toString(i));
-            viewHolder.resultListView.setText(randomGameList.getRandomGameListItem());
+            viewHolder.resultListView.setText(randomGameData.getRandomGameListItem());
         }
 
     }

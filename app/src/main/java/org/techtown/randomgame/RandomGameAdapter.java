@@ -2,7 +2,6 @@ package org.techtown.randomgame;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,13 +13,11 @@ import android.widget.EditText;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.techtown.loginactivity.R;
-import org.techtown.projectmain.OnItemClick;
-import org.techtown.projectmain.ProjectPersonAdapter;
 
 import java.util.ArrayList;
 
 public class RandomGameAdapter extends RecyclerView.Adapter<RandomGameAdapter.ViewHolder> {
-    private ArrayList<RandomGameList> randomLists;
+    private ArrayList<RandomGameData> randomLists;
     private ArrayList<String> strings = new ArrayList();
     private int num =0;
 
@@ -41,7 +38,7 @@ public class RandomGameAdapter extends RecyclerView.Adapter<RandomGameAdapter.Vi
         }
     }
 
-    public RandomGameAdapter(ArrayList<RandomGameList> adapterlist) {
+    public RandomGameAdapter(ArrayList<RandomGameData> adapterlist) {
         this.randomLists = adapterlist;
 
     }
@@ -58,16 +55,16 @@ public class RandomGameAdapter extends RecyclerView.Adapter<RandomGameAdapter.Vi
 
     @Override
     public void onBindViewHolder(final RandomGameAdapter.ViewHolder viewHolder, final int position) {
-        final RandomGameList randomGameList = randomLists.get(position);
+        final RandomGameData randomGameData = randomLists.get(position);
         String itemValue="";
         viewHolder.randomListItem.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
 
         viewHolder.randomListItem.setGravity(Gravity.CENTER);
         viewHolder.listDeleteBt.setGravity(Gravity.CENTER);
 
-        viewHolder.randomListItem.setText(randomGameList.getRandomGameListItem());
+        viewHolder.randomListItem.setText(randomGameData.getRandomGameListItem());
 
-        randomGameList.setRandomGameListItem(viewHolder.randomListItem.getText().toString());
+        randomGameData.setRandomGameListItem(viewHolder.randomListItem.getText().toString());
 
         //TextWatcher를 이용하여 값이 변경된 후 randomGameList안에 수정된 값이 저장되도록 만듬듬
        viewHolder.randomListItem.addTextChangedListener(new TextWatcher() {
@@ -84,7 +81,7 @@ public class RandomGameAdapter extends RecyclerView.Adapter<RandomGameAdapter.Vi
             @Override
             public void afterTextChanged(Editable s) {
                 //입력이 끝났을 때
-                randomGameList.setRandomGameListItem(viewHolder.randomListItem.getText().toString());
+                randomGameData.setRandomGameListItem(viewHolder.randomListItem.getText().toString());
             }
         });
 
