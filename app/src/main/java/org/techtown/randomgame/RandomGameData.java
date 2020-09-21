@@ -1,10 +1,10 @@
 package org.techtown.randomgame;
 
-public class RandomGameList {
+public class RandomGameData extends RandomGameMyItem{
 
     private String randomGameListItem;
 
-    public RandomGameList(String randomGameListItem){
+    public RandomGameData(String randomGameListItem){
         this.randomGameListItem = randomGameListItem;
     }
 

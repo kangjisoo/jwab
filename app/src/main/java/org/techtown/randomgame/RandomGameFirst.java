@@ -3,9 +3,7 @@ package org.techtown.randomgame;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -30,7 +28,7 @@ public class RandomGameFirst extends AppCompatActivity {
     private Button ch_Bt;
     private int numOfMember=0;
     private int maxOfMember=20;
-    private ArrayList<RandomGameList> rArrayList;
+    private ArrayList<RandomGameData> rArrayList;
     private RandomGameAdapter rAdapter;
     private int listCount=0;
     private static String whatTitleName;
@@ -71,7 +69,7 @@ public class RandomGameFirst extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                RandomGameList newList = new RandomGameList("");
+                RandomGameData newList = new RandomGameData("");
                 rArrayList.add(newList);
                 listCount++;
                 rAdapter.notifyDataSetChanged();

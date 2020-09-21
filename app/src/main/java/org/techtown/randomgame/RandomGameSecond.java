@@ -18,9 +18,9 @@ public class RandomGameSecond extends AppCompatActivity {
     private TextView randomGameSecondTitle;
     private RecyclerView resultRecyclerView;
     private Button resultBt, reshuffleBt;
-    private ArrayList<RandomGameList> sArrayList;
+    private ArrayList<RandomGameData> sArrayList;
     private RandomGameSecondAdapter sAdapter;
-    private RandomGameList sList;
+    private RandomGameData sList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -45,8 +45,8 @@ public class RandomGameSecond extends AppCompatActivity {
                 layoutManager.getOrientation());
         resultRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        RandomGameList randomGameList = new RandomGameList("");
-        sArrayList.add(randomGameList);
+        RandomGameData randomGameData = new RandomGameData("");
+        sArrayList.add(randomGameData);
         sAdapter.notifyDataSetChanged();
 
         //결과보기 버튼 클릭
