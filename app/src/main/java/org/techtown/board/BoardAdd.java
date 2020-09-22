@@ -34,6 +34,7 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
 import org.techtown.loginactivity.R;
+import org.techtown.projectmain.ProjectAdd;
 import org.techtown.projectmain.ProjectHomeListAdapter;
 
 import java.io.BufferedReader;
@@ -52,13 +53,22 @@ public class BoardAdd extends AppCompatActivity {
     Context context;
     private ScrollView board_scrollView;
     private EditText board_text;
+    private EditText insertText, insertText2;
+    private static String  pname;
+    private static String  pkey;
+
+    public static String  getPname(){ return pname; }
+    public static String getPkey(){
+        return pkey;
+    }
 
     private Boolean isPermission = true;
     private File tempFile;
 
-    Button image_bt, file_bt, upload_bt;
+    Button image_bt, upload_bt;
     ImageView image, image1, image2, image3, image4, image5;
-    TextView textView;
+    String board_name = null;
+
     ArrayList imageListUri = new ArrayList();
     private static final int PICK_FROM_FILE = 1;
 
@@ -74,8 +84,6 @@ public class BoardAdd extends AppCompatActivity {
         image3 = (ImageView) findViewById(R.id.imageView3);
         image4 = (ImageView) findViewById(R.id.imageView4);
         image5 = (ImageView) findViewById(R.id.imageView5);
-        textView = (TextView) findViewById(R.id.board_file_text);
-
 
         board_scrollView = (ScrollView) findViewById(R.id.board_scrollView);
         board_text = (EditText) findViewById(R.id.board_textView);
@@ -94,7 +102,7 @@ public class BoardAdd extends AppCompatActivity {
         });
 
         image_bt = (Button) findViewById(R.id.board_add_picture);
-        file_bt = (Button) findViewById(R.id.board_add_file);
+
         upload_bt = (Button) findViewById(R.id.board_upload_bt);
 
         //사진 버튼 눌렀을 때
@@ -104,28 +112,27 @@ public class BoardAdd extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-//                intent.setAction(Intent.ACTION_GET_CONTENT);
-//                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, PICK_FROM_FILE);
             }
         });
 
-        //파일 버튼 눌렀을 때
-        file_bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("file/*");
-                startActivityForResult(intent, PICK_FROM_FILE);
-            }
-        });
 
         //업로드 버튼 눌렀을 때
         upload_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                insertText = (EditText)findViewById(R.id.board_name);
+                insertText2 = (EditText)findViewById(R.id.board_textView);
+                board_name= (String)insertText.getText().toString();
+
+            if(board_name.equals("")){
+                Toast.makeText(BoardAdd.this,"제목을 입력해주세요.",Toast.LENGTH_LONG).show();
+            }
+            else {
+                Toast.makeText(BoardAdd.this,"uploadDB실행.",Toast.LENGTH_LONG).show();
                 UploadDB uploadDB = new UploadDB();
                 uploadDB.execute();
+                }
             }
         });
     }
@@ -185,20 +192,6 @@ public class BoardAdd extends AppCompatActivity {
 
                     }
                 }
-
-                //파일버튼 눌렀을 때
-            } else if (uri != null) {
-
-                String urione = uri.getPath();
-                textView.setText("[첨부파일]\n" + urione);
-
-//                    File file = new File(uri.getPath());
-//                    if(file.exists()==true){
-//                        Log.e("첨부파일 있움ㅋㅋ","ㅇ헤ㅔ헤");
-//                    }else{
-//                        Log.e("없다 ㅅㅂ서4뱌ㅐ솓갸ㅐ며호", "ㅎㅎㅎㅎ");
-//                    }
-
             }
 
             Cursor cursor = null;
@@ -244,14 +237,14 @@ public class BoardAdd extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... unused) {
-
-            String param = "param1=" + "";
-
+            pname = ProjectHomeListAdapter.getProjectNameImsi();
+            pkey = ProjectHomeListAdapter.getSee();
+            String param = "p_name=" + pname + "p_key" + pkey +"&title=" + board_name + "&contents=" + board_text + "&img" + image1 +  "";
 
             try {
                 /* 서버연결 */
                 URL url = new URL(
-                        "http://rtemd.suwon.ac.kr/guest/getPersonInfo.php");
+                        "http://rtemd.suwon.ac.kr/guest/getBoardContents.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
