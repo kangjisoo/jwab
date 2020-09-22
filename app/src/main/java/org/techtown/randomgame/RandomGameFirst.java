@@ -27,11 +27,11 @@ public class RandomGameFirst extends AppCompatActivity {
     private TextView memberCountView;
     private RecyclerView gameListRecyclerView;
     private Button ch_Bt;
-    private int numOfMember=0;
+    private static int numOfMember=0;
     private int maxOfMember=20;
     private ArrayList<RandomGameData> rArrayList;
     private RandomGameAdapter rAdapter;
-    private static int listCount=0;
+    private int listCount=0;
     private static String whatTitleName;
     private ArrayList<String> storage;
     private int okay=0;
@@ -40,8 +40,8 @@ public class RandomGameFirst extends AppCompatActivity {
         return whatTitleName;
     }
 
-    public static int getListCount(){
-        return listCount;
+    public static int getnumOfMember(){
+        return numOfMember;
     }
 
     @SuppressLint("WrongViewCast")
@@ -50,6 +50,7 @@ public class RandomGameFirst extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.random_game_first);
 
+        numOfMember=0;
         randomGameTitleView = findViewById(R.id.randomGameTitleView);
         memberMinus = findViewById(R.id.memberMinusBt);
         memberPlus = findViewById(R.id.memberPlusBt);
@@ -120,10 +121,11 @@ public class RandomGameFirst extends AppCompatActivity {
                         if (rArrayList.get(i).getRandomGameListItem().equals("")) {
                             Toast.makeText(RandomGameFirst.this, i + "번째 뽑기 목록이 비어있습니다. 적어주세요", Toast.LENGTH_LONG).show();
                         } else {
-                            okay=+1; }
-                        }
+                            okay=okay+1; }
+                    }
 
-                        if (okay == listCount-1){
+                    Log.e("뭐가 다른거야 대체", okay+"나누기"+listCount+"");
+                        if (okay == listCount){
                             //제목 받기
                             whatTitleName = randomGameTitleView.getText().toString();
 

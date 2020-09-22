@@ -1,5 +1,7 @@
 package org.techtown.randomgame;
 
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +47,18 @@ public class RandomGameSecondAdapter extends RecyclerView.Adapter<RandomGameSeco
     public void onBindViewHolder(RandomGameSecondAdapter.ViewHolder viewHolder, int position) {
         RandomGameData randomGameData = sRandomLists.get(position);
 
-        for (int i =0; i<=getItemCount();i++){
-            viewHolder.countNum.setText(Integer.toString(i));
+        viewHolder.countNum.setGravity(Gravity.CENTER);
+        viewHolder.resultListView2.setGravity(Gravity.CENTER);
+
+        viewHolder.countNum.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        viewHolder.resultListView2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+
+        //순서를 줄 것
+        int count=1;
+            viewHolder.countNum.setText(Integer.toString(count));
+        count=+1;
+        for (int i =0; i<=RandomGameFirst.getnumOfMember();i++){
+
             viewHolder.resultListView2.setText(randomGameData.getRandomGameListItem());
         }
 
