@@ -33,8 +33,6 @@ public class RandomGameAdapter extends RecyclerView.Adapter<RandomGameAdapter.Vi
             this.randomListItem = itemView.findViewById(R.id.randomGameListItem);
             this.listDeleteBt = itemView.findViewById(R.id.randomGameDeleteBt);
 
-
-
         }
     }
 
