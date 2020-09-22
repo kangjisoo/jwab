@@ -3,6 +3,7 @@ package org.techtown.randomgame;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,8 +31,18 @@ public class RandomGameFirst extends AppCompatActivity {
     private int maxOfMember=20;
     private ArrayList<RandomGameData> rArrayList;
     private RandomGameAdapter rAdapter;
-    private int listCount=0;
+    private static int listCount=0;
     private static String whatTitleName;
+    private ArrayList<String> storage;
+    private int okay=0;
+
+    public static String getWhatTitleName(){
+        return whatTitleName;
+    }
+
+    public static int getListCount(){
+        return listCount;
+    }
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -72,8 +83,7 @@ public class RandomGameFirst extends AppCompatActivity {
                 RandomGameData newList = new RandomGameData("");
                 rArrayList.add(newList);
                 listCount++;
-                rAdapter.notifyDataSetChanged();
-
+                rAdapter.notifyItemInserted(listCount);
             }
         });
 
@@ -103,20 +113,34 @@ public class RandomGameFirst extends AppCompatActivity {
                 } else if (numOfMember>listCount || numOfMember<listCount){
                     Toast.makeText(RandomGameFirst.this, "사람 수 :"+ numOfMember +"  뽑을 목록 : "+listCount +"\n"+"수가 일치 해야 합니다.",Toast.LENGTH_LONG).show();
                 }else {
+
                     //뽑기 목록값에 빈칸이 있을 경우 메세지 출력
                     for (int i = 0; i < listCount; i++) {
 
                         if (rArrayList.get(i).getRandomGameListItem().equals("")) {
                             Toast.makeText(RandomGameFirst.this, i + "번째 뽑기 목록이 비어있습니다. 적어주세요", Toast.LENGTH_LONG).show();
                         } else {
-                            whatTitleName = randomGameTitleView.getText().toString();
-                            //모든 조건 완료, 화면 전환
-                            Intent intent = new Intent(
-                                    getApplicationContext(), // 현재 화면의 제어권자
-                                    RandomGameSecond.class); // 다음 넘어갈 클래스 지정
-                            startActivity(intent); // 다음 화면으로 넘어간다
+                            okay=+1; }
                         }
 
+                        if (okay == listCount-1){
+                            //제목 받기
+                            whatTitleName = randomGameTitleView.getText().toString();
+
+                            //모든 조건 완료, 화면 전환
+                            Intent intent = new Intent(getApplicationContext(), // 현재 화면의 제어권자
+                                    RandomGameSecond.class); // 다음 넘어갈 클래스 지정
+
+                            storage = new ArrayList<>();
+
+                            for (int k =0; k<listCount; k++){
+                                storage.add(k,rArrayList.get(k).getRandomGameListItem());
+
+                                Log.e("뭐가 문제야",rArrayList.get(k).getRandomGameListItem()+"");
+
+                            }
+                            intent.putStringArrayListExtra("resultValue",storage);
+                            startActivity(intent); // 다음 화면으로 넘어간다
                         }
 
                     }

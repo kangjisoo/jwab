@@ -17,13 +17,13 @@ public class RandomGameSecondAdapter extends RecyclerView.Adapter<RandomGameSeco
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView countNum;
-        private TextView resultListView;
+        private TextView resultListView2;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             this.countNum = itemView.findViewById(R.id.countNum);
-            this.resultListView = itemView.findViewById(R.id.resultListView);
+            this.resultListView2 = itemView.findViewById(R.id.resultlistView2);
 
         }
     }
@@ -47,7 +47,7 @@ public class RandomGameSecondAdapter extends RecyclerView.Adapter<RandomGameSeco
 
         for (int i =0; i<=getItemCount();i++){
             viewHolder.countNum.setText(Integer.toString(i));
-            viewHolder.resultListView.setText(randomGameData.getRandomGameListItem());
+            viewHolder.resultListView2.setText(randomGameData.getRandomGameListItem());
         }
 
     }

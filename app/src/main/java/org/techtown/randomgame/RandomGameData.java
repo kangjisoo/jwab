@@ -1,6 +1,8 @@
 package org.techtown.randomgame;
 
-public class RandomGameData extends RandomGameMyItem{
+import java.io.Serializable;
+
+public class RandomGameData implements Serializable {
 
     private String randomGameListItem;
 

@@ -1,6 +1,7 @@
 package org.techtown.randomgame;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,7 +21,7 @@ public class RandomGameSecond extends AppCompatActivity {
     private Button resultBt, reshuffleBt;
     private ArrayList<RandomGameData> sArrayList;
     private RandomGameSecondAdapter sAdapter;
-    private RandomGameData sList;
+    private ArrayList<String> sList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -45,9 +46,24 @@ public class RandomGameSecond extends AppCompatActivity {
                 layoutManager.getOrientation());
         resultRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        RandomGameData randomGameData = new RandomGameData("");
-        sArrayList.add(randomGameData);
+
+        //제목 받아오기
+        randomGameSecondTitle.setText(RandomGameFirst.getWhatTitleName());
+
+        Bundle extras = getIntent().getExtras();
+        String resultValue;
+        sList = new ArrayList<>();
+       for (int i =0; i<RandomGameFirst.getListCount(); i++){
+
+           sList = extras.getStringArrayList("resultValue");
+           RandomGameData randomGameData = new RandomGameData(sList.get(i));
+           sArrayList.add(randomGameData);
+
+           Log.e("리사이클러뷰를 좀 알고싶다", sList.get(i)+"");
+
+       }
         sAdapter.notifyDataSetChanged();
+
 
         //결과보기 버튼 클릭
         resultBt.setOnClickListener(new View.OnClickListener() {
