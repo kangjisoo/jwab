@@ -51,9 +51,8 @@ public class RandomGameSecond extends AppCompatActivity {
         randomGameSecondTitle.setText(RandomGameFirst.getWhatTitleName());
 
         Bundle extras = getIntent().getExtras();
-        String resultValue;
         sList = new ArrayList<>();
-       for (int i =0; i<RandomGameFirst.getListCount(); i++){
+       for (int i =0; i<RandomGameFirst.getnumOfMember(); i++){
 
            sList = extras.getStringArrayList("resultValue");
            RandomGameData randomGameData = new RandomGameData(sList.get(i));
