@@ -83,7 +83,15 @@ public class RandomGameAdapter extends RecyclerView.Adapter<RandomGameAdapter.Vi
             }
         });
 
+       //삭제버튼 클릭시 아이템 삭제 구현
+        viewHolder.listDeleteBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                randomLists.remove(randomGameData);
+                notifyDataSetChanged();
 
+            }
+        });
     }
 
 

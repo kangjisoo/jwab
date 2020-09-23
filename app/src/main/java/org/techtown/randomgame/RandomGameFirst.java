@@ -31,7 +31,6 @@ public class RandomGameFirst extends AppCompatActivity {
     private int maxOfMember=20;
     private ArrayList<RandomGameData> rArrayList;
     private RandomGameAdapter rAdapter;
-    private int listCount=0;
     private static String whatTitleName;
     private ArrayList<String> storage;
     private int okay=0;
@@ -83,8 +82,8 @@ public class RandomGameFirst extends AppCompatActivity {
 
                 RandomGameData newList = new RandomGameData("");
                 rArrayList.add(newList);
-                listCount++;
-                rAdapter.notifyItemInserted(listCount);
+                rAdapter.notifyItemInserted(rAdapter.getItemCount());
+                Log.e("count of list", +rAdapter.getItemCount()+"");
             }
         });
 
@@ -111,12 +110,12 @@ public class RandomGameFirst extends AppCompatActivity {
                 //제목이 빈칸이거나 공백만 있을 경우
                 if (titleName.equals("")|| titleName.trim().equals("")){
                     Toast.makeText(RandomGameFirst.this, "제목을 입력해주세요!",Toast.LENGTH_LONG).show();
-                } else if (numOfMember>listCount || numOfMember<listCount){
-                    Toast.makeText(RandomGameFirst.this, "사람 수 :"+ numOfMember +"  뽑을 목록 : "+listCount +"\n"+"수가 일치 해야 합니다.",Toast.LENGTH_LONG).show();
+                } else if (numOfMember>rAdapter.getItemCount() || numOfMember<rAdapter.getItemCount() ){
+                    Toast.makeText(RandomGameFirst.this, "사람 수 :"+ numOfMember +"  뽑을 목록 : "+rAdapter.getItemCount()  +"\n"+"수가 일치 해야 합니다.",Toast.LENGTH_LONG).show();
                 }else {
 
                     //뽑기 목록값에 빈칸이 있을 경우 메세지 출력
-                    for (int i = 0; i < listCount; i++) {
+                    for (int i = 0; i < rAdapter.getItemCount() ; i++) {
 
                         if (rArrayList.get(i).getRandomGameListItem().equals("")) {
                             Toast.makeText(RandomGameFirst.this, i + "번째 뽑기 목록이 비어있습니다. 적어주세요", Toast.LENGTH_LONG).show();
@@ -124,8 +123,7 @@ public class RandomGameFirst extends AppCompatActivity {
                             okay=okay+1; }
                     }
 
-                    Log.e("뭐가 다른거야 대체", okay+"나누기"+listCount+"");
-                        if (okay == listCount){
+                        if (okay == rAdapter.getItemCount() ){
                             //제목 받기
                             whatTitleName = randomGameTitleView.getText().toString();
 
@@ -135,12 +133,15 @@ public class RandomGameFirst extends AppCompatActivity {
 
                             storage = new ArrayList<>();
 
-                            for (int k =0; k<listCount; k++){
+                            //두번째 화면에 전달할 아이템 저장
+                            for (int k =0; k<rAdapter.getItemCount() ; k++){
                                 storage.add(k,rArrayList.get(k).getRandomGameListItem());
 
-                                Log.e("뭐가 문제야",rArrayList.get(k).getRandomGameListItem()+"");
+                                Log.e("item send to second ",rArrayList.get(k).getRandomGameListItem()+"");
 
                             }
+
+                            //두번째 화면으로 아이템 보내기
                             intent.putStringArrayListExtra("resultValue",storage);
                             startActivity(intent); // 다음 화면으로 넘어간다
                         }

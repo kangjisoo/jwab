@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.techtown.loginactivity.R;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class RandomGameSecond extends AppCompatActivity {
     private TextView randomGameSecondTitle;
@@ -50,15 +52,21 @@ public class RandomGameSecond extends AppCompatActivity {
         //제목 받아오기
         randomGameSecondTitle.setText(RandomGameFirst.getWhatTitleName());
 
+        //첫번째 화면에서 리사이클러뷰 안에 들어간 아이템 넘겨받기
         Bundle extras = getIntent().getExtras();
         sList = new ArrayList<>();
+        sList = extras.getStringArrayList("resultValue");
+
+        //아이템들이 랜더으로 나오도록 섞어주기
+        Collections.shuffle(sList);
+
        for (int i =0; i<RandomGameFirst.getnumOfMember(); i++){
 
-           sList = extras.getStringArrayList("resultValue");
+           //두번째 화면 리스트에 추가해주기
            RandomGameData randomGameData = new RandomGameData(sList.get(i));
            sArrayList.add(randomGameData);
 
-           Log.e("리사이클러뷰를 좀 알고싶다", sList.get(i)+"");
+           Log.e("receive to Firstlist", sList+"");
 
        }
         sAdapter.notifyDataSetChanged();
@@ -77,7 +85,16 @@ public class RandomGameSecond extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //리사이클러뷰 다시 섞기
+                resultBt.setVisibility(View.VISIBLE);
+
+                //다시섞기
+                Collections.shuffle(sArrayList);
+
+                //(xml)countNum을 순서대로 넣기위해
+                sArrayList.get(0).setInitNum(0);
+
+                sAdapter.notifyDataSetChanged();
+
             }
         });
     }
