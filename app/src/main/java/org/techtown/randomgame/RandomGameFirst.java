@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 public class RandomGameFirst extends AppCompatActivity {
 
+
     private EditText randomGameTitleView;
     private ImageButton memberMinus, memberPlus,listAddBt;
     private TextView memberCountView;
@@ -36,6 +37,7 @@ public class RandomGameFirst extends AppCompatActivity {
     private static String whatTitleName;
     private ArrayList<String> storage;
     private int okay=0;
+
 
     public static String getWhatTitleName(){
         return whatTitleName;
@@ -61,6 +63,7 @@ public class RandomGameFirst extends AppCompatActivity {
         ch_Bt = findViewById(R.id.ch_Bt);
 
         memberCountView.setText(Integer.toString(numOfMember));
+        randomGameTitleView.setText("");
         memberMinus.setEnabled(false);
 
         LinearLayoutManager layoutManager =
