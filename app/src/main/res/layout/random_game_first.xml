@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/random_game_color">
 
     <TextView
         android:id="@+id/textView"
@@ -23,8 +24,8 @@
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginLeft="52dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginLeft="45dp"
         android:layout_marginTop="56dp"
         android:gravity="center"
         android:text="뽑을 사람"
@@ -37,8 +38,8 @@
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginLeft="52dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginLeft="45dp"
         android:gravity="center"
         android:text="뽑기 목록"
         android:textSize="15dp"
@@ -64,8 +65,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/gameListRecyclerView"
-        android:layout_width="268dp"
-        android:layout_height="270dp"
+        android:layout_width="283dp"
+        android:layout_height="287dp"
         android:layout_marginStart="20dp"
 
 
@@ -80,7 +81,7 @@
         android:id="@+id/ch_Bt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="25dp"
         android:text="확인"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
