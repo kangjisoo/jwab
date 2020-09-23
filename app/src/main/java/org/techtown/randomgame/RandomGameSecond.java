@@ -104,9 +104,12 @@ public class RandomGameSecond extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        backActivity(RandomGameSecond.this);
+//      backActivity(RandomGameSecond.this);
+        RandomGameSecond.this.finish();
+
 
     }
+
 
     public static void backActivity(Activity act) {
 
