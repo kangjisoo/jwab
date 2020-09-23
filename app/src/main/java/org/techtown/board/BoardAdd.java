@@ -52,7 +52,6 @@ import java.util.logging.Logger;
 public class BoardAdd extends AppCompatActivity {
     Context context;
     private ScrollView board_scrollView;
-    private EditText board_text;
     private EditText insertText, insertText2;
     private static String  pname;
     private static String  pkey;
@@ -68,6 +67,7 @@ public class BoardAdd extends AppCompatActivity {
     Button image_bt, upload_bt;
     ImageView image, image1, image2, image3, image4, image5;
     String board_name = null;
+    String board_text = null;
 
     ArrayList imageListUri = new ArrayList();
     private static final int PICK_FROM_FILE = 1;
@@ -86,13 +86,15 @@ public class BoardAdd extends AppCompatActivity {
         image5 = (ImageView) findViewById(R.id.imageView5);
 
         board_scrollView = (ScrollView) findViewById(R.id.board_scrollView);
-        board_text = (EditText) findViewById(R.id.board_textView);
+//        board_text = (EditText) findViewById(R.id.board_textView);
+        insertText = (EditText)findViewById(R.id.board_textView);
+
 
         //텍스트에 스크롤 선언
-        board_text.setMovementMethod(new ScrollingMovementMethod());
-        board_text.setFocusableInTouchMode(true);
-        board_text.setFocusable(true);
-        board_text.setOnTouchListener(new View.OnTouchListener() {
+        insertText.setMovementMethod(new ScrollingMovementMethod());
+        insertText.setFocusableInTouchMode(true);
+        insertText.setFocusable(true);
+        insertText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 //스크롤뷰가 텍스트뷰의 터치이벤트를 가져가지 못하게 함
@@ -121,10 +123,9 @@ public class BoardAdd extends AppCompatActivity {
         upload_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertText = (EditText)findViewById(R.id.board_name);
-                insertText2 = (EditText)findViewById(R.id.board_textView);
-                board_name= (String)insertText.getText().toString();
-
+                insertText2 = (EditText)findViewById(R.id.board_name);
+                board_name= (String)insertText2.getText().toString();
+                board_text = (String)insertText.getText().toString();
             if(board_name.equals("")){
                 Toast.makeText(BoardAdd.this,"제목을 입력해주세요.",Toast.LENGTH_LONG).show();
             }
@@ -171,6 +172,7 @@ public class BoardAdd extends AppCompatActivity {
                 for (int i = 0; i < clipData.getItemCount(); i++) {
                     if (i < clipData.getItemCount()) {
                         Uri urione = clipData.getItemAt(i).getUri();
+                        Log.e("씨발꺼싸아안ㄹ씨발것", String.valueOf(urione));
 
                         switch (i) {
                             case 0:
@@ -200,15 +202,15 @@ public class BoardAdd extends AppCompatActivity {
     }
 
 
-    private void setImage() {
-
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
-        Log.d("TAG", "setImage : " + tempFile.getAbsolutePath());
-        image1.setImageBitmap(originalBm);
-        tempFile = null;
-
-    }
+//    private void setImage() {
+//
+//        BitmapFactory.Options options = new BitmapFactory.Options();
+//        Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
+//        Log.d("TAG", "setImage : " + tempFile.getAbsolutePath());
+//        image1.setImageBitmap(originalBm);
+//        tempFile = null;
+//
+//    }
 
     //권한설정
     private void tedPermission() {
@@ -239,8 +241,8 @@ public class BoardAdd extends AppCompatActivity {
         protected Void doInBackground(Void... unused) {
             pname = ProjectHomeListAdapter.getProjectNameImsi();
             pkey = ProjectHomeListAdapter.getSee();
-            String param = "p_name=" + pname + "p_key" + pkey +"&title=" + board_name + "&contents=" + board_text + "&img" + image1 +  "";
-
+            String param = "p_name=" + pname + "&p_key=" + pkey +"&title=" + board_name + "&contents=" + board_text + "&img=" + image1 +  "";
+            Log.e("pkey Test..",pkey);
             try {
                 /* 서버연결 */
                 URL url = new URL(
@@ -276,7 +278,7 @@ public class BoardAdd extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
+            Log.e("getBoardDBTestㅋㅋㅋㅋㅋ",data);
             return null;
         }
     }
