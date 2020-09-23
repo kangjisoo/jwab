@@ -1,5 +1,7 @@
 package org.techtown.randomgame;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 
 import java.util.ArrayList;
@@ -98,5 +101,20 @@ public class RandomGameSecond extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        backActivity(RandomGameSecond.this);
 
+    }
+
+    public static void backActivity(Activity act) {
+
+        //전있던 엑티비티 종료
+        act.finish();
+        Intent i = new Intent(act, RandomGameFirst.class );
+        i.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP );
+        i.putExtra( "KILL", true );
+        act.startActivity(i);
+    };
 }

@@ -1,6 +1,7 @@
 package org.techtown.randomgame;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 
 import java.util.ArrayList;

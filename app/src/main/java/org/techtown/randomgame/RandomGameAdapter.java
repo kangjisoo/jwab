@@ -33,6 +33,7 @@ public class RandomGameAdapter extends RecyclerView.Adapter<RandomGameAdapter.Vi
             this.randomListItem = itemView.findViewById(R.id.randomGameListItem);
             this.listDeleteBt = itemView.findViewById(R.id.randomGameDeleteBt);
 
+
         }
     }
 
@@ -87,8 +88,9 @@ public class RandomGameAdapter extends RecyclerView.Adapter<RandomGameAdapter.Vi
         viewHolder.listDeleteBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                randomLists.remove(randomGameData);
-                notifyDataSetChanged();
+                randomLists.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, randomLists.size());
 
             }
         });
