@@ -30,7 +30,9 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:background="@drawable/border"
+                    />
 
                 <TextView
                     android:id="@+id/resultlistView2"
@@ -38,7 +40,9 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:background="@drawable/border"
+                    />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
