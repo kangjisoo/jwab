@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -11,8 +13,13 @@ import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.navigation.NavigationView;
+
+import org.techtown.loginactivity.FragmentCallback;
 import org.techtown.loginactivity.R;
 import org.techtown.projectmain.ProjectAdd;
 import org.techtown.projectmain.ProjectHome;
@@ -21,6 +28,15 @@ import org.techtown.projectmain.ProjectHome;
 public class BoardMainRecycler extends AppCompatActivity {
     RecyclerView recyclerView;
     ImageButton imageButton;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.inner_menu, menu);
+        return true;
+
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +64,9 @@ public class BoardMainRecycler extends AppCompatActivity {
         });
 
     }
+
+
+
 
 
 

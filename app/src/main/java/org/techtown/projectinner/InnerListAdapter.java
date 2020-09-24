@@ -47,8 +47,6 @@ public class InnerListAdapter  extends RecyclerView.Adapter<InnerListAdapter.Vie
 
         public ViewHolder(View itemView) {
             super(itemView);
-
-
             textView = itemView.findViewById(R.id.person_name);
             textView2 = itemView.findViewById(R.id.person_message);
 
