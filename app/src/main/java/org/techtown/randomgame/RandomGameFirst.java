@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class RandomGameFirst extends AppCompatActivity {
 
 
     private EditText randomGameTitleView;
-    private ImageButton memberMinus, memberPlus,listAddBt;
+    private ImageButton memberMinus, memberPlus;
     private TextView memberCountView;
     private RecyclerView gameListRecyclerView;
     private Button ch_Bt;
@@ -85,12 +84,10 @@ public class RandomGameFirst extends AppCompatActivity {
             public void onClick(View v) {
                 MinusBt();
 
-                //rAdapter.notifyItemRemoved(rAdapter.getItemCount());
-                Log.e("왜삭제안되냐",rAdapter.getItemCount()+"");
+                //리사이클러뷰 리스트에서 맨 마지막 아이템 삭제
                 rArrayList.remove(rAdapter.getItemCount()-1);
                 rAdapter.notifyDataSetChanged();
 
-                //rAdapter.notifyItemRangeChanged(position, randomLists.size());
 
             }
         });
@@ -99,13 +96,15 @@ public class RandomGameFirst extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 PlusBt();
+
+                //인원추가 시 자동으로 리사이클러뷰 아아템 추가
                 RandomGameData newList = new RandomGameData("");
                 rArrayList.add(rAdapter.getItemCount(),newList);
                 rAdapter.notifyItemInserted(rAdapter.getItemCount());
                 Log.e("count of list", +rAdapter.getItemCount()+"");
 
                 for (int i =0; i<rAdapter.getItemCount(); i++){
-                    Log.e("추가하면 리스트에 들어있는 값", rArrayList.get(i).getRandomGameListItem()+"");
+                    Log.e("after add, list state", rArrayList.get(i).getRandomGameListItem()+"");
                 }
             }
         });
