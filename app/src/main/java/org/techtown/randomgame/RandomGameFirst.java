@@ -59,7 +59,6 @@ public class RandomGameFirst extends AppCompatActivity {
         memberPlus = findViewById(R.id.memberPlusBt);
         memberCountView = findViewById(R.id.memberCountView);
         gameListRecyclerView = findViewById(R.id.gameListRecyclerView);
-        listAddBt = findViewById(R.id.listAddBt);
         ch_Bt = findViewById(R.id.ch_Bt);
 
         memberCountView.setText(Integer.toString(numOfMember));
@@ -80,22 +79,19 @@ public class RandomGameFirst extends AppCompatActivity {
                 layoutManager.getOrientation());
         gameListRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        //목록 추가 버튼 클릭
-        listAddBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                RandomGameData newList = new RandomGameData("");
-                rArrayList.add(newList);
-                rAdapter.notifyItemInserted(rAdapter.getItemCount());
-                Log.e("count of list", +rAdapter.getItemCount()+"");
-            }
-        });
 
         memberMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MinusBt();
+
+                //rAdapter.notifyItemRemoved(rAdapter.getItemCount());
+                Log.e("왜삭제안되냐",rAdapter.getItemCount()+"");
+                rArrayList.remove(rAdapter.getItemCount()-1);
+                rAdapter.notifyDataSetChanged();
+
+                //rAdapter.notifyItemRangeChanged(position, randomLists.size());
+
             }
         });
 
@@ -103,6 +99,14 @@ public class RandomGameFirst extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 PlusBt();
+                RandomGameData newList = new RandomGameData("");
+                rArrayList.add(rAdapter.getItemCount(),newList);
+                rAdapter.notifyItemInserted(rAdapter.getItemCount());
+                Log.e("count of list", +rAdapter.getItemCount()+"");
+
+                for (int i =0; i<rAdapter.getItemCount(); i++){
+                    Log.e("추가하면 리스트에 들어있는 값", rArrayList.get(i).getRandomGameListItem()+"");
+                }
             }
         });
 

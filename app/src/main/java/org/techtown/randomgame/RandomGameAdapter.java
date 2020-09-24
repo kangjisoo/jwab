@@ -2,6 +2,7 @@ package org.techtown.randomgame;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,13 +27,11 @@ public class RandomGameAdapter extends RecyclerView.Adapter<RandomGameAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         protected EditText randomListItem;
-        protected Button listDeleteBt;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             this.randomListItem = itemView.findViewById(R.id.randomGameListItem);
-            this.listDeleteBt = itemView.findViewById(R.id.randomGameDeleteBt);
 
 
         }
@@ -59,41 +59,47 @@ public class RandomGameAdapter extends RecyclerView.Adapter<RandomGameAdapter.Vi
         viewHolder.randomListItem.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
 
         viewHolder.randomListItem.setGravity(Gravity.CENTER);
-        viewHolder.listDeleteBt.setGravity(Gravity.CENTER);
 
         viewHolder.randomListItem.setText(randomGameData.getRandomGameListItem());
 
         randomGameData.setRandomGameListItem(viewHolder.randomListItem.getText().toString());
+
 
         //TextWatcher를 이용하여 값이 변경된 후 randomGameList안에 수정된 값이 저장되도록 만듬듬
        viewHolder.randomListItem.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //입력하기 전에
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //입력되는 텍스트에 변화가 있을 때
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+
                 //입력이 끝났을 때
                 randomGameData.setRandomGameListItem(viewHolder.randomListItem.getText().toString());
             }
         });
 
-       //삭제버튼 클릭시 아이템 삭제 구현
-        viewHolder.listDeleteBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                randomLists.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, randomLists.size());
-
-            }
-        });
+//       //삭제버튼 클릭시 아이템 삭제 구현
+//        viewHolder.listDeleteBt.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.e("지울위치",position+"");
+//                randomLists.remove(position);
+//                notifyItemRemoved(position);
+//                notifyItemRangeChanged(position, randomLists.size());
+//                //notifyDataSetChanged();
+//
+//
+//            }
+//        });
     }
 
 
