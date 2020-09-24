@@ -172,7 +172,6 @@ public class BoardAdd extends AppCompatActivity {
                 for (int i = 0; i < clipData.getItemCount(); i++) {
                     if (i < clipData.getItemCount()) {
                         Uri urione = clipData.getItemAt(i).getUri();
-                        Log.e("씨발꺼싸아안ㄹ씨발것", String.valueOf(urione));
 
                         switch (i) {
                             case 0:
