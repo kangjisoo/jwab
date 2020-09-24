@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
+import org.techtown.projectinner.InnerMainRecycler;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -101,23 +102,16 @@ public class RandomGameSecond extends AppCompatActivity {
             }
         });
     }
+
+    //뒤로가기 버튼 눌렀을때 두번째 화면 종료 첫번째뽑기 화면으로 돌아가기
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-//      backActivity(RandomGameSecond.this);
         RandomGameSecond.this.finish();
-
+      Intent intent = new Intent(RandomGameSecond.this,RandomGameFirst.class);
+      intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+      startActivity(intent);
 
     }
 
-
-    public static void backActivity(Activity act) {
-
-        //전있던 엑티비티 종료
-        act.finish();
-        Intent i = new Intent(act, RandomGameFirst.class );
-        i.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP );
-        i.putExtra( "KILL", true );
-        act.startActivity(i);
-    };
 }
