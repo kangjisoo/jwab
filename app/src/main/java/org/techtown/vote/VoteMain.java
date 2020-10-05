@@ -1,5 +1,6 @@
 package org.techtown.vote;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,9 +15,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.navigation.NavigationView;
+
+import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 import org.techtown.projectmain.ProjectAdd;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class VoteMain extends AppCompatActivity {
@@ -62,9 +74,11 @@ public class VoteMain extends AppCompatActivity {
 
             voteAllCheckBox.setChecked(false);
 
+            //전체선택 클릭 리스너
         voteAllCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
                 if (voteAllCheckBox.isChecked()==true){
                     for (int i =0; i< vArrayList.size(); i++){
                         VoteData allCheckList = vArrayList.get(i);
@@ -78,6 +92,8 @@ public class VoteMain extends AppCompatActivity {
                         allCheckList.setCheckBoxCh(false);
                     }
                 }
+
+                //변경사항 적용
                 vAdapter.notifyDataSetChanged();
             }
         });
@@ -97,6 +113,7 @@ public class VoteMain extends AppCompatActivity {
 
                 else{
 
+                    //전체선택 선택되어 있을 시
                     if (voteAllCheckBox.isChecked()==true){
                         //리스트 추가
                         VoteData newVoteData = new VoteData(true, getList);
@@ -106,7 +123,9 @@ public class VoteMain extends AppCompatActivity {
                         listNum++;
                         listCountTextView.setText(Integer.toString(listNum));
                     }
-                    else {
+
+                    //전체선택 해제되어 있을 시
+                   else {
                         //리스트 추가
                         VoteData newVoteData = new VoteData(false, getList);
                         vArrayList.add(newVoteData);
@@ -169,7 +188,81 @@ public class VoteMain extends AppCompatActivity {
             }
         });
 
+        //확인버튼 클릭시
+        voteMakeBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                voteTitleEditView.getText().toString();
+
+                //제목이 공백이거나 빈칸일 때
+                if (voteTitleEditView.equals("")|| voteTitleEditView.getText().toString().trim().equals("")){
+                    Toast.makeText(VoteMain.this, "투표 주제를 입력해주세요",Toast.LENGTH_LONG).show();
+                }
+                //투표 목록이 1개 미만일 때
+                else if (vArrayList.size()<1){
+                    Toast.makeText(VoteMain.this, "투표 목록이 존재하지 않습니다.",Toast.LENGTH_LONG).show();
+                }
+                //모든 조건 만족 시시
+               else{
+                    //db올리는 코드
+                    CreateVoteDB createVoteDB = new CreateVoteDB();
+                    createVoteDB.execute();
+                }
+            }
+        });
+
     }
 
 
+    public class CreateVoteDB extends AsyncTask<Void, Integer, Void>
+    {
+        String data = "";
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+
+            String param = "u_voteProjectName=" + "헬로" + "&u_voteProjectPrk="+"0"+"";
+
+            //Check param
+            Log.e("POST.param", param);
+
+            try {
+                /* 서버연결 */
+                URL url = new URL(
+                        "http://rtemd.suwon.ac.kr/guest/createVote.php");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                /* 서버 -> 안드로이드 파라메터값 전달 */
+                InputStream is = null;
+                BufferedReader in = null;
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ((line = in.readLine()) != null) {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+
+                /* 서버에서 응답 */
+                Log.e("getName : ", data);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
 }
