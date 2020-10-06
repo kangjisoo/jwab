@@ -29,7 +29,9 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class VoteMain extends AppCompatActivity {
 
@@ -221,7 +223,25 @@ public class VoteMain extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... unused) {
 
-            String param = "u_voteProjectName=" + "헬로" + "&u_voteProjectPrk="+"0"+"";
+            String voteTitle = voteTitleEditView.getText().toString();
+            String voteLists[] = new String[listNum-1];
+            String voteAllList="";
+
+            //현재날짜 저장 변수
+            long now = System.currentTimeMillis();
+            Date date = new Date(now);
+            SimpleDateFormat mFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            String time = mFormat.format(date);
+
+
+            //투표 목록을 합쳐서 변수에 저장
+            for (int i =0; i<listNum; i++){
+
+                voteLists[i] = vArrayList.get(i).getVoteListValue();
+                voteAllList = voteAllList.concat(voteLists[i])+",";
+
+            }
+            String param = "u_voteProjectName=" + "헬로" + "&u_voteProjectPrk="+"0"+"&u_voteName="+voteTitle+"&u_voteList="+voteAllList+"&u_voteListCount="+(listNum+1)+"";
 
             //Check param
             Log.e("POST.param", param);
