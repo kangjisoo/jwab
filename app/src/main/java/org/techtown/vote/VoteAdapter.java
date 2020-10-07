@@ -72,9 +72,9 @@ public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.ViewHolder> {
     }
 
     @Override
-    public int getItemCount() {
-        return (null != vlist ? vlist.size() : 0);
-    }
+public int getItemCount() {
+    return (null != vlist ? vlist.size() : 0);
+}
 
 
 }

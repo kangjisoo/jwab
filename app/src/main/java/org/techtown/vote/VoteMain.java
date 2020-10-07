@@ -1,5 +1,6 @@
 package org.techtown.vote;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,8 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
+import org.techtown.loginactivity.SignActivty;
+import org.techtown.projectinner.InnerMainRecycler;
 import org.techtown.projectmain.ProjectAdd;
 
 import java.io.BufferedReader;
@@ -31,10 +34,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class VoteMain extends AppCompatActivity {
 
+    public static final int REQUEST_CODE_VOTE = 102;
     private TextView voteTextView,listCountText,listCountTextView;
     private EditText voteTitleEditView, voteAddList;
     private Button voteAddBt,voteDeleteBt,voteMakeBt;
@@ -45,6 +50,12 @@ public class VoteMain extends AppCompatActivity {
     private VoteAdapter vAdapter;
 
     private int listNum=0;
+
+    public static String voteNameAndKey;
+
+    public static String GetVoteNameAndKey(){
+        return voteNameAndKey;
+    }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -209,6 +220,10 @@ public class VoteMain extends AppCompatActivity {
                     //db올리는 코드
                     CreateVoteDB createVoteDB = new CreateVoteDB();
                     createVoteDB.execute();
+
+//                    Intent intent = new Intent(getApplicationContext(), VoteFinish.class);
+//                    startActivityForResult(intent,REQUEST_CODE_VOTE);
+
                 }
             }
         });
@@ -216,15 +231,18 @@ public class VoteMain extends AppCompatActivity {
     }
 
 
+    //db에 투표기능 만드는 스레드
     public class CreateVoteDB extends AsyncTask<Void, Integer, Void>
     {
         String data = "";
+        String pname = InnerMainRecycler.getPname();
+        String pkey = InnerMainRecycler.getPkey();
 
         @Override
         protected Void doInBackground(Void... unused) {
 
             String voteTitle = voteTitleEditView.getText().toString();
-            String voteLists[] = new String[listNum-1];
+            String voteLists[] = new String[listNum];
             String voteAllList="";
 
             //현재날짜 저장 변수
@@ -233,6 +251,13 @@ public class VoteMain extends AppCompatActivity {
             SimpleDateFormat mFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             String time = mFormat.format(date);
 
+            //현재날짜에서 3일 뒤에 날짜 저장
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            cal.add(Calendar.DATE,3);
+            String deathDate = mFormat.format(cal.getTime());
+
+            Log.e("deathDate check", deathDate);
 
             //투표 목록을 합쳐서 변수에 저장
             for (int i =0; i<listNum; i++){
@@ -241,7 +266,7 @@ public class VoteMain extends AppCompatActivity {
                 voteAllList = voteAllList.concat(voteLists[i])+",";
 
             }
-            String param = "u_voteProjectName=" + "헬로" + "&u_voteProjectPrk="+"0"+"&u_voteName="+voteTitle+"&u_voteList="+voteAllList+"&u_voteListCount="+(listNum+1)+"";
+            String param = "u_voteProjectName=" + pname + "&u_voteProjectPrk="+ pkey +"&u_voteName="+voteTitle+"&u_voteList="+voteAllList+"&u_voteListCount="+(listNum+1)+"&u_voteDate="+deathDate+"";
 
             //Check param
             Log.e("POST.param", param);
@@ -276,7 +301,8 @@ public class VoteMain extends AppCompatActivity {
                 data = buff.toString().trim();
 
                 /* 서버에서 응답 */
-                Log.e("getName : ", data);
+                Log.e("getVoteTitleKey : ", data);
+                voteNameAndKey = data;
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
