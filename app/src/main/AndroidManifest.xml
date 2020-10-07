@@ -46,6 +46,10 @@
         </activity>
 
         <activity
+            android:name="org.techtown.board.BoardView">
+        </activity>
+
+        <activity
             android:name="org.techtown.projectmain.ProjectHome"
            />
         <activity

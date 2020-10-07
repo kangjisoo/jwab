@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.renderscript.ScriptGroup;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -34,6 +35,7 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
 import org.techtown.loginactivity.R;
+import org.techtown.projectinner.InnerMainRecycler;
 import org.techtown.projectmain.ProjectAdd;
 import org.techtown.projectmain.ProjectHomeListAdapter;
 
@@ -55,6 +57,7 @@ public class BoardAdd extends AppCompatActivity {
     private EditText insertText, insertText2;
     private static String  pname;
     private static String  pkey;
+    private String imageString,imageString2,str;
 
     public static String  getPname(){ return pname; }
     public static String getPkey(){
@@ -65,9 +68,14 @@ public class BoardAdd extends AppCompatActivity {
     private File tempFile;
 
     Button image_bt, upload_bt;
-    ImageView image, image1, image2, image3, image4, image5;
+    ImageView image, image1, image2, image3, image4, image5, image6;
     String board_name = null;
     String board_text = null;
+
+    String res = null;
+    Uri urione;
+    ClipData clipData;
+
 
     ArrayList imageListUri = new ArrayList();
     private static final int PICK_FROM_FILE = 1;
@@ -84,6 +92,10 @@ public class BoardAdd extends AppCompatActivity {
         image3 = (ImageView) findViewById(R.id.imageView3);
         image4 = (ImageView) findViewById(R.id.imageView4);
         image5 = (ImageView) findViewById(R.id.imageView5);
+
+
+
+
 
         board_scrollView = (ScrollView) findViewById(R.id.board_scrollView);
 //        board_text = (EditText) findViewById(R.id.board_textView);
@@ -112,8 +124,10 @@ public class BoardAdd extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+//                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setType("image/*");
+                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, PICK_FROM_FILE);
             }
         });
@@ -165,17 +179,18 @@ public class BoardAdd extends AppCompatActivity {
         if (requestCode == PICK_FROM_FILE) {
             //단일파일->uri, 여러파일->clipData에 삽입됨
             Uri uri = data.getData();
-            ClipData clipData = data.getClipData();
+            clipData = data.getClipData();
 
             //사진첨부 했을 때
             if (clipData != null) {
                 for (int i = 0; i < clipData.getItemCount(); i++) {
                     if (i < clipData.getItemCount()) {
-                        Uri urione = clipData.getItemAt(i).getUri();
+                        urione = clipData.getItemAt(i).getUri();
 
                         switch (i) {
                             case 0:
                                 image1.setImageURI(urione);
+                                Log.e("zzzzzzzzzz", urione.getPath());
                                 break;
                             case 1:
                                 image2.setImageURI(urione);
@@ -201,15 +216,15 @@ public class BoardAdd extends AppCompatActivity {
     }
 
 
-//    private void setImage() {
-//
-//        BitmapFactory.Options options = new BitmapFactory.Options();
-//        Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
-//        Log.d("TAG", "setImage : " + tempFile.getAbsolutePath());
-//        image1.setImageBitmap(originalBm);
-//        tempFile = null;
-//
-//    }
+    private void setImage() {
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
+        Log.d("TAG", "setImage : " + tempFile.getAbsolutePath());
+        image1.setImageBitmap(originalBm);
+        tempFile = null;
+
+    }
 
     //권한설정
     private void tedPermission() {
@@ -232,6 +247,20 @@ public class BoardAdd extends AppCompatActivity {
                 .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
                 .check();
     }
+    //이미지 실제 경로(절대경로) 구하기
+    private String uri_path(Uri uri){
+
+        String[] image_data = {MediaStore.Images.Media.DATA};
+        Cursor cur = getContentResolver().query(uri, image_data, null,null,null);
+
+        if(cur.moveToFirst()){
+            int col = cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cur.getString(col);
+        }
+        Log.e("URI_PATH TEST!!!!!!!!!!!", res);
+        cur.close();
+        return res;
+    }
 
     public class UploadDB extends AsyncTask<Void, Integer, Void> {
         String data = "";
@@ -240,8 +269,10 @@ public class BoardAdd extends AppCompatActivity {
         protected Void doInBackground(Void... unused) {
             pname = ProjectHomeListAdapter.getProjectNameImsi();
             pkey = ProjectHomeListAdapter.getSee();
-            String param = "p_name=" + pname + "&p_key=" + pkey +"&title=" + board_name + "&contents=" + board_text + "&img=" + image1 +  "";
-            Log.e("pkey Test..",pkey);
+            str = urione.getPath();
+            String param = "p_name=" + pname + "&p_key=" + pkey +"&title=" + board_name + "&contents=" + board_text + "&img=" + str +  "";
+
+
             try {
                 /* 서버연결 */
                 URL url = new URL(
@@ -277,8 +308,26 @@ public class BoardAdd extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Log.e("getBoardDBTestㅋㅋㅋㅋㅋ",data);
+
             return null;
         }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            String file_path = uri_path(urione);
+            Log.e("씨빌씨빨씨발씨", file_path);
+            File imgFile = new File(file_path);
+            image6 = (ImageView) findViewById(R.id.board_test_image);
+//            BitmapFactory.Options options = new BitmapFactory.Options();
+            Bitmap originalBm = BitmapFactory.decodeFile(imgFile.toString());
+            image6.setImageBitmap(originalBm);
+
+
+                Intent intent = new Intent(BoardAdd.this, BoardView.class);
+                startActivity(intent);
+
+
+        }
     }
+
 }
