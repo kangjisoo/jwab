@@ -3,6 +3,7 @@ package org.techtown.vote;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -56,10 +57,20 @@ public class VoteFinish extends AppCompatActivity {
         fAdapter = new VoteFinishAdapter(fArrayList);
         voteFinishRecyclerView.setAdapter(fAdapter);
 
+        voteFinishMember.setText("0");
 
         GetVoteDB getVoteDB = new GetVoteDB();
         getVoteDB.execute();
 
+        voteFinishBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                VoteAttend voteAttend = new VoteAttend();
+                voteAttend.execute();
+
+            }
+        });
 
 
     }
@@ -134,6 +145,70 @@ public class VoteFinish extends AppCompatActivity {
             }
 
             voteFinishTitle.setText(deliverTitle);
+        }
+    }
+
+    //투표 참여하는 스레드
+    public class VoteAttend extends AsyncTask<Void, Integer, Void>{
+
+        String data = "";
+        String myId = MainActivity.getsId();
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+            String findVoteName = VoteMain.GetVoteNameAndKey();
+            String[] nameKey = findVoteName.split("_");
+            String sNum = "";
+            for (int i=0; i<fArrayList.size(); i++) {
+                if (fArrayList.get(i).isVoteRadioButton()==true){
+                    Log.e("몇번째인지 한번 보자", String.valueOf(i));
+                   sNum = fArrayList.get(i).getVoteFinishItems();
+                }
+            }
+
+            String param = "u_id="+myId+"&u_voteName="+nameKey[0]+"&u_votePrkey="+nameKey[1]+"&u_selectNum="+sNum+"";
+
+            //Check param
+            Log.e("POST.param", param);
+
+
+            try {
+                /* 서버연결 */
+                URL url = new URL(
+                        "http://rtemd.suwon.ac.kr/guest/voteAttend.php");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                /* 서버 -> 안드로이드 파라메터값 전달 */
+                InputStream is = null;
+                BufferedReader in = null;
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ((line = in.readLine()) != null) {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+
+                /* 서버에서 응답 */
+                Log.e("vote content: ", data);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
     }
 }
