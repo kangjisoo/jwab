@@ -37,6 +37,7 @@ import org.techtown.projectmain.ProjectHomeList;
 import org.techtown.projectmain.ProjectHomeListAdapter;
 import org.techtown.projectmain.ProjectHomeRecyclerView;
 import org.techtown.randomgame.RandomGameFirst;
+import org.techtown.vote.VoteMain;
 import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
@@ -108,14 +109,12 @@ public class InnerMainRecycler extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
             case R.id.action_settings1:
-                //Toast.makeText(getApplicationContext(), "캘린더 클릭됨", Toast.LENGTH_LONG).show();
                 Toast.makeText(getContext(),"캘린더 클릭됨",Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getContext(), innercalendar.class);
                 startActivity(intent);
                 return true;
 
             case R.id.action_settings2:
-                //Toast.makeText(getApplicationContext(), "게시판 클릭됨", Toast.LENGTH_LONG).show();
                 Toast.makeText(getContext(),"게시판 클릭됨",Toast.LENGTH_LONG).show();
                 boardMainRecycler = new BoardMainRecycler();
 
@@ -123,18 +122,17 @@ public class InnerMainRecycler extends Fragment {
                 startActivity(intent2);
                 return true;
             case R.id.action_settings3:
-                //Toast.makeText(getApplicationContext(), "게시판 클릭됨", Toast.LENGTH_LONG).show();
                 Toast.makeText(getContext(),"뽑기 클릭됨",Toast.LENGTH_LONG).show();
 
                 Intent intent3 = new Intent(getContext(), RandomGameFirst.class);
                 startActivity(intent3);
                 return true;
             default:
-                //Toast.makeText(getApplicationContext(), "게시판 클릭됨", Toast.LENGTH_LONG).show();
+
                 Toast.makeText(getContext(),"투표 클릭됨",Toast.LENGTH_LONG).show();
 
-//                Intent intent4 = new Intent(getContext(), BoardMainRecycler.class);
-//                startActivity(intent4);
+                Intent intent4 = new Intent(getContext(), VoteMain.class);
+                startActivity(intent4);
                 return true;
 
         }
