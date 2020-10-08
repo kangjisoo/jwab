@@ -34,9 +34,7 @@ public class VoteFinish extends AppCompatActivity {
 
     private ArrayList<VoteFinishData> fArrayList;
     private VoteFinishAdapter fAdapter;
-
-    String findVoteName = VoteMain.GetVoteNameAndKey();
-    String[] nameKey = findVoteName.split("_");
+    private String deliverTitle="";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,16 +50,17 @@ public class VoteFinish extends AppCompatActivity {
                 new LinearLayoutManager(this);
 
         voteFinishRecyclerView.setLayoutManager(layoutManager);
-        fArrayList= new ArrayList<>();
+        fArrayList = new ArrayList<>();
 
 
         fAdapter = new VoteFinishAdapter(fArrayList);
         voteFinishRecyclerView.setAdapter(fAdapter);
 
-        voteFinishTitle.setText(nameKey[0]);
 
         GetVoteDB getVoteDB = new GetVoteDB();
         getVoteDB.execute();
+
+
 
     }
 
@@ -69,10 +68,16 @@ public class VoteFinish extends AppCompatActivity {
         String data = "";
         String myId = MainActivity.getsId();
 
+
         @Override
         protected Void doInBackground(Void... unused) {
+            String findVoteName = VoteMain.GetVoteNameAndKey();
+            String[] nameKey = findVoteName.split("_");
 
-            String param = "u_voteName="+nameKey[0]+"&u_voteKey="+nameKey[1]+"&u+myId="+myId+"";
+            deliverTitle = nameKey[0];
+
+
+            String param = "u_voteName=" + nameKey[0] + "&u_voteKey=" + nameKey[1] + "&u+myId=" + myId + "";
 
             //Check param
             Log.e("POST.param", param);
@@ -115,7 +120,21 @@ public class VoteFinish extends AppCompatActivity {
             }
             return null;
         }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            String[] divided = data.split(",");
+
+            for (int i = 0; i < divided.length; i++) {
+                VoteFinishData newVoteFinishData = new VoteFinishData(false, divided[i]);
+                fArrayList.add(newVoteFinishData);
+                fAdapter.notifyItemInserted(fAdapter.getItemCount());
+            }
+
+            voteFinishTitle.setText(deliverTitle);
+        }
     }
 }
-
 

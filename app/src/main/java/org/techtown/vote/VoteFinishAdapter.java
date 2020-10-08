@@ -4,8 +4,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 
 public class VoteFinishAdapter  extends RecyclerView.Adapter<VoteFinishAdapter.ViewHolder> {
     private ArrayList<VoteFinishData> flist;
+    private RadioButton lastCheckedRB = null;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         protected RadioButton voteFinishRadioBt;
@@ -43,27 +46,44 @@ public class VoteFinishAdapter  extends RecyclerView.Adapter<VoteFinishAdapter.V
     }
 
     @Override
-    public void onBindViewHolder(VoteFinishAdapter.ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(final VoteFinishAdapter.ViewHolder viewHolder, final int position) {
 
         final VoteFinishData voteFinishData = flist.get(position);
         viewHolder.voteFinishRadioBt.setGravity(Gravity.CENTER);
 
-        //라디오버튼 클릭 이벤트
-        viewHolder.voteFinishRadioBt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        viewHolder.voteFinishItem.setText(voteFinishData.getVoteFinishItems());
+
+
+        View.OnClickListener rbClick = new View.OnClickListener(){
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                //모든버튼 선택해제
-                for (int i =0; i<=getItemCount(); i++){
-                    flist.get(i).setVoteRadioButton(false);
+            public void onClick(View v) {
+                RadioButton checked_rb = (RadioButton) v;
+                if (lastCheckedRB != null){
+                    lastCheckedRB.setChecked(false);
                 }
-
-                //선택된 버튼만 체크
-                voteFinishData.setVoteRadioButton(isChecked);
-
+                lastCheckedRB = checked_rb;
             }
-        });
+        };
 
+        for (int i =0; i<getItemCount(); i++)
+        viewHolder.voteFinishRadioBt.setOnClickListener(rbClick);
+//
+//        viewHolder.voteFinishRadioBt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                //모든버튼 선택해제
+//                for (int i =0; i<getItemCount(); i++){
+//                    flist.get(i).setVoteRadioButton(false);
+//
+//                }
+//
+//                //선택된 버튼만 체크
+//                voteFinishData.setVoteRadioButton(isChecked);
+//
+//                notifyDataSetChanged();
+//
+//            }
+//        });
     }
 
     @Override

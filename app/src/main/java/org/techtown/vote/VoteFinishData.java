@@ -4,6 +4,11 @@ public class VoteFinishData {
     private boolean voteRadioButton;
     private String voteFinishItems;
 
+    public VoteFinishData(boolean voteRadioButton, String voteFinishItems) {
+        this.voteRadioButton = voteRadioButton;
+        this.voteFinishItems = voteFinishItems;
+    }
+
     public boolean isVoteRadioButton() {
         return voteRadioButton;
     }

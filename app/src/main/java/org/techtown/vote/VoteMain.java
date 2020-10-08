@@ -39,7 +39,7 @@ import java.util.Date;
 
 public class VoteMain extends AppCompatActivity {
 
-    public static final int REQUEST_CODE_VOTE = 102;
+    public static final int REQUEST_CODE_VOTE = 101;
     private TextView voteTextView,listCountText,listCountTextView;
     private EditText voteTitleEditView, voteAddList;
     private Button voteAddBt,voteDeleteBt,voteMakeBt;
@@ -51,7 +51,7 @@ public class VoteMain extends AppCompatActivity {
 
     private int listNum=0;
 
-    public static String voteNameAndKey;
+    public static String voteNameAndKey="";
 
     public static String GetVoteNameAndKey(){
         return voteNameAndKey;
@@ -221,8 +221,8 @@ public class VoteMain extends AppCompatActivity {
                     CreateVoteDB createVoteDB = new CreateVoteDB();
                     createVoteDB.execute();
 
-//                    Intent intent = new Intent(getApplicationContext(), VoteFinish.class);
-//                    startActivityForResult(intent,REQUEST_CODE_VOTE);
+                    Intent intent = new Intent(getApplicationContext(), VoteFinish.class);
+                    startActivityForResult(intent,REQUEST_CODE_VOTE);
 
                 }
             }
@@ -271,6 +271,8 @@ public class VoteMain extends AppCompatActivity {
             //Check param
             Log.e("POST.param", param);
 
+
+
             try {
                 /* 서버연결 */
                 URL url = new URL(
@@ -303,6 +305,8 @@ public class VoteMain extends AppCompatActivity {
                 /* 서버에서 응답 */
                 Log.e("getVoteTitleKey : ", data);
                 voteNameAndKey = data;
+                Log.e("시발", voteNameAndKey);
+
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
