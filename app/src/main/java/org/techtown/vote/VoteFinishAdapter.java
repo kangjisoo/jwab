@@ -1,5 +1,6 @@
 package org.techtown.vote;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class VoteFinishAdapter  extends RecyclerView.Adapter<VoteFinishAdapter.ViewHolder> {
     private ArrayList<VoteFinishData> flist;
     private RadioButton lastCheckedRB = null;
+    private RadioButton con=null;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         protected RadioButton voteFinishRadioBt;
@@ -58,32 +60,36 @@ public class VoteFinishAdapter  extends RecyclerView.Adapter<VoteFinishAdapter.V
             @Override
             public void onClick(View v) {
                 RadioButton checked_rb = (RadioButton) v;
-                if (lastCheckedRB != null){
+
+                if (lastCheckedRB==checked_rb)
+                {
+                    lastCheckedRB.setChecked(true);
+
+                }
+                else if (lastCheckedRB != null){
                     lastCheckedRB.setChecked(false);
                 }
+
                 lastCheckedRB = checked_rb;
             }
         };
 
-        for (int i =0; i<getItemCount(); i++)
+
         viewHolder.voteFinishRadioBt.setOnClickListener(rbClick);
-//
-//        viewHolder.voteFinishRadioBt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                //모든버튼 선택해제
-//                for (int i =0; i<getItemCount(); i++){
-//                    flist.get(i).setVoteRadioButton(false);
-//
-//                }
-//
-//                //선택된 버튼만 체크
-//                voteFinishData.setVoteRadioButton(isChecked);
-//
-//                notifyDataSetChanged();
-//
-//            }
-//        });
+
+        viewHolder.voteFinishRadioBt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+
+
+                    voteFinishData.setVoteRadioButton(isChecked);
+
+
+                notifyDataSetChanged();
+
+            }
+        });
     }
 
     @Override

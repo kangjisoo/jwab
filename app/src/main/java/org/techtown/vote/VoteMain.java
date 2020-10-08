@@ -234,6 +234,7 @@ public class VoteMain extends AppCompatActivity {
     //db에 투표기능 만드는 스레드
     public class CreateVoteDB extends AsyncTask<Void, Integer, Void>
     {
+        //
         String data = "";
         String pname = InnerMainRecycler.getPname();
         String pkey = InnerMainRecycler.getPkey();
@@ -266,12 +267,12 @@ public class VoteMain extends AppCompatActivity {
                 voteAllList = voteAllList.concat(voteLists[i])+",";
 
             }
+
+
             String param = "u_voteProjectName=" + pname + "&u_voteProjectPrk="+ pkey +"&u_voteName="+voteTitle+"&u_voteList="+voteAllList+"&u_voteListCount="+(listNum+1)+"&u_voteDate="+deathDate+"";
 
             //Check param
             Log.e("POST.param", param);
-
-
 
             try {
                 /* 서버연결 */
@@ -305,7 +306,7 @@ public class VoteMain extends AppCompatActivity {
                 /* 서버에서 응답 */
                 Log.e("getVoteTitleKey : ", data);
                 voteNameAndKey = data;
-                Log.e("시발", voteNameAndKey);
+
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
