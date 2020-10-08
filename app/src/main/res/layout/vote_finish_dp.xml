@@ -26,7 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="72dp"
             android:layout_gravity="center"
-            android:textSize="20dp"
+            android:gravity="center"
+            android:textSize="25dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -37,6 +38,7 @@
             android:layout_height="350dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
+            android:background="@drawable/border"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -47,6 +49,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="※ 중복선택 불가 ※"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
