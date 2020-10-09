@@ -40,7 +40,9 @@ import java.util.Date;
 
 public class VoteMain extends AppCompatActivity {
 
+    //액티비티를 두번째 화면에서 종료 시키기 위해서 선언된 변수
     public static Activity VoteMainAc;
+
     public static final int REQUEST_CODE_VOTE = 101;
     private TextView voteTextView,listCountText,listCountTextView;
     private EditText voteTitleEditView, voteAddList;
