@@ -1,5 +1,7 @@
 package org.techtown.vote;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +24,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -69,11 +71,29 @@ public class VoteFinish extends AppCompatActivity {
                 VoteAttend voteAttend = new VoteAttend();
                 voteAttend.execute();
 
+                VoteMain voteActivity = (VoteMain)VoteMain.VoteMainAc;
+
+                voteActivity.finish();
+                finish();
+
+               // logOut(VoteFinish.this);
+
             }
         });
 
 
     }
+
+    public static void logOut(Activity act) {
+
+        //전있던 엑티비티 종료
+        //act.finish();
+        Intent i = new Intent(act, VoteMain.class );
+        i.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP );
+        i.putExtra( "KILL", true );
+        act.startActivity(i);
+
+    };
 
     public class GetVoteDB extends AsyncTask<Void, Integer, Void> {
         String data = "";

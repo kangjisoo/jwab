@@ -1,5 +1,6 @@
 package org.techtown.vote;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ import java.util.Date;
 
 public class VoteMain extends AppCompatActivity {
 
+    public static Activity VoteMainAc;
     public static final int REQUEST_CODE_VOTE = 101;
     private TextView voteTextView,listCountText,listCountTextView;
     private EditText voteTitleEditView, voteAddList;
@@ -61,6 +63,7 @@ public class VoteMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vote_main_dp);
 
+        VoteMainAc = VoteMain.this;
         voteTextView = findViewById(R.id.voteTextView);
         listCountText = findViewById(R.id.listCountText);
         listCountTextView = findViewById(R.id.listCountTextView);
