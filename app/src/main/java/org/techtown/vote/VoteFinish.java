@@ -73,10 +73,9 @@ public class VoteFinish extends AppCompatActivity {
 
                 VoteMain voteActivity = (VoteMain)VoteMain.VoteMainAc;
 
+                //VoteMain 액티비티 종료 후 VoteFinish화면 종료
                 voteActivity.finish();
                 finish();
-
-               // logOut(VoteFinish.this);
 
             }
         });
@@ -84,17 +83,8 @@ public class VoteFinish extends AppCompatActivity {
 
     }
 
-    public static void logOut(Activity act) {
 
-        //전있던 엑티비티 종료
-        //act.finish();
-        Intent i = new Intent(act, VoteMain.class );
-        i.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP );
-        i.putExtra( "KILL", true );
-        act.startActivity(i);
-
-    };
-
+    //투표 자신의 항목 업데이트 하는 스레드
     public class GetVoteDB extends AsyncTask<Void, Integer, Void> {
         String data = "";
         String myId = MainActivity.getsId();
@@ -158,12 +148,14 @@ public class VoteFinish extends AppCompatActivity {
 
             String[] divided = data.split(",");
 
+            //db에서 받아온 데이터 분활해서 리스트 값으로 넘겨주기
             for (int i = 0; i < divided.length; i++) {
                 VoteFinishData newVoteFinishData = new VoteFinishData(false, divided[i]);
                 fArrayList.add(newVoteFinishData);
                 fAdapter.notifyItemInserted(fAdapter.getItemCount());
             }
 
+            //제목 셋팅
             voteFinishTitle.setText(deliverTitle);
         }
     }
@@ -179,9 +171,10 @@ public class VoteFinish extends AppCompatActivity {
             String findVoteName = VoteMain.GetVoteNameAndKey();
             String[] nameKey = findVoteName.split("_");
             String sNum = "";
+
+            //선택항목 true시 값 db에 넘겨주기 
             for (int i=0; i<fArrayList.size(); i++) {
                 if (fArrayList.get(i).isVoteRadioButton()==true){
-                    Log.e("몇번째인지 한번 보자", String.valueOf(i));
                    sNum = fArrayList.get(i).getVoteFinishItems();
                 }
             }
