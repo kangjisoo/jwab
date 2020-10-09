@@ -53,7 +53,7 @@ public class VoteFinish extends AppCompatActivity {
                 new LinearLayoutManager(this);
 
         voteFinishRecyclerView.setLayoutManager(layoutManager);
-        fArrayList = new ArrayList<>();
+        fArrayList= new ArrayList<>();
 
 
         fAdapter = new VoteFinishAdapter(fArrayList);
@@ -225,4 +225,5 @@ public class VoteFinish extends AppCompatActivity {
         }
     }
 }
+
 

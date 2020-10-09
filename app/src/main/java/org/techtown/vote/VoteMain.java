@@ -226,8 +226,8 @@ public class VoteMain extends AppCompatActivity {
                     CreateVoteDB createVoteDB = new CreateVoteDB();
                     createVoteDB.execute();
 
-                    Intent intent = new Intent(getApplicationContext(), VoteFinish.class);
-                    startActivityForResult(intent,REQUEST_CODE_VOTE);
+//                    Intent intent = new Intent(getApplicationContext(), VoteFinish.class);
+//                    startActivityForResult(intent,REQUEST_CODE_VOTE);
 
                 }
             }
@@ -239,7 +239,6 @@ public class VoteMain extends AppCompatActivity {
     //db에 투표기능 만드는 스레드
     public class CreateVoteDB extends AsyncTask<Void, Integer, Void>
     {
-        //
         String data = "";
         String pname = InnerMainRecycler.getPname();
         String pkey = InnerMainRecycler.getPkey();
