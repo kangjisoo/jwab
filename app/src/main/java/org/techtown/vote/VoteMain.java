@@ -226,8 +226,8 @@ public class VoteMain extends AppCompatActivity {
                     CreateVoteDB createVoteDB = new CreateVoteDB();
                     createVoteDB.execute();
 
-//                    Intent intent = new Intent(getApplicationContext(), VoteFinish.class);
-//                    startActivityForResult(intent,REQUEST_CODE_VOTE);
+                    Intent intent = new Intent(getApplicationContext(), VoteFinish.class);
+                    startActivityForResult(intent,REQUEST_CODE_VOTE);
 
                 }
             }
