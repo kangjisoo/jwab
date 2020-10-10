@@ -94,11 +94,7 @@ public class BoardAdd extends AppCompatActivity {
         image5 = (ImageView) findViewById(R.id.imageView5);
 
 
-
-
-
         board_scrollView = (ScrollView) findViewById(R.id.board_scrollView);
-//        board_text = (EditText) findViewById(R.id.board_textView);
         insertText = (EditText)findViewById(R.id.board_textView);
 
 
@@ -150,7 +146,7 @@ public class BoardAdd extends AppCompatActivity {
                 }
             }
         });
-    }
+    } //OnCreate();
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -190,7 +186,6 @@ public class BoardAdd extends AppCompatActivity {
                         switch (i) {
                             case 0:
                                 image1.setImageURI(urione);
-                                Log.e("zzzzzzzzzz", urione.getPath());
                                 break;
                             case 1:
                                 image2.setImageURI(urione);
@@ -270,7 +265,7 @@ public class BoardAdd extends AppCompatActivity {
             pname = ProjectHomeListAdapter.getProjectNameImsi();
             pkey = ProjectHomeListAdapter.getSee();
             str = urione.getPath();
-            String param = "p_name=" + pname + "&p_key=" + pkey +"&title=" + board_name + "&contents=" + board_text + "&img=" + str +  "";
+            String param = "p_name=" + pname + "&p_key=" + pkey +"&title=" + board_name + "&contents=" + board_text + "&img=" + str + "&date=" +  "";
 
 
             try {
@@ -315,10 +310,9 @@ public class BoardAdd extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             String file_path = uri_path(urione);
-            Log.e("씨빌씨빨씨발씨", file_path);
+            Log.e("ㅅㅄㅄㅄㅄㅄㅄㅂ", file_path);
             File imgFile = new File(file_path);
             image6 = (ImageView) findViewById(R.id.board_test_image);
-//            BitmapFactory.Options options = new BitmapFactory.Options();
             Bitmap originalBm = BitmapFactory.decodeFile(imgFile.toString());
             image6.setImageBitmap(originalBm);
 

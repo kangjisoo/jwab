@@ -58,7 +58,7 @@ public class BoardMainRecycler extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(BoardMainRecycler.this, BoardAdd.class);
+                Intent intent = new Intent(BoardMainRecycler.this, BoardAddTest.class);
                 startActivity(intent);
             }
         });
