@@ -35,6 +35,17 @@ import com.android.volley.toolbox.Volley;
 import org.techtown.loginactivity.R;
 import org.techtown.projectmain.ProjectHomeListAdapter;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+
 public class BoardAddTest extends AppCompatActivity {
     EditText etName,etMsg;
     ImageView iv;
@@ -92,6 +103,65 @@ public class BoardAddTest extends AppCompatActivity {
         });
 
     }//onCreate() ..
+
+    public void clickPost(View view) {
+
+        new Thread(){
+            @Override
+            public void run() {
+                String name= etName.getText().toString();
+                String msg= etMsg.getText().toString();
+
+                String serverUrl= "http://jwab.dothome.co.kr/Android/postTest.php";
+
+                try {
+                    URL url= new URL(serverUrl);
+
+                    HttpURLConnection connection= (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("POST");
+                    connection.setDoInput(true);
+                    connection.setDoOutput(true);
+                    connection.setUseCaches(false);
+
+                    //보낼 데이터
+                    String query= "name="+ name + "&msg=" + msg;
+
+                    OutputStream os = connection.getOutputStream();
+                    OutputStreamWriter writer= new OutputStreamWriter(os);
+
+                    writer.write(query, 0, query.length());
+                    writer.flush();
+                    writer.close();
+
+                    //postTest.php로부터 echo결과 받기
+                    InputStream is = connection.getInputStream();
+                    InputStreamReader isr = new InputStreamReader(is);
+                    BufferedReader reader= new BufferedReader(isr);
+
+                    final StringBuffer buffer= new StringBuffer();
+                    String line= reader.readLine();
+                    while (line != null){
+                        buffer.append(line+"\n");
+                        line=reader.readLine();
+                    }
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+//                            tv.setText(buffer.toString());
+                        }
+                    });
+
+                } catch (MalformedURLException e) {e.printStackTrace();} catch (IOException e) {e.printStackTrace();}
+
+            }
+        }.start();
+    }
+
+
+
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -172,7 +242,7 @@ public class BoardAddTest extends AppCompatActivity {
         Log.e("clickUpload Test!!!!!!!!!!!!!!!!!!!", "name: " + name +", msg: " + msg);
 
         //안드로이드에서 보낼 데이터를 받을 php 서버 주소
-        String serverUrl="http://rtemd.suwon.ac.kr/guest/boardContentsTest.php";
+        String serverUrl="http://jwab.dothome.co.kr/Android/boardContents.php";
 
         //Volley plus Library를 이용해서
         //파일 전송하도록..
@@ -184,7 +254,11 @@ public class BoardAddTest extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 new AlertDialog.Builder(BoardAddTest.this).setMessage("응답:"+response).create().show();
-                Log.e("응답???????","해라");
+
+                Intent intent = new Intent(BoardAddTest.this, BoardMainRecycler.class);
+                startActivity(intent);
+                Toast.makeText(BoardAddTest.this, "업로드 되었습니다.", Toast.LENGTH_SHORT).show();
+
             }
         }, new Response.ErrorListener() {
             @Override
