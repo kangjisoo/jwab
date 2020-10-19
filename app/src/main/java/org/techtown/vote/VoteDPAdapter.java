@@ -16,12 +16,11 @@ public class VoteDPAdapter extends RecyclerView.Adapter<VoteDPAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        protected TextView voteMyTitle, voteInfo, voteConfirm;
+        protected TextView voteMyTitle, voteConfirm;
 
         public ViewHolder(View itemView) {
             super(itemView);
             this.voteMyTitle = (TextView) itemView.findViewById(R.id.voteMyTitle);
-            this.voteInfo = (TextView) itemView.findViewById(R.id.voteInfo);
             this.voteConfirm = (TextView) itemView.findViewById(R.id.voteConfirm);
         }
     }
@@ -45,8 +44,8 @@ public class VoteDPAdapter extends RecyclerView.Adapter<VoteDPAdapter.ViewHolder
     public void onBindViewHolder(VoteDPAdapter.ViewHolder viewHolder, final int position) {
         VoteDPData voteDPData = dlist.get(position);
 
-
     }
+
 
     @Override
     public int getItemCount() {

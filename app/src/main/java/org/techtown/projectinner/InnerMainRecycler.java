@@ -37,6 +37,7 @@ import org.techtown.projectmain.ProjectHomeList;
 import org.techtown.projectmain.ProjectHomeListAdapter;
 import org.techtown.projectmain.ProjectHomeRecyclerView;
 import org.techtown.randomgame.RandomGameFirst;
+import org.techtown.vote.VoteDP;
 import org.techtown.vote.VoteMain;
 import org.w3c.dom.Text;
 
@@ -131,7 +132,7 @@ public class InnerMainRecycler extends Fragment {
 
                 Toast.makeText(getContext(),"투표 클릭됨",Toast.LENGTH_LONG).show();
 
-                Intent intent4 = new Intent(getContext(), VoteMain.class);
+                Intent intent4 = new Intent(getContext(), VoteDP.class);
                 startActivity(intent4);
                 return true;
 

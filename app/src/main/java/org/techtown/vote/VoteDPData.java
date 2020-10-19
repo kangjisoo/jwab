@@ -2,13 +2,13 @@ package org.techtown.vote;
 
 public class VoteDPData {
     private String voteTitleShow;
-    private String voteInfoShow;
     private String voteConfirmShow;
+    private int voteProjectKey;
 
-    public VoteDPData(String voteTitleShow, String voteInfoShow, String voteConfirmShow){
+    public VoteDPData(String voteTitleShow, String voteConfirmShow, int voteProjectKey){
         this.voteTitleShow=voteTitleShow;
-        this.voteInfoShow=voteInfoShow;
         this.voteConfirmShow=voteConfirmShow;
+        this.voteProjectKey = voteProjectKey;
 
     }
 
@@ -20,19 +20,18 @@ public class VoteDPData {
         this.voteTitleShow = voteTitleShow;
     }
 
-    public String getVoteInfoShow() {
-        return voteInfoShow;
-    }
-
-    public void setVoteInfoShow(String voteInfoShow) {
-        this.voteInfoShow = voteInfoShow;
-    }
-
     public String getVoteConfirmShow() {
         return voteConfirmShow;
     }
 
     public void setVoteConfirmShow(String voteConfirmShow) {
         this.voteConfirmShow = voteConfirmShow;
+    }
+    public int getVoteProjectKey() {
+        return voteProjectKey;
+    }
+
+    public void setVoteProjectKey(int voteProjectKey) {
+        this.voteProjectKey = voteProjectKey;
     }
 }

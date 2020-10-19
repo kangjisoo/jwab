@@ -72,8 +72,10 @@ public class VoteFinish extends AppCompatActivity {
                 voteAttend.execute();
 
                 VoteMain voteActivity = (VoteMain)VoteMain.VoteMainAc;
+                VoteDP voteDPActivity = (VoteDP)VoteDP.VoteDPAc;
 
-                //VoteMain 액티비티 종료 후 VoteFinish화면 종료
+                //VoteMain, VoteDP 액티비티 종료 후 VoteFinish화면 종료
+                voteDPActivity.finish();
                 voteActivity.finish();
                 finish();
 

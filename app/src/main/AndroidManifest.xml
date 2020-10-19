@@ -87,6 +87,10 @@
 
         </activity>
 
+        <activity android:name="org.techtown.vote.VoteDP">
+
+        </activity>
+
     </application>
 
 </manifest>

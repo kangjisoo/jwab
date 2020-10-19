@@ -271,7 +271,6 @@ public class VoteMain extends AppCompatActivity {
 
             }
 
-
             String param = "u_voteProjectName=" + pname + "&u_voteProjectPrk="+ pkey +"&u_voteName="+voteTitle+"&u_voteList="+voteAllList+"&u_voteListCount="+(listNum+1)+"&u_voteDate="+deathDate+"";
 
             //Check param

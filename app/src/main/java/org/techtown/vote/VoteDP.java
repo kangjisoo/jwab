@@ -1,5 +1,7 @@
 package org.techtown.vote;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,19 +18,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 import org.techtown.projectinner.InnerMainRecycler;
+import org.techtown.randomgame.RandomGameSecond;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class VoteDP extends AppCompatActivity {
 
+    public static Activity VoteDPAc;
     private TextView voteProjectView, voteNothing;
     private RadioGroup voteRadioGroup;
     private RadioButton voteRadioAll;
@@ -49,6 +55,7 @@ public class VoteDP extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vote_make_or_attend);
 
+        VoteDPAc = VoteDP.this;
         voteProjectView = findViewById(R.id.voteProjectView);
         voteRadioGroup = findViewById(R.id.voteRadioGroup);
         voteRadioAll = findViewById(R.id.voteRadioAll);
@@ -68,14 +75,29 @@ public class VoteDP extends AppCompatActivity {
 
         voteProjectListRecyclerVIew.setAdapter(dAdapter);
 
+        GetAllVoteList getAllVoteList = new GetAllVoteList();
+        getAllVoteList.execute();
+
+        //맨 위 textView에 나올 프로젝트 이름
         voteProjectView.setText(pname+" 투표 목록");
 
         if (dAdapter.getItemCount()==0){
             voteNothing.setVisibility(View.VISIBLE);
         }
+
         else{
             voteNothing.setVisibility(View.INVISIBLE);
         }
+
+        voteMakeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), // 현재 화면의 제어권자
+                        VoteMain.class); // 다음 넘어갈 클래스 지정
+                startActivity(intent); // 다음 화면으로 넘어간다
+            }
+        });
+
 
     }
 
@@ -86,7 +108,7 @@ public class VoteDP extends AppCompatActivity {
         protected Void doInBackground(Void... unused) {
 
 
-            String param = "u_projectName="+pname+"&u_projectKey="+pkey+"&u_MyId="+myId+"";
+            String param = "u_projectName="+pname+"&u_projectKey="+pkey+"&u_myId="+myId+"";
 
             //Check param
             Log.e("POST.param", param);
@@ -121,7 +143,7 @@ public class VoteDP extends AppCompatActivity {
                 data = buff.toString().trim();
 
                 /* 서버에서 응답 */
-                Log.e("vote content: ", data);
+                Log.e("vote list: ", data);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -130,5 +152,40 @@ public class VoteDP extends AppCompatActivity {
             return null;
         }
 
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            String voteListPrint="";
+            voteListPrint=data;
+
+            String[] div = voteListPrint.split("@");
+
+            Log.e("체크", Arrays.toString(div));
+
+            for (int i = 1; i< div.length; i++){
+
+                int sequence, sequenceS;
+                String[] getVoteName = new String[div.length+1];
+                String[] getVoteInfo = new String[div.length+1];
+                String[] getVoteKey = new String[div.length+1];
+                String[] getSelect = new String[div.length+1];
+
+                sequence = div[i].indexOf("/");
+                sequenceS = div[i].indexOf("!");
+
+                getVoteName[i] = div[i].substring(0,sequence);
+                getVoteInfo[i] = div[i].substring(sequence+1);
+                getVoteKey[i] = getVoteInfo[i].substring(0,sequenceS);
+                getSelect[i] =
+                if ()
+
+
+                VoteDPData newVoteDpData = new VoteDPData(getVoteName[i],,Integer.parseInt(getVoteKey[i]));
+
+            }
+
+
+        }
     }
 }
