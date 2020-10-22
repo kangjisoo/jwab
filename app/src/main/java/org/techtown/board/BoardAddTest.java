@@ -35,16 +35,6 @@ import com.android.volley.toolbox.Volley;
 import org.techtown.loginactivity.R;
 import org.techtown.projectmain.ProjectHomeListAdapter;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
 
 public class BoardAddTest extends AppCompatActivity {
     EditText etName,etMsg;
@@ -103,64 +93,6 @@ public class BoardAddTest extends AppCompatActivity {
         });
 
     }//onCreate() ..
-
-    public void clickPost(View view) {
-
-        new Thread(){
-            @Override
-            public void run() {
-                String name= etName.getText().toString();
-                String msg= etMsg.getText().toString();
-
-                String serverUrl= "http://jwab.dothome.co.kr/Android/postTest.php";
-
-                try {
-                    URL url= new URL(serverUrl);
-
-                    HttpURLConnection connection= (HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("POST");
-                    connection.setDoInput(true);
-                    connection.setDoOutput(true);
-                    connection.setUseCaches(false);
-
-                    //보낼 데이터
-                    String query= "name="+ name + "&msg=" + msg;
-
-                    OutputStream os = connection.getOutputStream();
-                    OutputStreamWriter writer= new OutputStreamWriter(os);
-
-                    writer.write(query, 0, query.length());
-                    writer.flush();
-                    writer.close();
-
-                    //postTest.php로부터 echo결과 받기
-                    InputStream is = connection.getInputStream();
-                    InputStreamReader isr = new InputStreamReader(is);
-                    BufferedReader reader= new BufferedReader(isr);
-
-                    final StringBuffer buffer= new StringBuffer();
-                    String line= reader.readLine();
-                    while (line != null){
-                        buffer.append(line+"\n");
-                        line=reader.readLine();
-                    }
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-//                            tv.setText(buffer.toString());
-                        }
-                    });
-
-                } catch (MalformedURLException e) {e.printStackTrace();} catch (IOException e) {e.printStackTrace();}
-
-            }
-        }.start();
-    }
-
-
-
-
 
 
     @Override
@@ -239,8 +171,6 @@ public class BoardAddTest extends AppCompatActivity {
         String name= etName.getText().toString();
         String msg= etMsg.getText().toString();
 
-        Log.e("clickUpload Test!!!!!!!!!!!!!!!!!!!", "name: " + name +", msg: " + msg);
-
         //안드로이드에서 보낼 데이터를 받을 php 서버 주소
         String serverUrl="http://jwab.dothome.co.kr/Android/boardContents.php";
 
@@ -268,8 +198,8 @@ public class BoardAddTest extends AppCompatActivity {
         });
 
         //요청 객체에 보낼 데이터를 추가
-        smpr.addStringParam("p_name", pname);
-        smpr.addStringParam("p_key", pkey);
+//        smpr.addStringParam("p_name", pname);
+//        smpr.addStringParam("p_key", pkey);
         smpr.addStringParam("name", name);
         smpr.addStringParam("msg", msg);
         //이미지 파일 추가

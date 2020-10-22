@@ -6,7 +6,7 @@
   
   $connect= mysqli_connect("localhost","jwab","wltn2002569!","jwab");
   mysqli_query($connect, "SET NAMES UTF8");
-  $dbname = 'guest_jwabBoardDB';
+
   
   //title, contents, img, pname, pkey를 param으로 받음
   $name= $_POST['name'];
@@ -15,7 +15,8 @@
   //$img = $_POST['img'];
   $pname = $_POST['p_name'];
   $pkey = $_POST['p_key'];
-
+  echo $pname;
+  
     //이미지 파일을 영구보관하기 위해
     //이미지 파일의 세부정보 얻어오기
     $srcName= $file['name'];

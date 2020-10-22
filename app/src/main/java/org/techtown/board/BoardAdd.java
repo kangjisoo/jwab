@@ -310,7 +310,7 @@ public class BoardAdd extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             String file_path = uri_path(urione);
-            Log.e("ㅅㅄㅄㅄㅄㅄㅄㅂ", file_path);
+
             File imgFile = new File(file_path);
             image6 = (ImageView) findViewById(R.id.board_test_image);
             Bitmap originalBm = BitmapFactory.decodeFile(imgFile.toString());

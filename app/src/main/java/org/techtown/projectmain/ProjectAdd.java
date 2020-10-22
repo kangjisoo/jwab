@@ -1,8 +1,13 @@
 package org.techtown.projectmain;
 
+import org.techtown.board.BoardAddTest;
+import org.techtown.board.BoardMainRecycler;
 import org.techtown.loginactivity.MainActivity;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -17,24 +22,39 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.OnLifecycleEvent;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.error.AuthFailureError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.SimpleMultiPartRequest;
+import com.android.volley.request.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.techtown.loginactivity.R;
+import org.techtown.projectinner.InnerMainRecycler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class ProjectAdd extends AppCompatActivity {
+    private static final Object TAG = "MAIN";
     final Context context = this;
     private ArrayList<ProjectPerson> mArrayList;
     private ProjectPersonAdapter mAdapter;
@@ -44,6 +64,7 @@ public class ProjectAdd extends AppCompatActivity {
     private String value;
     private EditText projectName;
     private String nameValue;
+    private static String  pname, pkey;
 
     //insert_text창에서 String형으로 받아올 변수
     String stridPhone=null;
@@ -54,6 +75,8 @@ public class ProjectAdd extends AppCompatActivity {
     boolean allCheckBoxYesOrNo;
     Button makeButton;
     private String myId;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,7 +233,7 @@ public class ProjectAdd extends AppCompatActivity {
         makeButton=(Button)findViewById(R.id.project_add_makebutton);
         makeButton.setOnClickListener(new Button.OnClickListener(){
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
 
                 //프로젝트 이름이 비어 있느지 확인하기 위해
                 nameValue=(String)projectName.getText().toString();
@@ -258,8 +281,12 @@ public class ProjectAdd extends AppCompatActivity {
                                         Log.v("TAG", "확인 버튼 클릭");
                                         Log.v("ProjectPw : ", value);
 
+
                                         MakeProjectDB makeProjectDB = new MakeProjectDB();
                                         makeProjectDB.execute();
+                                        clickAdd();
+
+
 
                                         finish();
                                     }
@@ -284,6 +311,7 @@ public class ProjectAdd extends AppCompatActivity {
         });
 
     }
+
 
     //공백이 있는지 없는지 검출해주는 메소드(공백이 있으면 true 없으면 false)
     public boolean spaceCheck(String spaceCheck)
@@ -508,7 +536,7 @@ public class ProjectAdd extends AppCompatActivity {
                     /* 서버에서 응답 */
                     Log.e("RECV DATA", data);
 
-
+                    clickAdd();
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -518,4 +546,135 @@ public class ProjectAdd extends AppCompatActivity {
             return null;
         }
     }
-}
+    //프로젝트 생성 시 게시판 테이블 생성
+    public class CreateBoradDB extends AsyncTask<Void, Integer, Void> {
+        String data = "";
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+
+            pname = ProjectHomeListAdapter.getProjectNameImsi();
+            pkey = ProjectHomeListAdapter.getSee();
+
+            String param = "p_name=" + pname + "&p_key=" + pkey + "";
+
+            try {
+
+                /* 서버연결 */
+                URL url = new URL(
+                        "http://rtemd.suwon.ac.kr/guest/createBoardTable.php");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                /* 안드로이드 -> 서버 파라메터값 전  달 */
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                /* 서버 -> 안드로이드 파라메터값 전달 */
+                InputStream is = null;
+                BufferedReader in = null;
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ((line = in.readLine()) != null) {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+
+                /* 서버에서 응답 */
+                Log.e("테이블만들기php DATA", data);
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+    }
+
+    @SuppressLint("LongLogTag")
+         public void clickAdd(){
+
+        //서버로 보낼 데이터
+        pkey = ProjectHomeListAdapter.getSee();
+        final String pname= nameValue;
+
+        //안드로이드에서 보낼 데이터를 받을 php 서버 주소
+        String serverUrl="http://jwab.dothome.co.kr/Android/boardTableCreate.php";
+
+        //Volley plus Library를 이용해서
+        //파일 전송하도록..
+        //Volley+는 AndroidStudio에서 검색이 안됨 [google 검색 이용]
+
+        StringRequest stringRequest= new StringRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+//                tv.setText(response);
+                Log.e("response******",response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(ProjectAdd.this, "ERROR", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            //POST 방식으로 보낼 데이터를
+            //리턴해주는 콜백 메소드
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                HashMap<String, String> datas= new HashMap<>();
+                datas.put("pname", pname);
+                datas.put("pkey","0");
+
+                return datas;
+
+            }
+        };
+
+        RequestQueue requestQueue= Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+
+
+
+
+
+        //파일 전송 요청 객체 생성[결과를 String으로 받음]
+//        SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//
+//
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Toast.makeText(ProjectAdd.this, "ERROR", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        //요청 객체에 보낼 데이터를 추가
+//        smpr.addStringParam("pname", pname);
+//        smpr.addStringParam("pkey", pkey);
+//
+//
+//        //요청객체를 서버로 보낼 우체통 같은 객체 생성
+//        RequestQueue requestQueue= Volley.newRequestQueue(this);
+//        requestQueue.add(smpr);
+
+
+    }
