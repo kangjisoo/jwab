@@ -146,7 +146,7 @@ public class BoardAdd extends AppCompatActivity {
                 }
             }
         });
-    } //OnCreate();
+    } //OnCreate() END
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -252,7 +252,7 @@ public class BoardAdd extends AppCompatActivity {
             int col = cur.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             res = cur.getString(col);
         }
-        Log.e("URI_PATH TEST!!!!!!!!!!!", res);
+
         cur.close();
         return res;
     }
@@ -316,10 +316,8 @@ public class BoardAdd extends AppCompatActivity {
             Bitmap originalBm = BitmapFactory.decodeFile(imgFile.toString());
             image6.setImageBitmap(originalBm);
 
-
                 Intent intent = new Intent(BoardAdd.this, BoardView.class);
                 startActivity(intent);
-
 
         }
     }

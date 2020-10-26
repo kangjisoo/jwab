@@ -65,6 +65,7 @@ public class ProjectAdd extends AppCompatActivity {
     private EditText projectName;
     private String nameValue;
     private static String  pname, pkey;
+    private String projectKey;
 
     //insert_text창에서 String형으로 받아올 변수
     String stridPhone=null;
@@ -284,7 +285,6 @@ public class ProjectAdd extends AppCompatActivity {
 
                                         MakeProjectDB makeProjectDB = new MakeProjectDB();
                                         makeProjectDB.execute();
-                                        clickAdd();
 
 
 
@@ -533,10 +533,13 @@ public class ProjectAdd extends AppCompatActivity {
                     }
                     data = buff.toString().trim();
 
-                    /* 서버에서 응답 */
-                    Log.e("RECV DATA", data);
+                    //프로젝트키를 projectKey변수에 저장
+                    //clickAdd()메소드에서 사용됨
+                    projectKey = data;
 
+                    //프로젝트 만들기 눌렀을 시 실행되는 메소드
                     clickAdd();
+
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -546,68 +549,13 @@ public class ProjectAdd extends AppCompatActivity {
             return null;
         }
     }
-    //프로젝트 생성 시 게시판 테이블 생성
-    public class CreateBoradDB extends AsyncTask<Void, Integer, Void> {
-        String data = "";
 
-        @Override
-        protected Void doInBackground(Void... unused) {
-
-            pname = ProjectHomeListAdapter.getProjectNameImsi();
-            pkey = ProjectHomeListAdapter.getSee();
-
-            String param = "p_name=" + pname + "&p_key=" + pkey + "";
-
-            try {
-
-                /* 서버연결 */
-                URL url = new URL(
-                        "http://rtemd.suwon.ac.kr/guest/createBoardTable.php");
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                conn.setRequestMethod("POST");
-                conn.setDoInput(true);
-                conn.connect();
-
-                /* 안드로이드 -> 서버 파라메터값 전  달 */
-                OutputStream outs = conn.getOutputStream();
-                outs.write(param.getBytes("UTF-8"));
-                outs.flush();
-                outs.close();
-
-                /* 서버 -> 안드로이드 파라메터값 전달 */
-                InputStream is = null;
-                BufferedReader in = null;
-
-                is = conn.getInputStream();
-                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
-                String line = null;
-                StringBuffer buff = new StringBuffer();
-                while ((line = in.readLine()) != null) {
-                    buff.append(line + "\n");
-                }
-                data = buff.toString().trim();
-
-                /* 서버에서 응답 */
-                Log.e("테이블만들기php DATA", data);
-
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-    }
-
+    //프로젝트 만들기 눌렀을 시 게시판DB 생성되는 스레드
     @SuppressLint("LongLogTag")
-         public void clickAdd(){
+    public void clickAdd() {
 
-        //서버로 보낼 데이터
-        pkey = ProjectHomeListAdapter.getSee();
-        final String pname= nameValue;
+        //서버로 전송시킬 데이터
+        String prjName = nameValue;
 
         //안드로이드에서 보낼 데이터를 받을 php 서버 주소
         String serverUrl="http://jwab.dothome.co.kr/Android/boardTableCreate.php";
@@ -616,65 +564,31 @@ public class ProjectAdd extends AppCompatActivity {
         //파일 전송하도록..
         //Volley+는 AndroidStudio에서 검색이 안됨 [google 검색 이용]
 
-        StringRequest stringRequest= new StringRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-//                tv.setText(response);
-                Log.e("response******",response);
-            }
-        }, new Response.ErrorListener() {
+        //파일 전송 요청 객체 생성[결과를 String으로 받음]
+        SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        Log.e("clickAdd() @@@@@@@@@@@@@@응답: ",response);
+                        Toast.makeText(ProjectAdd.this, "프로젝트가 생성되었습니다.", Toast.LENGTH_SHORT).show();
+
+                    }
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(ProjectAdd.this, "ERROR", Toast.LENGTH_SHORT).show();
             }
-        }){
-            //POST 방식으로 보낼 데이터를
-            //리턴해주는 콜백 메소드
+        });
 
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+        //param값 php로 전송
+        smpr.addStringParam("pname", prjName);
+        smpr.addStringParam("pkey", projectKey);
 
-                HashMap<String, String> datas= new HashMap<>();
-                datas.put("pname", pname);
-                datas.put("pkey","0");
-
-                return datas;
-
-            }
-        };
-
+     //요청객체를 서버로 보낼 우체통 같은 객체 생성
         RequestQueue requestQueue= Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+        requestQueue.add(smpr);
+
     }
-
-
-
-
-
-
-        //파일 전송 요청 객체 생성[결과를 String으로 받음]
-//        SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//
-//
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Toast.makeText(ProjectAdd.this, "ERROR", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//        //요청 객체에 보낼 데이터를 추가
-//        smpr.addStringParam("pname", pname);
-//        smpr.addStringParam("pkey", pkey);
-//
-//
-//        //요청객체를 서버로 보낼 우체통 같은 객체 생성
-//        RequestQueue requestQueue= Volley.newRequestQueue(this);
-//        requestQueue.add(smpr);
-
 
     }
