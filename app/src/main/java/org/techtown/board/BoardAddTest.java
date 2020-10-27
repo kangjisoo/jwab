@@ -8,6 +8,7 @@ import androidx.loader.content.CursorLoader;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -43,9 +44,10 @@ public class BoardAddTest extends AppCompatActivity {
     private ScrollView board_scrollView;
     private EditText insertText, insertText2;
     private static String pname, pkey;
+    private int count = 0;
     Button image_bt, upload_bt;
     //업로드할 이미지의 절대경로(실제 경로)
-    String imgPath;
+    String imgPath1,imgPath2,imgPath3,imgPath4,imgPath5;
     Uri urione;
     ClipData clipData;
 
@@ -120,7 +122,7 @@ public class BoardAddTest extends AppCompatActivity {
     public void clickBtn(View view) {
 
         //갤러리 or 사진 앱 실행하여 사진을 선택하도록..
-        Intent intent = new Intent(Intent.ACTION_PICK);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
 //        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
@@ -131,6 +133,17 @@ public class BoardAddTest extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            iv1.setImageResource(0);
+            iv2.setImageResource(0);
+            iv3.setImageResource(0);
+            iv4.setImageResource(0);
+            iv5.setImageResource(0);
+
+            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
+
+            return;
+        }
 
         switch (requestCode) {
             case 10:
@@ -140,7 +153,13 @@ public class BoardAddTest extends AppCompatActivity {
                     clipData = data.getClipData();
 
                     //사진첨부 했을 때
-                    if (clipData != null) {
+                    if(clipData==null){
+                        Log.e("uriData!!!!!!!!!!!","sdfafasfasfsafdasfa");
+                        iv1.setImageURI(uri);
+                        imgPath1= getRealPathFromUri(uri);
+                        break;
+                    }
+                    else if (clipData != null) {
                         for (int i = 0; i < clipData.getItemCount(); i++) {
                             if (i < clipData.getItemCount()) {
                                 urione = clipData.getItemAt(i).getUri();
@@ -148,46 +167,43 @@ public class BoardAddTest extends AppCompatActivity {
                                 switch (i) {
                                     case 0:
                                         iv1.setImageURI(urione);
-                                        imgPath= getRealPathFromUri(uri);
+                                        imgPath1= getRealPathFromUri(urione);
+                                        count+=1;
                                         break;
                                     case 1:
                                         iv2.setImageURI(urione);
+                                        imgPath2= getRealPathFromUri(urione);
+                                        count+=1;
                                         break;
                                     case 2:
                                         iv3.setImageURI(urione);
+                                        imgPath3= getRealPathFromUri(urione);
+                                        count+=1;
                                         break;
                                     case 3:
                                         iv4.setImageURI(urione);
+                                        imgPath4= getRealPathFromUri(urione);
+                                        count+=1;
                                         break;
                                     case 4:
                                         iv5.setImageURI(urione);
+                                        imgPath5= getRealPathFromUri(urione);
+                                        count+=1;
                                         break;
                                 }
 
                             }
                         }
                     }
-//                    if(uri!=null){
-//                        iv1.setImageURI(uri);
-//
-//                        //갤러리앱에서 관리하는 DB정보가 있는데, 그것이 나온다 [실제 파일 경로가 아님!!]
-//                        //얻어온 Uri는 Gallery앱의 DB번호임. (content://-----/2854)
-//                        //업로드를 하려면 이미지의 절대경로(실제 경로: file:// -------/aaa.png 이런식)가 필요함
-//                        //Uri -->절대경로(String)로 변환
-//                        imgPath= getRealPathFromUri(uri);   //임의로 만든 메소드 (절대경로를 가져오는 메소드)
-//
-//                        //이미지 경로 uri 확인해보기
-//                        new AlertDialog.Builder(this).setMessage(uri.toString()+"\n"+imgPath).create().show();
-//                    }
-//
-//                }else
-//                {
-//                    Toast.makeText(this, "이미지 선택을 하지 않았습니다.", Toast.LENGTH_SHORT).show();
-//                }
+                    else{
+                        Toast.makeText(this, "이미지를 선택하지 않았습니다.",Toast.LENGTH_SHORT).show();
+                    }
                     break;
                 }
-        }//onActivityResult() ..
-    }
+        }
+
+    }//onActivityResult() END
+
         //Uri -- > 절대경로로 바꿔서 리턴시켜주는 메소드
         private String getRealPathFromUri (Uri uri){
             String[] proj = {MediaStore.Images.Media.DATA};
@@ -232,13 +248,20 @@ public class BoardAddTest extends AppCompatActivity {
                 }
             });
 
+
             //param값 php로 전송
             smpr.addStringParam("pname", pname);
             smpr.addStringParam("pkey", pkey);
             smpr.addStringParam("name", name);
             smpr.addStringParam("contents", contents);
+            smpr.addStringParam("count", String.valueOf(count));
             //이미지 파일 추가
-            smpr.addFile("img", imgPath);
+            smpr.addFile("img1", imgPath1);
+            smpr.addFile("img2", imgPath2);
+            smpr.addFile("img3", imgPath3);
+            smpr.addFile("img4", imgPath4);
+            smpr.addFile("img5", imgPath5);
+
 
             //요청객체를 서버로 보낼 우체통 같은 객체 생성
             RequestQueue requestQueue = Volley.newRequestQueue(this);
