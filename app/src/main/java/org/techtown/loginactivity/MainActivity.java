@@ -47,10 +47,6 @@ public class MainActivity extends Activity {
     public static String getsId() { return sId; }
 
 
-    //연동코드
-    ImageView imView;
-
-
     //액티비티 옮겼을때 메세지
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

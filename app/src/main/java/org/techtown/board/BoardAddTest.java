@@ -34,7 +34,9 @@ import com.android.volley.error.VolleyError;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
+import org.techtown.projectmain.ProjectHome;
 import org.techtown.projectmain.ProjectHomeListAdapter;
 
 
@@ -222,6 +224,7 @@ public class BoardAddTest extends AppCompatActivity {
             //서버로 보낼 데이터
             String name = etName.getText().toString();
             String contents = etMsg.getText().toString();
+            String id = MainActivity.getsId();
             pname = ProjectHomeListAdapter.getProjectNameImsi();
             pkey = ProjectHomeListAdapter.getSee();
 
@@ -234,10 +237,10 @@ public class BoardAddTest extends AppCompatActivity {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            new AlertDialog.Builder(BoardAddTest.this).setMessage("응답:" + response).create().show();
+//                            new AlertDialog.Builder(BoardAddTest.this).setMessage("응답:" + response).create().show();
 
-//                Intent intent = new Intent(BoardAddTest.this, BoardMainRecycler.class);
-//                startActivity(intent);
+                Intent intent = new Intent(BoardAddTest.this, BoardMainRecycler.class);
+                startActivity(intent);
                             Toast.makeText(BoardAddTest.this, "업로드 되었습니다.", Toast.LENGTH_SHORT).show();
 
                         }
@@ -250,18 +253,40 @@ public class BoardAddTest extends AppCompatActivity {
 
 
             //param값 php로 전송
+            smpr.addStringParam("id",id);
             smpr.addStringParam("pname", pname);
             smpr.addStringParam("pkey", pkey);
             smpr.addStringParam("name", name);
             smpr.addStringParam("contents", contents);
             smpr.addStringParam("count", String.valueOf(count));
+            smpr.addStringParam("imgTest",imgPath1);
             //이미지 파일 추가
-            smpr.addFile("img1", imgPath1);
-            smpr.addFile("img2", imgPath2);
-            smpr.addFile("img3", imgPath3);
-            smpr.addFile("img4", imgPath4);
-            smpr.addFile("img5", imgPath5);
+            if(imgPath1 == null){
+                smpr.addStringParam("img1", "null");
+            }else{
+                smpr.addFile("img1", imgPath1);
+            }
 
+            if(imgPath2 == null){
+                smpr.addStringParam("img2", "null");
+            }else{
+                smpr.addFile("img2", imgPath2);
+            }
+            if(imgPath3 == null){
+                smpr.addStringParam("img3", "null");
+            }else{
+                smpr.addFile("img3", imgPath3);
+            }
+            if(imgPath4 == null){
+                smpr.addStringParam("img4", "null");
+            }else{
+                smpr.addFile("img4", imgPath4);
+            }
+            if(imgPath5 == null){
+                smpr.addStringParam("img5", "null");
+            }else{
+                smpr.addFile("img5", imgPath5);
+            }
 
             //요청객체를 서버로 보낼 우체통 같은 객체 생성
             RequestQueue requestQueue = Volley.newRequestQueue(this);
