@@ -236,7 +236,7 @@ public class ProjectAdd extends AppCompatActivity {
             @Override
             public void onClick(final View view) {
 
-                //프로젝트 이름이 비어 있느지 확인하기 위해
+                //프로젝트 이름이 비어 있는지 확인하기 위해
                 nameValue=(String)projectName.getText().toString();
                 final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(ProjectAdd.this);
 

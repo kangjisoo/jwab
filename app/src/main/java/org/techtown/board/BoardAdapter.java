@@ -13,12 +13,17 @@ import org.techtown.loginactivity.R;
 import java.util.ArrayList;
 
 public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder>{
-    ArrayList<BoardList> items = new ArrayList<BoardList>();
+    LayoutInflater inflater;
+    ArrayList<BoardList> items;
     Context context;
 
-    public BoardAdapter(Context context) {
-        this.context = context;
+    public BoardAdapter(LayoutInflater inflater, ArrayList<BoardList> items) {
+        this.inflater = inflater;
+        this.items = items;
     }
+   // public BoardAdapter(Context context) {
+       // this.context = context;
+    //}
 
     @NonNull
     @Override

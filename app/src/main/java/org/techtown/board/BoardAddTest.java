@@ -36,6 +36,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
+import org.techtown.projectmain.ProjectAdd;
 import org.techtown.projectmain.ProjectHome;
 import org.techtown.projectmain.ProjectHomeListAdapter;
 
@@ -48,6 +49,7 @@ public class BoardAddTest extends AppCompatActivity {
     private static String pname, pkey;
     private int count = 0;
     Button image_bt, upload_bt;
+
     //업로드할 이미지의 절대경로(실제 경로)
     String imgPath1,imgPath2,imgPath3,imgPath4,imgPath5;
     Uri urione;
@@ -57,8 +59,8 @@ public class BoardAddTest extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.board_add);
-        etName = findViewById(R.id.board_name);
-        etMsg = findViewById(R.id.board_textView);
+        etName = (EditText) findViewById(R.id.board_name);
+        etMsg = (EditText) findViewById(R.id.board_textView);
 
         image_bt = (Button) findViewById(R.id.board_add_picture);
         upload_bt = (Button) findViewById(R.id.board_upload_bt);
@@ -101,6 +103,26 @@ public class BoardAddTest extends AppCompatActivity {
             }
         });
 
+        //업로드 버튼 눌렀을 시 수행
+        //게시물 제목과 내용 비어있는지 확인
+        upload_bt.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(final View view) {
+                String name = (String) etName.getText().toString();
+                String contents = (String) etMsg.getText().toString();
+                if (name.length()==0){
+                    Toast.makeText(BoardAddTest.this,"제목을 입력해주세요",Toast.LENGTH_LONG).show();
+                    // dialog.dismiss();
+                }else if(contents.length()==0){
+                    Toast.makeText(BoardAddTest.this,"내용을 입력해주세요",Toast.LENGTH_LONG).show();
+                }else{
+                    clickUpload();
+                }
+
+
+            }
+
+        });
     }//onCreate() ..
 
 
@@ -156,7 +178,6 @@ public class BoardAddTest extends AppCompatActivity {
 
                     //사진첨부 했을 때
                     if(clipData==null){
-                        Log.e("uriData!!!!!!!!!!!","sdfafasfasfsafdasfa");
                         iv1.setImageURI(uri);
                         imgPath1= getRealPathFromUri(uri);
                         break;
@@ -218,8 +239,9 @@ public class BoardAddTest extends AppCompatActivity {
             return result;
         }
 
+
         @SuppressLint("LongLogTag")
-        public void clickUpload (View view){
+        public void clickUpload(){
 
             //서버로 보낼 데이터
             String name = etName.getText().toString();
@@ -227,6 +249,7 @@ public class BoardAddTest extends AppCompatActivity {
             String id = MainActivity.getsId();
             pname = ProjectHomeListAdapter.getProjectNameImsi();
             pkey = ProjectHomeListAdapter.getSee();
+
 
             //안드로이드에서 보낼 데이터를 받을 php 서버 주소
             String serverUrl = "http://jwab.dothome.co.kr/Android/boardContents.php";
@@ -292,8 +315,16 @@ public class BoardAddTest extends AppCompatActivity {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(smpr);
 
+            clickLoad();
         }
 
-        public void clickLoad () {
+        public void clickLoad() {
+            //안드로이드에서 보낼 데이터를 받을 php 서버 주소
+            String serverUrl = "http://jwab.dothome.co.kr/Android/boardContents.php";
+
+
+
+            Intent intent = new Intent(BoardAddTest.this, BoardMainRecycler.class);
+            startActivity(intent);
         }
     }

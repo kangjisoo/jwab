@@ -65,7 +65,7 @@ public class InnerMainRecycler extends Fragment {
     private static String  pname;
     private static String  pkey;
 
-    BoardMainRecycler board = new BoardMainRecycler();
+//    BoardMainRecycler board = new BoardMainRecycler();
     public static String  getPname(){
         return pname;
     }
