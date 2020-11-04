@@ -1,5 +1,6 @@
 package org.techtown.vote;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,9 @@ public class VoteDPAdapter extends RecyclerView.Adapter<VoteDPAdapter.ViewHolder
     @Override
     public void onBindViewHolder(VoteDPAdapter.ViewHolder viewHolder, final int position) {
         VoteDPData voteDPData = dlist.get(position);
+        viewHolder.voteMyTitle.setGravity(Gravity.CENTER);
+        viewHolder.voteMyTitle.setText(voteDPData.getVoteTitleShow());
+        viewHolder.voteConfirm.setText(voteDPData.getVoteConfirmShow());
 
     }
 

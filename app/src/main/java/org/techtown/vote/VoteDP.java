@@ -78,6 +78,8 @@ public class VoteDP extends AppCompatActivity {
         GetAllVoteList getAllVoteList = new GetAllVoteList();
         getAllVoteList.execute();
 
+        dAdapter.notifyDataSetChanged();
+
         //맨 위 textView에 나올 프로젝트 이름
         voteProjectView.setText(pname+" 투표 목록");
 
@@ -163,25 +165,41 @@ public class VoteDP extends AppCompatActivity {
 
             Log.e("체크", Arrays.toString(div));
 
-            for (int i = 1; i< div.length; i++){
+            int sequence, sequenceS;
+            String[] getVoteName = new String[div.length];
+            String[] getVoteInfo = new String[div.length];
+            String[] getVoteKey = new String[div.length];
+            String[] getSelect = new String[div.length];
 
-                int sequence, sequenceS;
-                String[] getVoteName = new String[div.length+1];
-                String[] getVoteInfo = new String[div.length+1];
-                String[] getVoteKey = new String[div.length+1];
-                String[] getSelect = new String[div.length+1];
+            for (int i = 1; i<div.length; i++){
+
 
                 sequence = div[i].indexOf("/");
-                sequenceS = div[i].indexOf("!");
 
                 getVoteName[i] = div[i].substring(0,sequence);
                 getVoteInfo[i] = div[i].substring(sequence+1);
+
+                sequenceS = getVoteInfo[i].indexOf("!");
+
                 getVoteKey[i] = getVoteInfo[i].substring(0,sequenceS);
-                getSelect[i] =
-                if ()
+                getSelect[i] = getVoteInfo[i].substring(sequenceS+1);
 
+                Log.e("투표이름 :",getVoteName[i]);
+                Log.e("중간 확인:",getVoteInfo[i]);
+                Log.e("투표키 :",getVoteKey[i]);
+                Log.e("투표선택 :",getSelect[i]);
 
-                VoteDPData newVoteDpData = new VoteDPData(getVoteName[i],,Integer.parseInt(getVoteKey[i]));
+                if(Integer.parseInt(getSelect[i])>0){
+                    VoteDPData newVoteDpData = new VoteDPData(getVoteName[i],"참여",Integer.parseInt(getVoteKey[i]));
+                    dArrayList.add(newVoteDpData);
+                    dAdapter.notifyItemInserted(dAdapter.getItemCount());
+                }
+                else{
+                    VoteDPData newVoteDpData = new VoteDPData(getVoteName[i],"불참",Integer.parseInt(getVoteKey[i]));
+
+                    dArrayList.add(newVoteDpData);
+                    dAdapter.notifyItemInserted(dAdapter.getItemCount());
+                }
 
             }
 

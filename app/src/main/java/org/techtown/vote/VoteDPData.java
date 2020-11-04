@@ -7,10 +7,11 @@ public class VoteDPData {
 
     public VoteDPData(String voteTitleShow, String voteConfirmShow, int voteProjectKey){
         this.voteTitleShow=voteTitleShow;
-        this.voteConfirmShow=voteConfirmShow;
+       this.voteConfirmShow=voteConfirmShow;
         this.voteProjectKey = voteProjectKey;
 
     }
+
 
     public String getVoteTitleShow() {
         return voteTitleShow;
@@ -20,9 +21,7 @@ public class VoteDPData {
         this.voteTitleShow = voteTitleShow;
     }
 
-    public String getVoteConfirmShow() {
-        return voteConfirmShow;
-    }
+    public String getVoteConfirmShow() {return voteConfirmShow;}
 
     public void setVoteConfirmShow(String voteConfirmShow) {
         this.voteConfirmShow = voteConfirmShow;
