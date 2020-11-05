@@ -1,5 +1,7 @@
 package org.techtown.vote;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,9 +46,22 @@ public class VoteDPAdapter extends RecyclerView.Adapter<VoteDPAdapter.ViewHolder
     @Override
     public void onBindViewHolder(VoteDPAdapter.ViewHolder viewHolder, final int position) {
         VoteDPData voteDPData = dlist.get(position);
-        viewHolder.voteMyTitle.setGravity(Gravity.CENTER);
+
+        // viewHolder.voteMyTitle.setGravity(Gravity.CENTER);
+
+        viewHolder.voteConfirm.setGravity(Gravity.CENTER);
         viewHolder.voteMyTitle.setText(voteDPData.getVoteTitleShow());
         viewHolder.voteConfirm.setText(voteDPData.getVoteConfirmShow());
+
+        if(viewHolder.voteConfirm.getText()=="참여"){
+
+            viewHolder.voteConfirm.setTextColor(Color.parseColor("#00a564"));
+        }
+        else
+        {
+            viewHolder.voteConfirm.setTextColor(Color.parseColor("#BD1010"));
+
+        }
 
     }
 

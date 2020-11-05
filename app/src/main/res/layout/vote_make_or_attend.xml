@@ -19,7 +19,7 @@
             android:layout_marginTop="15dp"
             android:gravity="center"
             android:layout_gravity="center"
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
         <RadioGroup
             android:id="@+id/voteRadioGroup"
@@ -48,7 +48,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/voteProjectListRecyclerVIew"
             android:layout_width="409dp"
-            android:layout_height="560dp" />
+            android:layout_height="540dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"/>
 
     </LinearLayout>
 
@@ -75,6 +77,17 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:text="Button"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

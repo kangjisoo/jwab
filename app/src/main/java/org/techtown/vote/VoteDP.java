@@ -41,14 +41,17 @@ public class VoteDP extends AppCompatActivity {
     private RadioButton voteRadioAt;
     private RadioButton voteRadioNat;
     private RecyclerView voteProjectListRecyclerVIew;
-    private Button voteMakeButton;
+    private Button voteMakeButton, button3;
 
 
-    private ArrayList<VoteDPData> dArrayList;
+    private static ArrayList<VoteDPData> dArrayList;
+    private static ArrayList<VoteDPData> temporaryArray;
+    private static ArrayList<VoteDPData> initArray;
     private VoteDPAdapter dAdapter;
     String pname = InnerMainRecycler.getPname();
     String pkey = InnerMainRecycler.getPkey();
     String myId = MainActivity.getsId();
+    int itemCount=0;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +67,15 @@ public class VoteDP extends AppCompatActivity {
         voteProjectListRecyclerVIew = findViewById(R.id.voteProjectListRecyclerVIew);
         voteMakeButton = findViewById(R.id.voteMakeButton);
         voteNothing = findViewById(R.id.voteNothing);
+        button3 = findViewById(R.id.button3);
 
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this);
 
         voteProjectListRecyclerVIew.setLayoutManager(layoutManager);
 
+        initArray = new ArrayList<>();
+        temporaryArray = new ArrayList<>();
         dArrayList = new ArrayList<>();
         dAdapter = new VoteDPAdapter(dArrayList);
 
@@ -78,19 +84,132 @@ public class VoteDP extends AppCompatActivity {
         GetAllVoteList getAllVoteList = new GetAllVoteList();
         getAllVoteList.execute();
 
-        dAdapter.notifyDataSetChanged();
 
         //맨 위 textView에 나올 프로젝트 이름
-        voteProjectView.setText(pname+" 투표 목록");
+        voteProjectView.setText("(프로젝트)"+pname+"의 투표 목록");
 
-        if (dAdapter.getItemCount()==0){
-            voteNothing.setVisibility(View.VISIBLE);
-        }
+//        voteRadioAll.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                dArrayList=temporaryArray;
+//                dAdapter.notifyItemInserted(dAdapter.getItemCount());
+//            }
+//        });
+//
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        else{
-            voteNothing.setVisibility(View.INVISIBLE);
-        }
+                //dArrayList = initArray;
+                dArrayList.clear();
+                dAdapter.notifyDataSetChanged();
 
+                Log.e("복사한 임시 배열", String.valueOf(temporaryArray));
+                Log.e("진짜배열 지운후", String.valueOf(dArrayList));
+
+
+                // 참여 라디오버튼 클릭시
+                for (int i=0; i<itemCount-1; i++){
+
+                        if (temporaryArray.get(i).getVoteConfirmShow()=="참여"){
+
+
+                            VoteDPData setVoteDpData = new VoteDPData(temporaryArray.get(i).getVoteTitleShow(),temporaryArray.get(i).getVoteConfirmShow(),temporaryArray.get(i).getVoteProjectKey());
+                            dArrayList.add(setVoteDpData);
+                            dAdapter.notifyDataSetChanged();
+
+                            Log.e("복복", dArrayList.get(0).getVoteTitleShow());
+
+                            Log.e("복복", String.valueOf(dArrayList));
+                        }
+
+                        else{
+
+                        }
+                }
+            }
+        });
+
+        voteRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
+
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int id) {
+
+                if (id ==R.id.voteRadioAll){
+                    dArrayList.clear();
+
+                    for (int i=0; i<itemCount-1; i++){
+
+                            VoteDPData setVoteDpData = new VoteDPData(temporaryArray.get(i).getVoteTitleShow(),temporaryArray.get(i).getVoteConfirmShow(),temporaryArray.get(i).getVoteProjectKey());
+                            dArrayList.add(setVoteDpData);
+                            dAdapter.notifyDataSetChanged();
+
+                            Log.e("복복", String.valueOf(dArrayList));
+
+                    }
+                    dAdapter.notifyDataSetChanged();
+
+
+                }
+                else if (id == R.id.voteRadioAt){
+                   // dArrayList = initArray;
+                    dArrayList.clear();
+                    dAdapter.notifyDataSetChanged();
+
+                    Log.e("복사한 임시 배열", String.valueOf(temporaryArray));
+                    Log.e("진짜배열 지운후", String.valueOf(dArrayList));
+
+
+                    // 참여 라디오버튼 클릭시
+                    for (int i=0; i<itemCount-1; i++){
+
+                        if (temporaryArray.get(i).getVoteConfirmShow()=="참여"){
+
+
+                            VoteDPData setVoteDpData = new VoteDPData(temporaryArray.get(i).getVoteTitleShow(),temporaryArray.get(i).getVoteConfirmShow(),temporaryArray.get(i).getVoteProjectKey());
+                            dArrayList.add(setVoteDpData);
+                            dAdapter.notifyDataSetChanged();
+
+                            Log.e("복복", String.valueOf(dArrayList));
+                        }
+
+                        else{
+
+                        }
+                    }
+                }
+                else{
+                    dArrayList.clear();
+                    dAdapter.notifyDataSetChanged();
+
+                    Log.e("복사한 임시 배열", String.valueOf(temporaryArray));
+                    Log.e("진짜배열 지운후", String.valueOf(dArrayList));
+
+
+                    // 참여 라디오버튼 클릭시
+                    for (int i=0; i<itemCount-1; i++){
+
+                        if (temporaryArray.get(i).getVoteConfirmShow()=="불참"){
+
+
+                            VoteDPData setVoteDpData = new VoteDPData(temporaryArray.get(i).getVoteTitleShow(),temporaryArray.get(i).getVoteConfirmShow(),temporaryArray.get(i).getVoteProjectKey());
+                            dArrayList.add(setVoteDpData);
+                            dAdapter.notifyDataSetChanged();
+
+                            Log.e("복복", String.valueOf(dArrayList));
+                        }
+
+                        else{
+
+                        }
+                    }
+                }
+
+            }
+            });
+
+//
         voteMakeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,7 +281,7 @@ public class VoteDP extends AppCompatActivity {
             voteListPrint=data;
 
             String[] div = voteListPrint.split("@");
-
+            itemCount= div.length;
             Log.e("체크", Arrays.toString(div));
 
             int sequence, sequenceS;
@@ -192,16 +311,30 @@ public class VoteDP extends AppCompatActivity {
                 if(Integer.parseInt(getSelect[i])>0){
                     VoteDPData newVoteDpData = new VoteDPData(getVoteName[i],"참여",Integer.parseInt(getVoteKey[i]));
                     dArrayList.add(newVoteDpData);
+                    temporaryArray.add(newVoteDpData);
                     dAdapter.notifyItemInserted(dAdapter.getItemCount());
                 }
                 else{
                     VoteDPData newVoteDpData = new VoteDPData(getVoteName[i],"불참",Integer.parseInt(getVoteKey[i]));
-
                     dArrayList.add(newVoteDpData);
+                    temporaryArray.add(newVoteDpData);
                     dAdapter.notifyItemInserted(dAdapter.getItemCount());
                 }
 
+                if (dAdapter.getItemCount()==0){
+                    voteNothing.setVisibility(View.VISIBLE);
+                }
+
+                else{
+                    voteNothing.setVisibility(View.INVISIBLE);
+                }
+
+
+
+
             }
+
+
 
 
         }
