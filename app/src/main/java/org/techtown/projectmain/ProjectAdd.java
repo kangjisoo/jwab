@@ -1,8 +1,13 @@
 package org.techtown.projectmain;
 
+import org.techtown.board.BoardAddTest;
+import org.techtown.board.BoardMainRecycler;
 import org.techtown.loginactivity.MainActivity;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -17,24 +22,39 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.OnLifecycleEvent;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.error.AuthFailureError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.SimpleMultiPartRequest;
+import com.android.volley.request.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.techtown.loginactivity.R;
+import org.techtown.projectinner.InnerMainRecycler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class ProjectAdd extends AppCompatActivity {
+    private static final Object TAG = "MAIN";
     final Context context = this;
     private ArrayList<ProjectPerson> mArrayList;
     private ProjectPersonAdapter mAdapter;
@@ -44,6 +64,8 @@ public class ProjectAdd extends AppCompatActivity {
     private String value;
     private EditText projectName;
     private String nameValue;
+    private static String  pname, pkey;
+    private String projectKey;
 
     //insert_text창에서 String형으로 받아올 변수
     String stridPhone=null;
@@ -54,6 +76,8 @@ public class ProjectAdd extends AppCompatActivity {
     boolean allCheckBoxYesOrNo;
     Button makeButton;
     private String myId;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,9 +234,9 @@ public class ProjectAdd extends AppCompatActivity {
         makeButton=(Button)findViewById(R.id.project_add_makebutton);
         makeButton.setOnClickListener(new Button.OnClickListener(){
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
 
-                //프로젝트 이름이 비어 있느지 확인하기 위해
+                //프로젝트 이름이 비어 있는지 확인하기 위해
                 nameValue=(String)projectName.getText().toString();
                 final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(ProjectAdd.this);
 
@@ -258,8 +282,11 @@ public class ProjectAdd extends AppCompatActivity {
                                         Log.v("TAG", "확인 버튼 클릭");
                                         Log.v("ProjectPw : ", value);
 
+
                                         MakeProjectDB makeProjectDB = new MakeProjectDB();
                                         makeProjectDB.execute();
+
+
 
                                         finish();
                                     }
@@ -284,6 +311,7 @@ public class ProjectAdd extends AppCompatActivity {
         });
 
     }
+
 
     //공백이 있는지 없는지 검출해주는 메소드(공백이 있으면 true 없으면 false)
     public boolean spaceCheck(String spaceCheck)
@@ -505,9 +533,12 @@ public class ProjectAdd extends AppCompatActivity {
                     }
                     data = buff.toString().trim();
 
-                    /* 서버에서 응답 */
-                    Log.e("RECV DATA", data);
+                    //프로젝트키를 projectKey변수에 저장
+                    //clickAdd()메소드에서 사용됨
+                    projectKey = data;
 
+                    //프로젝트 만들기 눌렀을 시 실행되는 메소드
+                    clickAdd();
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
@@ -518,4 +549,46 @@ public class ProjectAdd extends AppCompatActivity {
             return null;
         }
     }
-}
+
+    //프로젝트 만들기 눌렀을 시 게시판DB 생성되는 스레드
+    @SuppressLint("LongLogTag")
+    public void clickAdd() {
+
+        //서버로 전송시킬 데이터
+        String prjName = nameValue;
+
+        //안드로이드에서 보낼 데이터를 받을 php 서버 주소
+        String serverUrl="http://jwab.dothome.co.kr/Android/boardTableCreate.php";
+
+        //Volley plus Library를 이용해서
+        //파일 전송하도록..
+        //Volley+는 AndroidStudio에서 검색이 안됨 [google 검색 이용]
+
+        //파일 전송 요청 객체 생성[결과를 String으로 받음]
+        SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        Log.e("clickAdd() @@@@@@@@@@@@@@응답: ",response);
+                        Toast.makeText(ProjectAdd.this, "프로젝트가 생성되었습니다.", Toast.LENGTH_SHORT).show();
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(ProjectAdd.this, "ERROR", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //param값 php로 전송
+        smpr.addStringParam("pname", prjName);
+        smpr.addStringParam("pkey", projectKey);
+
+     //요청객체를 서버로 보낼 우체통 같은 객체 생성
+        RequestQueue requestQueue= Volley.newRequestQueue(this);
+        requestQueue.add(smpr);
+
+    }
+
+    }

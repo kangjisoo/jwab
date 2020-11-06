@@ -5,6 +5,7 @@ public class BoardList {
     String date;
     String writer;
 
+
     public BoardList(String title, String writer, String date){
         this.title = title;
         this.writer = writer;
@@ -34,11 +35,5 @@ public class BoardList {
     public void setTitle(String title) {
         this.title = title;
     }
-
-
-
-
-
-
 
 }

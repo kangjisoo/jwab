@@ -156,6 +156,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_marginRight="80dp"
+                android:onClick="clickBtn"
                 android:text="사진" />
 
             <Button
@@ -164,6 +165,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="80dp"
+                android:onClick="clickUpload"
                 android:text="업로드" />
 
         </LinearLayout>

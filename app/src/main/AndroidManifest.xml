@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
 
     <application
         android:allowBackup="true"
@@ -21,9 +23,18 @@
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true">
 
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false"/>
+
         <activity
             android:name="org.techtown.projectmain.ProjectAdd"
             android:label="프로젝트 만들기"
+            >
+        </activity>
+
+        <activity
+            android:name="org.techtown.board.BoardAddTest"
             >
         </activity>
 
@@ -39,7 +50,7 @@
         </activity>
 
         <activity
-            android:name="org.techtown.board.BoardAdd">
+            android:name="org.techtown.board.BoardView">
         </activity>
 
         <activity
@@ -54,12 +65,9 @@
 
 
         <activity android:name="org.techtown.randomgame.RandomGameFirst">
-      
+
         </activity>
-
-
-
-
+        <activity android:name="org.techtown.randomgame.RandomGameSecond"/>
         <activity
             android:name=".MainActivity">
             <intent-filter>
