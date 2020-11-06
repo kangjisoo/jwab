@@ -9,8 +9,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
 
     <application
         android:allowBackup="true"
@@ -29,11 +27,6 @@
             >
         </activity>
 
-        <activity
-            android:name="org.techtown.board.BoardAdd"
-            >
-        </activity>
-
 
         <activity android:name="org.techtown.projectinner.InnerMainRecycler"
             android:label="projectInner"
@@ -46,7 +39,7 @@
         </activity>
 
         <activity
-            android:name="org.techtown.board.BoardView">
+            android:name="org.techtown.board.BoardAdd">
         </activity>
 
         <activity
@@ -61,9 +54,12 @@
 
 
         <activity android:name="org.techtown.randomgame.RandomGameFirst">
-
+      
         </activity>
-        <activity android:name="org.techtown.randomgame.RandomGameSecond"/>
+
+
+
+
         <activity
             android:name=".MainActivity">
             <intent-filter>

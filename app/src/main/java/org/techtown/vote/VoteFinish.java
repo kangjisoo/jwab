@@ -53,7 +53,7 @@ public class VoteFinish extends AppCompatActivity {
                 new LinearLayoutManager(this);
 
         voteFinishRecyclerView.setLayoutManager(layoutManager);
-        fArrayList = new ArrayList<>();
+        fArrayList= new ArrayList<>();
 
 
         fAdapter = new VoteFinishAdapter(fArrayList);
@@ -179,7 +179,7 @@ public class VoteFinish extends AppCompatActivity {
             String[] nameKey = findVoteName.split("_");
             String sNum = "";
 
-            //선택항목 true시 값 db에 넘겨주기 
+            //선택항목 true시 값 db에 넘겨주기
             for (int i=0; i<fArrayList.size(); i++) {
                 if (fArrayList.get(i).isVoteRadioButton()==true){
                    sNum = fArrayList.get(i).getVoteFinishItems();
@@ -232,4 +232,5 @@ public class VoteFinish extends AppCompatActivity {
         }
     }
 }
+
 
