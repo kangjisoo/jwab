@@ -2,31 +2,21 @@ package org.techtown.board;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.navigation.NavigationView;
-
-import org.techtown.loginactivity.FragmentCallback;
 import org.techtown.loginactivity.R;
-import org.techtown.projectmain.ProjectAdd;
-import org.techtown.projectmain.ProjectHome;
 import org.techtown.projectmain.ProjectHomeListAdapter;
 
 import java.io.BufferedReader;
@@ -43,8 +33,16 @@ import java.util.ArrayList;
 public class BoardMainRecycler extends AppCompatActivity {
     RecyclerView recyclerView;
     ImageButton imageButton;
+    BoardList item;
     ArrayList<BoardList> boardList = new ArrayList<>();
+    static String title, writer, date,Contents;
+    public static String getsTitle() { return title; }
+    public static String getsWriter(){return writer;}
+    public static String getsDate(){return date;}
+    public static String getsContents(){return Contents;}
     private static String pname, pkey;
+
+    String contents,img1,img2,img3,img4,img5;
 
 
     StringBuffer buffer = new StringBuffer();
@@ -62,7 +60,6 @@ public class BoardMainRecycler extends AppCompatActivity {
 //        툴바의 옵션메뉴 동작
 //        setHasOptionsMenu(true);
         setContentView(R.layout.board_main);
-        //BoardAdapter adapter = new BoardAdapter(BoardMainRecycler.this);
         BoardAdapter adapter = new BoardAdapter(getLayoutInflater(),boardList);
         recyclerView = (RecyclerView) findViewById(R.id.board_recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -136,8 +133,10 @@ public class BoardMainRecycler extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            BoardAdapter adapter = new BoardAdapter(getLayoutInflater(),boardList);
+            final BoardAdapter adapter = new BoardAdapter(getLayoutInflater(),boardList);
             RecyclerView recyclerView = BoardMainRecycler.this.findViewById(R.id.board_recyclerView);
+
+
             //읽어온 문자열에서 row(레코드)별로 분리하여 배열로 리턴하기
             String[] rows = buffer.toString().split(";");
 
@@ -157,11 +156,24 @@ public class BoardMainRecycler extends AppCompatActivity {
                 adapter.addItem(new BoardList(title, id, date));
 
             }
+
             recyclerView.setAdapter(adapter);
 
+            //게시물 아이템을 클릭했을 때 실행
+            adapter.setOnItemClicklistener(new BoardItemClickListener() {
+                @Override
+                public void onItemClick(BoardAdapter.ViewHolder holder, View view, int position) {
+                    item = adapter.getItem(position);
+                    title = item.getTitle();
+                    writer = item.getWriter();
+                    date = item.getDate();
+
+                    Intent intent = new Intent(BoardMainRecycler.this, BoardView.class);
+                    startActivity(intent);
+                }
+            });
+
         }
-
     }
-
 
 }

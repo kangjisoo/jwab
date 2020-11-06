@@ -6,8 +6,9 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/post_item"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         app:cardBackgroundColor="#FFFFFFFF"
         app:cardCornerRadius="10dp"
         app:cardElevation="5dp"
@@ -23,7 +24,8 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:padding="5dp"
-                app:srcCompat="@mipmap/ic_launcher"/>
+                app:srcCompat="@mipmap/ic_launcher" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -35,15 +37,15 @@
                     android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="25dp"
-                    android:text="제목" />
+                    android:text="제목"
+                    android:textSize="25dp" />
 
                 <TextView
                     android:id="@+id/writer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:text="글쓴이" />
+                    android:text="글쓴이"
+                    android:textSize="15dp" />
 
                 <TextView
                     android:id="@+id/date"

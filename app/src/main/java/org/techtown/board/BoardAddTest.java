@@ -2,7 +2,6 @@ package org.techtown.board;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.content.CursorLoader;
 
@@ -18,7 +17,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -36,8 +34,6 @@ import com.android.volley.toolbox.Volley;
 
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
-import org.techtown.projectmain.ProjectAdd;
-import org.techtown.projectmain.ProjectHome;
 import org.techtown.projectmain.ProjectHomeListAdapter;
 
 
