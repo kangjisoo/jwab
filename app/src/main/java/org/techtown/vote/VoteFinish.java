@@ -171,6 +171,11 @@ public class VoteFinish extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... unused) {
             String findVoteName = VoteMain.GetVoteNameAndKey();
+
+            if(findVoteName==""){
+                findVoteName = VoteDP.getSendVoteInfoFromDP();
+            }
+
             String[] nameKey = findVoteName.split("_");
             String sNum = "";
 

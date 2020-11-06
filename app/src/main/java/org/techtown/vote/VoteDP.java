@@ -41,18 +41,20 @@ public class VoteDP extends AppCompatActivity {
     private RadioButton voteRadioAt;
     private RadioButton voteRadioNat;
     private RecyclerView voteProjectListRecyclerVIew;
-    private Button voteMakeButton, button3;
+    private Button voteMakeButton;
 
 
     private static ArrayList<VoteDPData> dArrayList;
     private static ArrayList<VoteDPData> temporaryArray;
     private static ArrayList<VoteDPData> initArray;
+    public static String sendVoteInfoFromDP="";
     private VoteDPAdapter dAdapter;
     String pname = InnerMainRecycler.getPname();
     String pkey = InnerMainRecycler.getPkey();
     String myId = MainActivity.getsId();
     int itemCount=0;
 
+    public static String getSendVoteInfoFromDP() {return sendVoteInfoFromDP; }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +69,6 @@ public class VoteDP extends AppCompatActivity {
         voteProjectListRecyclerVIew = findViewById(R.id.voteProjectListRecyclerVIew);
         voteMakeButton = findViewById(R.id.voteMakeButton);
         voteNothing = findViewById(R.id.voteNothing);
-        button3 = findViewById(R.id.button3);
 
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this);
@@ -88,119 +89,58 @@ public class VoteDP extends AppCompatActivity {
         //맨 위 textView에 나올 프로젝트 이름
         voteProjectView.setText("(프로젝트)"+pname+"의 투표 목록");
 
-//        voteRadioAll.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                dArrayList=temporaryArray;
-//                dAdapter.notifyItemInserted(dAdapter.getItemCount());
-//            }
-//        });
-//
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //dArrayList = initArray;
-                dArrayList.clear();
-                dAdapter.notifyDataSetChanged();
-
-                Log.e("복사한 임시 배열", String.valueOf(temporaryArray));
-                Log.e("진짜배열 지운후", String.valueOf(dArrayList));
-
-
-                // 참여 라디오버튼 클릭시
-                for (int i=0; i<itemCount-1; i++){
-
-                        if (temporaryArray.get(i).getVoteConfirmShow()=="참여"){
-
-
-                            VoteDPData setVoteDpData = new VoteDPData(temporaryArray.get(i).getVoteTitleShow(),temporaryArray.get(i).getVoteConfirmShow(),temporaryArray.get(i).getVoteProjectKey());
-                            dArrayList.add(setVoteDpData);
-                            dAdapter.notifyDataSetChanged();
-
-                            Log.e("복복", dArrayList.get(0).getVoteTitleShow());
-
-                            Log.e("복복", String.valueOf(dArrayList));
-                        }
-
-                        else{
-
-                        }
-                }
-            }
-        });
-
+        //라디오그룹
         voteRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
 
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int id) {
 
+                //라디오 버튼 전체 클릭
                 if (id ==R.id.voteRadioAll){
                     dArrayList.clear();
 
+                    //전체 투표 목록 dArrayList에 복사
                     for (int i=0; i<itemCount-1; i++){
 
                             VoteDPData setVoteDpData = new VoteDPData(temporaryArray.get(i).getVoteTitleShow(),temporaryArray.get(i).getVoteConfirmShow(),temporaryArray.get(i).getVoteProjectKey());
                             dArrayList.add(setVoteDpData);
                             dAdapter.notifyDataSetChanged();
-
-                            Log.e("복복", String.valueOf(dArrayList));
-
                     }
                     dAdapter.notifyDataSetChanged();
 
-
                 }
+                //참여한 투표 클릭시
                 else if (id == R.id.voteRadioAt){
                    // dArrayList = initArray;
                     dArrayList.clear();
                     dAdapter.notifyDataSetChanged();
 
-                    Log.e("복사한 임시 배열", String.valueOf(temporaryArray));
-                    Log.e("진짜배열 지운후", String.valueOf(dArrayList));
-
-
-                    // 참여 라디오버튼 클릭시
+                    //참여인지 비교하여 참여인 것들만 복사 출력
                     for (int i=0; i<itemCount-1; i++){
 
                         if (temporaryArray.get(i).getVoteConfirmShow()=="참여"){
 
-
                             VoteDPData setVoteDpData = new VoteDPData(temporaryArray.get(i).getVoteTitleShow(),temporaryArray.get(i).getVoteConfirmShow(),temporaryArray.get(i).getVoteProjectKey());
                             dArrayList.add(setVoteDpData);
                             dAdapter.notifyDataSetChanged();
-
-                            Log.e("복복", String.valueOf(dArrayList));
-                        }
-
-                        else{
 
                         }
                     }
                 }
+
+                //불참인지 비교후 불참만 복사 출력
                 else{
                     dArrayList.clear();
                     dAdapter.notifyDataSetChanged();
 
-                    Log.e("복사한 임시 배열", String.valueOf(temporaryArray));
-                    Log.e("진짜배열 지운후", String.valueOf(dArrayList));
-
-
-                    // 참여 라디오버튼 클릭시
+                    // 불참 라디오버튼 클릭시
                     for (int i=0; i<itemCount-1; i++){
 
                         if (temporaryArray.get(i).getVoteConfirmShow()=="불참"){
 
-
                             VoteDPData setVoteDpData = new VoteDPData(temporaryArray.get(i).getVoteTitleShow(),temporaryArray.get(i).getVoteConfirmShow(),temporaryArray.get(i).getVoteProjectKey());
                             dArrayList.add(setVoteDpData);
                             dAdapter.notifyDataSetChanged();
-
-                            Log.e("복복", String.valueOf(dArrayList));
-                        }
-
-                        else{
 
                         }
                     }
@@ -209,7 +149,7 @@ public class VoteDP extends AppCompatActivity {
             }
             });
 
-//
+        //투표 만들기 버튼 클릭시
         voteMakeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -219,9 +159,21 @@ public class VoteDP extends AppCompatActivity {
             }
         });
 
+        dAdapter.setOnItemClicklistener(new OnPersonItemClickListener() {
+            @Override
+            public void onItemClick(VoteDPAdapter.ViewHolder holder, View view, int position) {
+                VoteDPData goToRealVote = dAdapter.getItem(position);
+                sendVoteInfoFromDP = goToRealVote.getVoteTitleShow()+"_"+goToRealVote.getVoteProjectKey();
+
+                Intent intent = new Intent(getApplicationContext(), // 현재 화면의 제어권자
+                        VoteFinish.class); // 다음 넘어갈 클래스 지정
+                startActivity(intent); // 다음 화면으로 넘어간다
+            }
+        });
 
     }
 
+    //투표 리스트 받아오는 스레드
     public class GetAllVoteList extends AsyncTask<Void, Integer, Void> {
         String data = "";
 
@@ -304,7 +256,6 @@ public class VoteDP extends AppCompatActivity {
                 getSelect[i] = getVoteInfo[i].substring(sequenceS+1);
 
                 Log.e("투표이름 :",getVoteName[i]);
-                Log.e("중간 확인:",getVoteInfo[i]);
                 Log.e("투표키 :",getVoteKey[i]);
                 Log.e("투표선택 :",getSelect[i]);
 
@@ -328,15 +279,7 @@ public class VoteDP extends AppCompatActivity {
                 else{
                     voteNothing.setVisibility(View.INVISIBLE);
                 }
-
-
-
-
             }
-
-
-
-
         }
     }
 }
