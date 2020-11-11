@@ -226,6 +226,10 @@ public class VoteMain extends AppCompatActivity {
                     CreateVoteDB createVoteDB = new CreateVoteDB();
                     createVoteDB.execute();
 
+                    //알림DB에 올리는 코드
+                    SetNoticeDB setNoticeDB =new SetNoticeDB();
+                    setNoticeDB.execute();
+
                     Intent intent = new Intent(getApplicationContext(), VoteFinish.class);
                     startActivityForResult(intent,REQUEST_CODE_VOTE);
 
@@ -309,6 +313,74 @@ public class VoteMain extends AppCompatActivity {
                 /* 서버에서 응답 */
                 Log.e("getVoteTitleKey : ", data);
                 voteNameAndKey = data;
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    //알림DB에 데이터를 넣어줄 스레드
+    public class SetNoticeDB extends AsyncTask<Void, Integer, Void>{
+        String data = "";
+        String pname = InnerMainRecycler.getPname();
+        String pkey = InnerMainRecycler.getPkey();
+        String pId = MainActivity.getsId();
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+
+            String voteTitle = voteTitleEditView.getText().toString();
+
+            //현재날짜 저장 변수
+            long now = System.currentTimeMillis();
+            Date date = new Date(now);
+            SimpleDateFormat mFormat = new SimpleDateFormat("yyyy/MM/dd");
+            String time = mFormat.format(date);
+
+            Log.e("notice Time check", time);
+
+            String projectInfo = pname+"_"+pkey;
+
+            String param = "u_nId="+pId+"&u_nContents="+voteTitle+"&u_nDate="+time+"&u_nProjectInfo="+projectInfo+"&u_nKind="+"투표"+"";
+            //Check param
+            Log.e("VoteMain.param", param);
+
+            try {
+                /* 서버연결 */
+                URL url = new URL(
+                        "http://rtemd.suwon.ac.kr/guest/setNotice.php");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                /* 서버 -> 안드로이드 파라메터값 전달 */
+                InputStream is = null;
+                BufferedReader in = null;
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ((line = in.readLine()) != null) {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+
+                /* 서버에서 응답 */
+                Log.e("notice  : ", data);
 
 
             } catch (MalformedURLException e) {

@@ -76,7 +76,7 @@ public class VoteFinish extends AppCompatActivity {
 
                 //VoteMain, VoteDP 액티비티 종료 후 VoteFinish화면 종료
                 voteDPActivity.finish();
-                voteActivity.finish();
+                //voteActivity.finish();
                 finish();
 
             }
@@ -106,7 +106,7 @@ public class VoteFinish extends AppCompatActivity {
             String param = "u_voteName=" + nameKey[0] + "&u_voteKey=" + nameKey[1] + "&u+myId=" + myId + "";
 
             //Check param
-            Log.e("POST.param", param);
+            Log.e("VoteFinish.param", param);
 
             try {
                 /* 서버연결 */
