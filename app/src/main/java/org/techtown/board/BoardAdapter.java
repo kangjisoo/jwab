@@ -99,8 +99,6 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder>
     public BoardList getItem(int position){
         return items.get(position);
     }
-    public void setItems(int position, BoardList item){
-        items.set(position, item);
-    }
+
 
 }

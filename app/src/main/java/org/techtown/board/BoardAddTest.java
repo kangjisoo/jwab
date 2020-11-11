@@ -41,7 +41,7 @@ public class BoardAddTest extends AppCompatActivity {
     EditText etName, etMsg;
     ImageView iv1, iv2, iv3, iv4, iv5;
     private ScrollView board_scrollView;
-    private EditText insertText, insertText2;
+    private EditText insertText;
     private static String pname, pkey;
     private int count = 0;
     Button image_bt, upload_bt;
