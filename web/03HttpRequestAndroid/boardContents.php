@@ -80,13 +80,14 @@
 
 
   //선택된 프로젝트에 제목, 내용, 이미지경로, 날짜 저장됨
-    $sql="insert into ".$pname."_".$pkey."(id, title, contents, img1,img2,img3,img4,img5, date) values('$id', '$name','$contents','$dstName1','$dstName2','$dstName3','$dstName4','$dstName5','$now')";
+    $sql="insert into ".$pname."_".$pkey." (id, title, contents, img1,img2,img3,img4,img5, date) values('$id', '$name','$contents','$dstName1','$dstName2','$dstName3','$dstName4','$dstName5','$now')";
    
     $result = mysqli_query($connect, $sql);
     
       if($result) echo "insert success \n";
     else echo "\ninsert fail \n";
- 
+
+
    mysqli_close($connect);
     
 ?>

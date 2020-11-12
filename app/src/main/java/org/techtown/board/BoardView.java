@@ -1,12 +1,15 @@
 package org.techtown.board;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +27,7 @@ import com.bumptech.glide.Glide;
 
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
+import org.techtown.loginactivity.SignActivty;
 import org.techtown.projectmain.ProjectHomeListAdapter;
 
 import java.io.BufferedReader;
@@ -46,9 +50,12 @@ public class BoardView extends AppCompatActivity {
     TextView title, writer, date, contents;
     EditText comment;
     ImageView Img1, Img2, Img3, Img4, Img5;
+
     BoardViewAdapter boardViewAdapter;
+    BoardCommentAdapter boardCommentAdapter;
+
     ArrayList<BoardViewList> boardViewLists = new ArrayList<>();
-    ArrayList<BoardCommentList> boardCommentList;
+    ArrayList<BoardCommentList> boardCommentList = new ArrayList<>();
 
     String Date ,Title;
     static String  img1, img2, img3, img4, img5;
@@ -59,15 +66,18 @@ public class BoardView extends AppCompatActivity {
     public static String getsImg5() { return img5; }
 
 
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.board_post);
+
 
         title = findViewById(R.id.post_title);
         writer = findViewById(R.id.post_writer);
         date = findViewById(R.id.post_date);
         contents = findViewById(R.id.post_text);
         comment = (EditText)findViewById(R.id.comment);
+
 
         Img1 = findViewById(R.id.post_img1);
         Img2 = findViewById(R.id.post_img2);
@@ -84,6 +94,24 @@ public class BoardView extends AppCompatActivity {
         date.setText(Date);
 
         boardViewAdapter = new BoardViewAdapter(getLayoutInflater(), boardViewLists);
+        boardCommentAdapter = new BoardCommentAdapter(getLayoutInflater(), boardCommentList);
+
+        ImageButton button = findViewById(R.id.comment_bt);
+
+        //댓글 전송 버튼 누를 시
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String contents = comment.getText().toString();
+                if (contents.length() == 0) {
+                    Toast.makeText(BoardView.this, "댓글을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    commentload();
+                    Toast.makeText(BoardView.this, "commentLoad 실행완료", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         LoadDB loadDb = new LoadDB();
         loadDb.execute();
@@ -158,7 +186,8 @@ public class BoardView extends AppCompatActivity {
                 img5 = "http://jwab.dothome.co.kr/Android/" + datas[5];
                 //데이터 ArrayList에 추가
                 boardViewLists.add(new BoardViewList(Contents, img1, img2, img3, img4, img5));
-
+                CommentDB commentDB = new CommentDB();
+                commentDB.execute();
                 //게시물 내용과 사진 set해주기
                 contents.setText(Contents);
                 Glide.with(BoardView.this).load(img1).into(Img1);
@@ -172,6 +201,10 @@ public class BoardView extends AppCompatActivity {
                 Img3.setOnClickListener(new MyListener());
                 Img4.setOnClickListener(new MyListener());
                 Img5.setOnClickListener(new MyListener());
+
+                //댓글 리사이클러뷰
+
+
 
             }
         }
@@ -200,16 +233,19 @@ public class BoardView extends AppCompatActivity {
         }
     }
 
+
+    //댓글 전송버튼 누를 시, DB로 댓글,프로젝트명, id, 날짜 넘겨주기
     @SuppressLint("LongLogTag")
     public void commentload(){
 
         //서버로 보낼 데이터
-        String id = MainActivity.getsId();
-        String contents = comment.getText().toString();
-        String boardDate = Date;
-        pname = ProjectHomeListAdapter.getProjectNameImsi();
-        pkey = ProjectHomeListAdapter.getSee();
-        String name = Title;
+        String id = MainActivity.getsId();                      //댓글 남기는 사용자의 id
+        String contents = comment.getText().toString();         //댓글내용
+        String boardDate = Date;                                //댓글을 남기는 해당 게시물의 날짜
+        pname = ProjectHomeListAdapter.getProjectNameImsi() +
+                      "_" + ProjectHomeListAdapter.getSee();    //프로젝트명_프로젝트키
+        String name = Title;                                    //게시물의 제목
+
 
 
         //안드로이드에서 보낼 데이터를 받을 php 서버 주소
@@ -221,11 +257,7 @@ public class BoardView extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-//                            new AlertDialog.Builder(BoardAddTest.this).setMessage("응답:" + response).create().show();
-
-//                        Intent intent = new Intent(BoardAddTest.this, BoardMainRecycler.class);
-//                        startActivity(intent);
-//                        Toast.makeText(BoardAddTest.this, "업로드 되었습니다.", Toast.LENGTH_SHORT).show();
+                            new AlertDialog.Builder(BoardView.this).setMessage("응답:" + response).create().show();
 
                     }
                 }, new Response.ErrorListener() {
@@ -239,7 +271,6 @@ public class BoardView extends AppCompatActivity {
         //param값 php로 전송
         smpr.addStringParam("id",id);
         smpr.addStringParam("pname", pname);
-        smpr.addStringParam("pkey", pkey);
         smpr.addStringParam("name", name);
         smpr.addStringParam("contents", contents);
         smpr.addStringParam("boardDate",boardDate);
@@ -248,31 +279,24 @@ public class BoardView extends AppCompatActivity {
         //요청객체를 서버로 보낼 우체통 같은 객체 생성
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(smpr);
+        comment.setText(null);
 
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
+    //댓글 로드하는 스레드
     public class CommentDB extends AsyncTask<Void, Integer, Void> {
 
         @SuppressLint("LongLogTag")
         @Override
         protected Void doInBackground(Void... unused) {
-            pname = ProjectHomeListAdapter.getProjectNameImsi();
-            pkey = ProjectHomeListAdapter.getSee();
+            pname = ProjectHomeListAdapter.getProjectNameImsi() + "_" + ProjectHomeListAdapter.getSee();
+            String boardDate = Date;
+            String boardTitle = Title;
 
-            String param = "pname=" + pname + "&pkey=" + pkey + "";
-            String serverUri = "http://jwab.dothome.co.kr/Android/boardComment.php";
+
+            String param = "pname=" + pname + "&boardDate=" + boardDate + "&boardTitle=" + boardTitle +"";
+            String serverUri = "http://jwab.dothome.co.kr/Android/boardCommentLoad.php";
 
 
             try {
@@ -281,7 +305,7 @@ public class BoardView extends AppCompatActivity {
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setDoInput(true);
-                //connection.setDoOutput(true);// 이 예제는 필요 없다.
+                //connection.setDoOutput(true);
                 connection.setUseCaches(false);
 
                 /* 안드로이드 -> 서버 파라메터값 전달 */
@@ -316,13 +340,12 @@ public class BoardView extends AppCompatActivity {
             final BoardCommentAdapter adapter = new BoardCommentAdapter(getLayoutInflater(),boardCommentList);
             RecyclerView recyclerView = BoardView.this.findViewById(R.id.comment_recycler);
 
-
             //읽어온 문자열에서 row(레코드)별로 분리하여 배열로 리턴하기
             String[] rows = buffer.toString().split(";");
 
 
             //대량의 데이터 초기화
-            boardCommentList.clear();
+           // boardCommentList.clear();
 
             for (String row : rows) {
                 //한줄 데이터에서 한 칸씩 분리
@@ -334,10 +357,11 @@ public class BoardView extends AppCompatActivity {
                 String date = datas[2];
 
                 adapter.addItem(new BoardCommentList(comment, id, date));
-
+//                adapter.notifyDataSetChanged();
+//                adapter.notifyItemInserted(adapter.getItemCount());
             }
-
             recyclerView.setAdapter(adapter);
+
 
         }
     }

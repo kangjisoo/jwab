@@ -153,7 +153,8 @@
             android:layout_width="match_parent"
             android:layout_height="217dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="10dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <View
             android:id="@+id/board_post_line2"
@@ -175,7 +176,7 @@
                 android:inputType="textPersonName" />
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/comment_bt"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_menu_send" />

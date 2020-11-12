@@ -29,9 +29,9 @@ public class BoardCommentAdapter extends RecyclerView.Adapter<BoardCommentAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder viewholder, int position) {
         BoardCommentList item = items.get(position);
-        holder.setItem(item);
+        viewholder.setItem(item);
     }
 
     @Override
