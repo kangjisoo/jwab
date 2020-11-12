@@ -27,6 +27,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ProjectBottomMenu4 extends Fragment {
 
@@ -59,6 +60,7 @@ public class ProjectBottomMenu4 extends Fragment {
         return noticeView;
     }
 
+    //모든 알림 가져오는 스레드
     public class GetEveryNotice extends AsyncTask<Void, Integer, Void>{
         String data = "";
         String pId = MainActivity.getsId();
@@ -69,7 +71,7 @@ public class ProjectBottomMenu4 extends Fragment {
             String param = "u_id="+pId+"";
 
             //Check param
-            Log.e("POST.param", param);
+            Log.e("ProjectBottomMenu4: ", param);
 
             try {
                 /* 서버연결 */
@@ -101,13 +103,71 @@ public class ProjectBottomMenu4 extends Fragment {
                 data = buff.toString().trim();
 
                 /* 서버에서 응답 */
-                Log.e("vote list: ", data);
+                Log.e("notice data: ", data);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            String noticeBell = "";
+            noticeBell = data;
+
+            String[] firstDiv = noticeBell.split("@");
+            int noticeCount = 0;
+            noticeCount = firstDiv.length;
+
+            Log.e("111", Arrays.toString(firstDiv));
+
+            int sequence, sequence2, sequence3, sequence4, sequence5;
+            String[] getWriteId = new String[noticeCount];
+            String[] NoticeInfo = new String[noticeCount];
+            String[] getContents = new String[noticeCount];
+            String[] remainInfo = new String[noticeCount];
+            String[] getDate = new String[noticeCount];
+            String[] remainProjectKind = new String[noticeCount];
+            String[] getProjectName = new String[noticeCount];
+            String[] getKind = new String[noticeCount];
+
+            for (int i=1; i<noticeCount; i++){
+
+                sequence = firstDiv[i].indexOf("/");
+
+                getWriteId[i] = firstDiv[i].substring(0,sequence);
+                NoticeInfo[i] = firstDiv[i].substring(sequence+1);
+
+                sequence2 = NoticeInfo[i].indexOf("!");
+
+                getContents[i] = NoticeInfo[i].substring(0,sequence2);
+                remainInfo[i] = NoticeInfo[i].substring(sequence2+1);
+
+                sequence3 = remainInfo[i].indexOf("?");
+
+                getDate[i] = remainInfo[i].substring(0,sequence3);
+                remainProjectKind[i] = remainInfo[i].substring(sequence3+1);
+
+                sequence4 = remainProjectKind[i].indexOf("_");
+
+                getProjectName[i] = remainProjectKind[i].substring(0,sequence4);
+
+                sequence5 = remainProjectKind[i].indexOf("#");
+
+                getKind[i] = remainProjectKind[i].substring(sequence5+1);
+
+                Log.e("값 제대로 들어가는지 확인", getWriteId[i]+"/"+getContents[i]+"/"+getDate[i]+"/"+getProjectName[i]+"/"+getKind[i]+"");
+
+                NoticeData addNoticeData = new NoticeData(getWriteId[i],getContents[i],getDate[i],getProjectName[i],getKind[i]);
+                nArraylist.add(addNoticeData);
+                nAdapter.notifyItemInserted(0);
+
+            }
+
         }
     }
 }

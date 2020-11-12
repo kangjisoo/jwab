@@ -1,5 +1,6 @@
 package org.techtown.projectmain;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,48 +18,59 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        protected TextView notice_title,notice_contents,notice_date;
+        protected TextView notice_title, notice_contents, notice_date;
 
         public ViewHolder(View itemView) {
             super(itemView);
             this.notice_title = (TextView)itemView.findViewById(R.id.notice_title);
-            this.notice_contents = (TextView)itemView.findViewById(R.id.notice_RecyclerView);
+            this.notice_contents = (TextView)itemView.findViewById(R.id.notice_contents);
             this.notice_date = (TextView)itemView.findViewById(R.id.notice_date);
 
         }
 
     }
 
-    @Override
-    public NoticeAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.vote_make_or_attend_item, viewGroup, false);
-        NoticeAdapter.ViewHolder viewHolder = new NoticeAdapter.ViewHolder(view);
-
-        return viewHolder;
-    }
     public NoticeAdapter(ArrayList<NoticeData> list) {this.nlist = list;}
 
     @Override
-    public void onBindViewHolder(NoticeAdapter.ViewHolder viewHolder, final int position) {
-        NoticeData noticeData = nlist.get(position);
+    public NoticeAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        View view = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.notice_item, viewGroup, false);
+        ViewHolder viewHolder = new ViewHolder(view);
 
-        if (noticeData.getNoticeKind()=="게시판"){
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(NoticeAdapter.ViewHolder viewHolder, final int position) {
+         final NoticeData noticeData = nlist.get(position);
+
+        viewHolder.notice_title.setText("("+noticeData.getNoticePojectInfo()+") "+ noticeData.getNoticeId()+"님이 " +noticeData.getNoticeKind()+"에 글을 올렸습니다.");
+        viewHolder.notice_contents.setText("\""+noticeData.getNoticeContents()+"\"");
+        viewHolder.notice_date.setText(noticeData.getNoticeDate());
+
+        String classification = noticeData.getNoticeKind();
+
+        Log.e("",classification+"");
+
+
+        if (classification=="게시판"){
             viewHolder.notice_title.setText("("+noticeData.getNoticePojectInfo()+") "+ noticeData.getNoticeId()+"님이 " +noticeData.getNoticeKind()+"에 글을 올렸습니다.");
             viewHolder.notice_contents.setText("\""+noticeData.getNoticeContents()+"\"");
             viewHolder.notice_date.setText(noticeData.getNoticeDate());
         }
-        else if (noticeData.getNoticeKind()== "투표"){
-            viewHolder.notice_title.setText("("+noticeData.getNoticePojectInfo()+") "+ noticeData.getNoticeId()+"님이 " +noticeData.getNoticeKind()+"를 만들었습니다.");
+        else if (classification=="투표"){
+            viewHolder.notice_title.setText("("+noticeData.getNoticePojectInfo()+") "+ noticeData.getNoticeId()+"님이 " +noticeData.getNoticeKind()+"를 올렸습니다.");
             viewHolder.notice_contents.setText("\""+noticeData.getNoticeContents()+"\"");
             viewHolder.notice_date.setText(noticeData.getNoticeDate());
         }
-        else{
+        else if (classification=="댓글"){
             viewHolder.notice_title.setText("("+noticeData.getNoticePojectInfo()+") "+ noticeData.getNoticeId()+"님이 " +noticeData.getNoticeKind()+"를 달았습니다.");
             viewHolder.notice_contents.setText("\""+noticeData.getNoticeContents()+"\"");
             viewHolder.notice_date.setText(noticeData.getNoticeDate());
-
         }
+
+        Log.e("","("+noticeData.getNoticePojectInfo()+") "+ noticeData.getNoticeId()+"님이 " +noticeData.getNoticeKind()+"에 글을 올렸습니다.");
 
     }
     @Override
