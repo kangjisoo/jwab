@@ -28,6 +28,7 @@ import com.bumptech.glide.Glide;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 import org.techtown.loginactivity.SignActivty;
+import org.techtown.projectinner.InnerMainRecycler;
 import org.techtown.projectmain.ProjectHomeListAdapter;
 
 import java.io.BufferedReader;
@@ -38,7 +39,9 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 //게시물 전체 내용을 보여주는 클래스
 public class BoardView extends AppCompatActivity {
@@ -108,6 +111,9 @@ public class BoardView extends AppCompatActivity {
                 } else {
 
                     commentload();
+
+
+
                     Toast.makeText(BoardView.this, "commentLoad 실행완료", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -186,8 +192,7 @@ public class BoardView extends AppCompatActivity {
                 img5 = "http://jwab.dothome.co.kr/Android/" + datas[5];
                 //데이터 ArrayList에 추가
                 boardViewLists.add(new BoardViewList(Contents, img1, img2, img3, img4, img5));
-                CommentDB commentDB = new CommentDB();
-                commentDB.execute();
+
                 //게시물 내용과 사진 set해주기
                 contents.setText(Contents);
                 Glide.with(BoardView.this).load(img1).into(Img1);
@@ -195,6 +200,9 @@ public class BoardView extends AppCompatActivity {
                 Glide.with(BoardView.this).load(img3).into(Img3);
                 Glide.with(BoardView.this).load(img4).into(Img4);
                 Glide.with(BoardView.this).load(img5).into(Img5);
+
+                CommentDB commentDB = new CommentDB();
+                commentDB.execute();
 
                 Img1.setOnClickListener(new MyListener());
                 Img2.setOnClickListener(new MyListener());
@@ -237,6 +245,8 @@ public class BoardView extends AppCompatActivity {
     //댓글 전송버튼 누를 시, DB로 댓글,프로젝트명, id, 날짜 넘겨주기
     @SuppressLint("LongLogTag")
     public void commentload(){
+        final BoardCommentAdapter adapter = new BoardCommentAdapter(getLayoutInflater(),boardCommentList);
+        RecyclerView recyclerView = BoardView.this.findViewById(R.id.comment_recycler);
 
         //서버로 보낼 데이터
         String id = MainActivity.getsId();                      //댓글 남기는 사용자의 id
@@ -257,7 +267,7 @@ public class BoardView extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                            new AlertDialog.Builder(BoardView.this).setMessage("응답:" + response).create().show();
+                            //new AlertDialog.Builder(BoardView.this).setMessage("응답:" + response).create().show();
 
                     }
                 }, new Response.ErrorListener() {
@@ -275,11 +285,33 @@ public class BoardView extends AppCompatActivity {
         smpr.addStringParam("contents", contents);
         smpr.addStringParam("boardDate",boardDate);
 
+//현재날짜 저장 변수
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        SimpleDateFormat mFormat = new SimpleDateFormat("yyyy/MM/dd");
+        String time = mFormat.format(date);
+
 
         //요청객체를 서버로 보낼 우체통 같은 객체 생성
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(smpr);
+
+        adapter.addItem(new BoardCommentList(contents, id, time));
+        adapter.notifyItemInserted(adapter.getItemCount());
+        adapter.notifyDataSetChanged();
+
+        //댓글을 달았을 시 알림DB에 데이터 전송되는 스레드
+        SetNoticeDB setNoticeDB = new SetNoticeDB();
+        setNoticeDB.execute();
+
+
+
+
+
+        //버튼 누르면 댓글창 초기화
         comment.setText(null);
+
+
 
     }
 
@@ -356,13 +388,83 @@ public class BoardView extends AppCompatActivity {
                 String id = datas[1];
                 String date = datas[2];
 
+
                 adapter.addItem(new BoardCommentList(comment, id, date));
-//                adapter.notifyDataSetChanged();
-//                adapter.notifyItemInserted(adapter.getItemCount());
+
+
             }
             recyclerView.setAdapter(adapter);
 
 
+
+        }
+    }
+
+    //알림DB에 데이터를 넣어줄 스레드
+    public class SetNoticeDB extends AsyncTask<Void, Integer, Void> {
+        String data = "";
+        String pname = InnerMainRecycler.getPname();
+        String pkey = InnerMainRecycler.getPkey();
+        String pId = MainActivity.getsId();
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+
+            String commentTitle = comment.getText().toString();
+
+            //현재날짜 저장 변수
+            long now = System.currentTimeMillis();
+            java.util.Date date = new Date(now);
+            SimpleDateFormat mFormat = new SimpleDateFormat("yyyy/MM/dd");
+            String time = mFormat.format(date);
+
+            Log.e("notice Time check", time);
+
+            String projectInfo = pname+"_"+pkey;
+
+            String param = "u_nId="+pId+"&u_nContents="+commentTitle+"&u_nDate="+time+"&u_nProjectInfo="+projectInfo+"&u_nKind="+"댓글"+"";
+            //Check param
+            Log.e("VoteMain.param", param);
+
+            try {
+                /* 서버연결 */
+                URL url = new URL(
+                        "http://rtemd.suwon.ac.kr/guest/setNotice.php");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                /* 서버 -> 안드로이드 파라메터값 전달 */
+                InputStream is = null;
+                BufferedReader in = null;
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ((line = in.readLine()) != null) {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+
+                /* 서버에서 응답 */
+                Log.e("notice  : ", data);
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
     }
 
