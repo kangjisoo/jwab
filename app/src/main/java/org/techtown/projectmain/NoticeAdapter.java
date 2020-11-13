@@ -1,5 +1,6 @@
 package org.techtown.projectmain;
 
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,30 +46,11 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ViewHolder
     public void onBindViewHolder(NoticeAdapter.ViewHolder viewHolder, final int position) {
          final NoticeData noticeData = nlist.get(position);
 
-        viewHolder.notice_title.setText("("+noticeData.getNoticePojectInfo()+") "+ noticeData.getNoticeId()+"님이 " +noticeData.getNoticeKind()+"에 글을 올렸습니다.");
-        viewHolder.notice_contents.setText("\""+noticeData.getNoticeContents()+"\"");
+        viewHolder.notice_title.setText("프로젝트 이름 : " + noticeData.getNoticePojectInfo());
         viewHolder.notice_date.setText(noticeData.getNoticeDate());
+        viewHolder.notice_contents.setText(noticeData.getNoticeId()+"님이 "+noticeData.getNoticeKind()+"을 올렸습니다 : "+"\""+noticeData.getNoticeContents()+"\"");
 
-        String classification = noticeData.getNoticeKind();
-
-        Log.e("",classification+"");
-
-
-        if (classification=="게시판"){
-            viewHolder.notice_title.setText("("+noticeData.getNoticePojectInfo()+") "+ noticeData.getNoticeId()+"님이 " +noticeData.getNoticeKind()+"에 글을 올렸습니다.");
-            viewHolder.notice_contents.setText("\""+noticeData.getNoticeContents()+"\"");
-            viewHolder.notice_date.setText(noticeData.getNoticeDate());
-        }
-        else if (classification=="투표"){
-            viewHolder.notice_title.setText("("+noticeData.getNoticePojectInfo()+") "+ noticeData.getNoticeId()+"님이 " +noticeData.getNoticeKind()+"를 올렸습니다.");
-            viewHolder.notice_contents.setText("\""+noticeData.getNoticeContents()+"\"");
-            viewHolder.notice_date.setText(noticeData.getNoticeDate());
-        }
-        else if (classification=="댓글"){
-            viewHolder.notice_title.setText("("+noticeData.getNoticePojectInfo()+") "+ noticeData.getNoticeId()+"님이 " +noticeData.getNoticeKind()+"를 달았습니다.");
-            viewHolder.notice_contents.setText("\""+noticeData.getNoticeContents()+"\"");
-            viewHolder.notice_date.setText(noticeData.getNoticeDate());
-        }
+        viewHolder.notice_date.setTextColor(Color.parseColor("#c9cacd"));
 
         Log.e("","("+noticeData.getNoticePojectInfo()+") "+ noticeData.getNoticeId()+"님이 " +noticeData.getNoticeKind()+"에 글을 올렸습니다.");
 
