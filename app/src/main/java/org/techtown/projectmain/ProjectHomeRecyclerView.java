@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.techtown.board.BoardCommentList;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 
@@ -179,6 +180,9 @@ public class ProjectHomeRecyclerView extends Fragment {
                 //카드뷰에 프로젝트 이름과 인원수 입력
                 adapter.addItem(new ProjectHomeList(projectName[i], MainActivity.getsId() +"님 외 " + countMember[i] +"명"));
                 adapter.items.get(i-1).setKey(inn[i]);
+                adapter.notifyItemInserted(adapter.getItemCount());
+               adapter.notifyDataSetChanged();
+
 
 
             }

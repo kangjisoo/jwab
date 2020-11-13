@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
-
-
-
     <LinearLayout
-        android:layout_width="409dp"
-        android:layout_height="729dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +25,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,7 +38,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="0dp"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/ic_menu_gallery"/>
+
+                app:srcCompat="@drawable/ic_menu_gallery" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -107,6 +108,7 @@
                 android:layout_width="78dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:onClick="ImgClick"
                 app:srcCompat="@drawable/ic_menu_gallery" />
 
             <ImageView
@@ -139,6 +141,50 @@
 
         </LinearLayout>
 
+
+        <View
+            android:id="@+id/board_post_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/comment_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="217dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <View
+            android:id="@+id/board_post_line2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="66dp">
+
+            <EditText
+                android:id="@+id/comment"
+                android:layout_width="334dp"
+                android:layout_height="65dp"
+                android:layout_marginLeft="10dp"
+                android:ems="10"
+                android:hint="댓글을 입력해주세요"
+                android:inputType="textPersonName" />
+
+            <ImageButton
+                android:id="@+id/comment_bt"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/ic_menu_send" />
+        </LinearLayout>
+
     </LinearLayout>
 
-</LinearLayout>
+    </LinearLayout>
+
+
+</ScrollView>

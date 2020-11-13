@@ -39,10 +39,9 @@ public class BoardMainRecycler extends AppCompatActivity {
     public static String getsTitle() { return title; }
     public static String getsWriter(){return writer;}
     public static String getsDate(){return date;}
-    public static String getsContents(){return Contents;}
+
     private static String pname, pkey;
 
-    String contents,img1,img2,img3,img4,img5;
 
 
     StringBuffer buffer = new StringBuffer();

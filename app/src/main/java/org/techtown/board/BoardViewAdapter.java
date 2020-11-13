@@ -1,14 +1,12 @@
 package org.techtown.board;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+
 import org.techtown.loginactivity.R;
 import com.bumptech.glide.Glide;
 
@@ -44,7 +42,7 @@ public class BoardViewAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
         if(view==null){
-            view= inflater.inflate(R.layout.board_post_pic, viewGroup, false);
+            view= inflater.inflate(R.layout.board_post, viewGroup, false);
         }
         TextView contents = view.findViewById(R.id.post_text);
         ImageView img1 = view.findViewById(R.id.post_img1);

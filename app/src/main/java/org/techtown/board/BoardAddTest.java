@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -29,19 +30,32 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
+import com.android.volley.misc.AsyncTask;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
+import org.techtown.projectinner.InnerMainRecycler;
 import org.techtown.projectmain.ProjectHomeListAdapter;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class BoardAddTest extends AppCompatActivity {
     EditText etName, etMsg;
     ImageView iv1, iv2, iv3, iv4, iv5;
     private ScrollView board_scrollView;
-    private EditText insertText, insertText2;
+    private EditText insertText;
     private static String pname, pkey;
     private int count = 0;
     Button image_bt, upload_bt;
@@ -311,16 +325,85 @@ public class BoardAddTest extends AppCompatActivity {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(smpr);
 
+            //게시물 올렸을 시 알림DB에 데이터 넣는 스레드
+            SetNoticeDB setNoticeDB = new SetNoticeDB();
+            setNoticeDB.execute();
+
+            //게시물 올렸을 시 화면 intent되면서 리사이클러뷰에 추가
             clickLoad();
         }
 
         public void clickLoad() {
-            //안드로이드에서 보낼 데이터를 받을 php 서버 주소
-            String serverUrl = "http://jwab.dothome.co.kr/Android/boardContents.php";
-
-
-
             Intent intent = new Intent(BoardAddTest.this, BoardMainRecycler.class);
             startActivity(intent);
         }
+
+    //알림DB에 데이터를 넣어줄 스레드
+    public class SetNoticeDB extends AsyncTask<Void, Integer, Void> {
+        String data = "";
+        String pname = InnerMainRecycler.getPname();
+        String pkey = InnerMainRecycler.getPkey();
+        String pId = MainActivity.getsId();
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+
+            String boardTitle = etName.getText().toString();
+
+            //현재날짜 저장 변수
+            long now = System.currentTimeMillis();
+            Date date = new Date(now);
+            SimpleDateFormat mFormat = new SimpleDateFormat("yyyy/MM/dd");
+            String time = mFormat.format(date);
+
+            Log.e("notice Time check", time);
+
+            String projectInfo = pname+"_"+pkey;
+
+            String param = "u_nId="+pId+"&u_nContents="+boardTitle+"&u_nDate="+time+"&u_nProjectInfo="+projectInfo+"&u_nKind="+"게시판"+"";
+            //Check param
+            Log.e("VoteMain.param", param);
+
+            try {
+                /* 서버연결 */
+                URL url = new URL(
+                        "http://rtemd.suwon.ac.kr/guest/setNotice.php");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                /* 서버 -> 안드로이드 파라메터값 전달 */
+                InputStream is = null;
+                BufferedReader in = null;
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ((line = in.readLine()) != null) {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+
+                /* 서버에서 응답 */
+                Log.e("notice  : ", data);
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
     }

@@ -20,15 +20,12 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder>
     LayoutInflater inflater;
     ArrayList<BoardList> items = new ArrayList<>();
     BoardItemClickListener listener;
-    Context context;
 
     public BoardAdapter(LayoutInflater inflater, ArrayList<BoardList> items) {
         this.inflater = inflater;
         this.items = items;
     }
-   // public BoardAdapter(Context context) {
-       // this.context = context;
-    //}
+
 
     @NonNull
     @Override
@@ -64,8 +61,8 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder>
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView title, writer, date, contents;
-        //ImageView img1, img2, img3, img4, img5;
+        TextView title, writer, date;
+
         public ViewHolder(View itemView, final BoardItemClickListener listener) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
@@ -99,8 +96,6 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder>
     public BoardList getItem(int position){
         return items.get(position);
     }
-    public void setItems(int position, BoardList item){
-        items.set(position, item);
-    }
+
 
 }
