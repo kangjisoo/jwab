@@ -1,7 +1,6 @@
 package org.techtown.projectmain;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,8 +25,6 @@ import org.techtown.loginactivity.FragmentCallback;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 
-import org.techtown.projectinner.InnerMainRecycler;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,7 +33,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 //ProjectHome메인
 
 public class ProjectHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentCallback {
@@ -264,7 +260,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
 
                     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
                     View headerView = navigationView.getHeaderView(0);
-                    TextView navUserName = (TextView) headerView.findViewById(R.id.profile_name);
+                    TextView navUserName = (TextView) headerView.findViewById(R.id.profile_nameView);
                     navUserName.setText(data);
                     t1 = navUserName.getText().toString();
                 }

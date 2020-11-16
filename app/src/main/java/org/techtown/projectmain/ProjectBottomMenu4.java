@@ -123,7 +123,7 @@ public class ProjectBottomMenu4 extends Fragment {
             int noticeCount = 0;
             noticeCount = firstDiv.length;
 
-            Log.e("111", Arrays.toString(firstDiv));
+            Log.e("values check", Arrays.toString(firstDiv));
 
             int sequence, sequence2, sequence3, sequence4, sequence5;
             String[] getWriteId = new String[noticeCount];
