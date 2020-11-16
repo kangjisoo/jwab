@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.volley.misc.AsyncTask;
-
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 

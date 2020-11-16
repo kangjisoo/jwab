@@ -2,6 +2,7 @@ package org.techtown.board;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.content.CursorLoader;
 
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +27,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Toast;
+//import android.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -33,10 +37,14 @@ import com.android.volley.error.VolleyError;
 import com.android.volley.misc.AsyncTask;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
+import org.techtown.loginactivity.FragmentCallback;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 import org.techtown.projectinner.InnerMainRecycler;
+import org.techtown.projectmain.ProjectHome;
 import org.techtown.projectmain.ProjectHomeListAdapter;
 
 import java.io.BufferedReader;
@@ -52,6 +60,7 @@ import java.util.Date;
 
 
 public class BoardAddTest extends AppCompatActivity {
+
     EditText etName, etMsg;
     ImageView iv1, iv2, iv3, iv4, iv5;
     private ScrollView board_scrollView;
@@ -59,16 +68,27 @@ public class BoardAddTest extends AppCompatActivity {
     private static String pname, pkey;
     private int count = 0;
     Button image_bt, upload_bt;
-
+    Toolbar toolbar;
     //업로드할 이미지의 절대경로(실제 경로)
     String imgPath1,imgPath2,imgPath3,imgPath4,imgPath5;
     Uri urione;
     ClipData clipData;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.board_add);
+
+        //상단바
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+
         etName = (EditText) findViewById(R.id.board_name);
         etMsg = (EditText) findViewById(R.id.board_textView);
 
@@ -122,7 +142,7 @@ public class BoardAddTest extends AppCompatActivity {
                 String contents = (String) etMsg.getText().toString();
                 if (name.length()==0){
                     Toast.makeText(BoardAddTest.this,"제목을 입력해주세요",Toast.LENGTH_LONG).show();
-                    // dialog.dismiss();
+
                 }else if(contents.length()==0){
                     Toast.makeText(BoardAddTest.this,"내용을 입력해주세요",Toast.LENGTH_LONG).show();
                 }else{
@@ -134,6 +154,7 @@ public class BoardAddTest extends AppCompatActivity {
 
         });
     }//onCreate() ..
+
 
 
     @Override
@@ -337,6 +358,7 @@ public class BoardAddTest extends AppCompatActivity {
             Intent intent = new Intent(BoardAddTest.this, BoardMainRecycler.class);
             startActivity(intent);
         }
+
 
     //알림DB에 데이터를 넣어줄 스레드
     public class SetNoticeDB extends AsyncTask<Void, Integer, Void> {

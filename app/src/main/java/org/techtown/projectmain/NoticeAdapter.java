@@ -26,7 +26,6 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ViewHolder
             this.notice_title = (TextView)itemView.findViewById(R.id.notice_title);
             this.notice_contents = (TextView)itemView.findViewById(R.id.notice_contents);
             this.notice_date = (TextView)itemView.findViewById(R.id.notice_date);
-
         }
 
     }
@@ -58,6 +57,5 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ViewHolder
     @Override
     public int getItemCount() {
         return (null != nlist ? nlist.size() : 0);
-
     }
 }

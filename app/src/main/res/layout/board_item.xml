@@ -37,20 +37,31 @@
                     android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical|left"
                     android:text="제목"
                     android:textSize="25dp" />
 
                 <TextView
                     android:id="@+id/writer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
+                    android:gravity="center_vertical|left"
                     android:text="글쓴이"
                     android:textSize="15dp" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="68dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="191dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal|center"
                     android:text="날짜" />
             </LinearLayout>
 
