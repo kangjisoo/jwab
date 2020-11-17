@@ -42,6 +42,10 @@
             android:name="org.techtown.board.BoardImgClick"
             >
         </activity>
+        <activity
+            android:name="org.techtown.projectmain.ProjectHomeRecyclerView"
+            tools:ignore="Instantiatable">
+        </activity>
 
 
         <activity android:name="org.techtown.projectinner.InnerMainRecycler"

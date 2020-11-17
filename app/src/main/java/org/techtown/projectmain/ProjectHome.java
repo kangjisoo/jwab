@@ -58,9 +58,17 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.project_home_slide_menu);
+
         //상단바
         toolbar = findViewById(R.id.toolbar);
+        if(useToolbar()){
         setSupportActionBar(toolbar);
+        }else{
+            toolbar.setVisibility(View.GONE);
+        }
+
+
+
 
 
         //프로필에 사용자 ID 띄우기
@@ -128,7 +136,10 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         );
     }   //onCreate() 끝
 
-
+    //툴바를 사용할지 말지 정함
+    protected boolean useToolbar(){
+        return true;
+    }
 
         @Override
         public void onBackPressed () {
@@ -147,6 +158,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
             if (id == R.id.menu1) {
                 Toast.makeText(this, "첫 번째 메뉴 선택됨", Toast.LENGTH_LONG).show();
                 onFragmentSelected(0, null);
+
             } else if (id == R.id.menu2) {
                 Toast.makeText(this, "두 번째 메뉴 선택됨", Toast.LENGTH_LONG).show();
                 onFragmentSelected(1, null);
@@ -179,8 +191,8 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
             Fragment curFragment = null;
 
             if (position == 0) {
-                curFragment = fragment1;
-                toolbar.setTitle("첫 번째 화면");
+                curFragment = fragment0;
+                toolbar.setTitle("프로젝트 홈");
             } else if (position == 1) {
                 curFragment = fragment2;
                 toolbar.setTitle("두 번째 화면");

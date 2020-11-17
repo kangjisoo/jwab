@@ -52,7 +52,7 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
         public ViewHolder(View itemView) {
             super(itemView);
 //
-            
+
             //itemView클릭 시 InnerMainRecycler로 화면 전환
             itemView.setOnClickListener(new View.OnClickListener(){
             @Override
