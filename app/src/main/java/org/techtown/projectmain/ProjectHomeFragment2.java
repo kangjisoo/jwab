@@ -33,6 +33,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 
+//하단바 내정보 탭
 public class ProjectHomeFragment2 extends Fragment {
 
     private TextView profile_name, profile_id, profile_pw, profile_pw_ch;

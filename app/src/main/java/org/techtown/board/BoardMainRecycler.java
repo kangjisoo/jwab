@@ -77,8 +77,8 @@ public class BoardMainRecycler extends AppCompatActivity {
         });
 
 
-            loadDB loaddb = new loadDB();
-            loaddb.execute();
+        loadDB loaddb = new loadDB();
+        loaddb.execute();
 
     }
 

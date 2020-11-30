@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.techtown.loginactivity.R;
-import org.techtown.vote.VoteDPAdapter;
 
 import java.util.ArrayList;
 
@@ -23,9 +22,9 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ViewHolder
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.notice_title = (TextView)itemView.findViewById(R.id.notice_title);
-            this.notice_contents = (TextView)itemView.findViewById(R.id.notice_contents);
-            this.notice_date = (TextView)itemView.findViewById(R.id.notice_date);
+            this.notice_title = (TextView)itemView.findViewById(R.id.myActivities_project);
+            this.notice_contents = (TextView)itemView.findViewById(R.id.myActivities_title);
+            this.notice_date = (TextView)itemView.findViewById(R.id.myActivities_date);
         }
 
     }
@@ -51,7 +50,6 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ViewHolder
 
         viewHolder.notice_date.setTextColor(Color.parseColor("#c9cacd"));
 
-        Log.e("","("+noticeData.getNoticePojectInfo()+") "+ noticeData.getNoticeId()+"님이 " +noticeData.getNoticeKind()+"에 글을 올렸습니다.");
 
     }
     @Override

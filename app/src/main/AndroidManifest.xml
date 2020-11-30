@@ -21,64 +21,78 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        android:requestLegacyExternalStorage="true">
+        android:requestLegacyExternalStorage="true"
+        android:screenOrientation="portrait">
 
         <uses-library
             android:name="org.apache.http.legacy"
-            android:required="false"/>
+            android:required="false"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="org.techtown.projectmain.ProjectAdd"
             android:label="프로젝트 만들기"
+            android:screenOrientation="portrait"
             >
         </activity>
 
         <activity
             android:name="org.techtown.board.BoardAddTest"
+            android:screenOrientation="portrait"
             >
         </activity>
 
         <activity
             android:name="org.techtown.board.BoardImgClick"
+            android:screenOrientation="portrait"
             >
         </activity>
         <activity
             android:name="org.techtown.projectmain.ProjectHomeRecyclerView"
-            tools:ignore="Instantiatable">
+            tools:ignore="Instantiatable"
+            android:screenOrientation="portrait">
         </activity>
 
 
         <activity android:name="org.techtown.projectinner.InnerMainRecycler"
             android:label="projectInner"
-            tools:ignore="Instantiatable">
+            tools:ignore="Instantiatable"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <activity
-            android:name="org.techtown.board.BoardMainRecycler">
+            android:name="org.techtown.board.BoardMainRecycler"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity
-            android:name="org.techtown.board.BoardView">
+            android:name="org.techtown.board.BoardView"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name="org.techtown.projectmain.ProjectHome"
+            android:screenOrientation="portrait"
            />
         <activity
             android:name=".SignActivty"
             android:label="회원가입"
-            android:theme="@style/Theme.AppCompat.Dialog" />
+            android:theme="@style/Theme.AppCompat.Dialog"
+            android:screenOrientation="portrait"/>
 
 
 
 
-        <activity android:name="org.techtown.randomgame.RandomGameFirst">
+        <activity android:name="org.techtown.randomgame.RandomGameFirst"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name="org.techtown.randomgame.RandomGameSecond"/>
+        <activity android:name="org.techtown.randomgame.RandomGameSecond"
+            android:screenOrientation="portrait"/>
         <activity
-            android:name=".MainActivity">
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -87,20 +101,24 @@
         </activity>
 
        <activity
-           android:name="org.techtown.calendar.innercalendar">
+           android:name="org.techtown.calendar.innercalendar"
+           android:screenOrientation="portrait">
 
        </activity>
 
 
-        <activity android:name="org.techtown.vote.VoteMain">
+        <activity android:name="org.techtown.vote.VoteMain"
+            android:screenOrientation="portrait">
 
         </activity>
 
-        <activity android:name="org.techtown.vote.VoteFinish">
+        <activity android:name="org.techtown.vote.VoteFinish"
+            android:screenOrientation="portrait">
 
         </activity>
 
-        <activity android:name="org.techtown.vote.VoteDP">
+        <activity android:name="org.techtown.vote.VoteDP"
+            android:screenOrientation="portrait">
 
         </activity>
 

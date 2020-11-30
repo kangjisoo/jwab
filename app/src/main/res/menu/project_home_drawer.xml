@@ -11,7 +11,7 @@
         <item
             android:id="@+id/menu2"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="내 정보" />
+            android:title="내 활동" />
         <item
             android:id="@+id/menu3"
             android:icon="@drawable/ic_menu_share"

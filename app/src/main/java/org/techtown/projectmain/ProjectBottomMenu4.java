@@ -28,6 +28,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+//하단바 알림 탭
 public class ProjectBottomMenu4 extends Fragment {
 
     private RecyclerView notice_RecyclerView;
@@ -162,7 +163,9 @@ public class ProjectBottomMenu4 extends Fragment {
                 Log.e("값 제대로 들어가는지 확인", getWriteId[i]+"/"+getContents[i]+"/"+getDate[i]+"/"+getProjectName[i]+"/"+getKind[i]+"");
 
                 NoticeData addNoticeData = new NoticeData(getWriteId[i],getContents[i],getDate[i],getProjectName[i],getKind[i]);
-                nArraylist.add(addNoticeData);
+
+                //첫번째 줄에 삽입
+                nArraylist.add(0,addNoticeData);
                 nAdapter.notifyItemInserted(0);
 
             }
