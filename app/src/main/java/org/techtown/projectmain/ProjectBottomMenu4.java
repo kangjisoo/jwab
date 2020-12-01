@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -112,6 +113,8 @@ public class ProjectBottomMenu4 extends Fragment {
             return null;
         }
 
+        //가져온 자료들을 분활하여 추가
+        @SuppressLint("LongLogTag")
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
@@ -160,7 +163,7 @@ public class ProjectBottomMenu4 extends Fragment {
 
                 getKind[i] = remainProjectKind[i].substring(sequence5+1);
 
-                Log.e("값 제대로 들어가는지 확인", getWriteId[i]+"/"+getContents[i]+"/"+getDate[i]+"/"+getProjectName[i]+"/"+getKind[i]+"");
+                Log.e("projectBottomMenu4 value check:", getWriteId[i]+"/"+getContents[i]+"/"+getDate[i]+"/"+getProjectName[i]+"/"+getKind[i]+"");
 
                 NoticeData addNoticeData = new NoticeData(getWriteId[i],getContents[i],getDate[i],getProjectName[i],getKind[i]);
 

@@ -5,13 +5,13 @@ import android.widget.TextView;
 //내 활동 데이타 ProjectBottomMenu
 public class MyActivitiesData {
 
-    private TextView myAcId;
-    private TextView myAcKind;
-    private TextView myAcContents;
-    private TextView myAcDate;
-    private TextView myAcInfo;
+    private String myAcId;
+    private String myAcKind;
+    private String myAcContents;
+    private String myAcDate;
+    private String myAcInfo;
 
-    public MyActivitiesData(TextView myAcId, TextView myAcKind, TextView myAcContents, TextView myAcDate, TextView myAcInfo) {
+    public MyActivitiesData(String myAcId, String myAcKind, String myAcContents, String myAcDate, String myAcInfo) {
         this.myAcId = myAcId;
         this.myAcKind = myAcKind;
         this.myAcContents = myAcContents;
@@ -19,43 +19,43 @@ public class MyActivitiesData {
         this.myAcInfo = myAcInfo;
     }
 
-    public TextView getMyAcId() {
+    public String getMyAcId() {
         return myAcId;
     }
 
-    public void setMyAcId(TextView myAcId) {
+    public void setMyAcId(String myAcId) {
         this.myAcId = myAcId;
     }
 
-    public TextView getMyAcKind() {
+    public String getMyAcKind() {
         return myAcKind;
     }
 
-    public void setMyAcKind(TextView myAcKind) {
+    public void setMyAcKind(String myAcKind) {
         this.myAcKind = myAcKind;
     }
 
-    public TextView getMyAcContents() {
+    public String getMyAcContents() {
         return myAcContents;
     }
 
-    public void setMyAcContents(TextView myAcContents) {
+    public void setMyAcContents(String myAcContents) {
         this.myAcContents = myAcContents;
     }
 
-    public TextView getMyAcDate() {
+    public String getMyAcDate() {
         return myAcDate;
     }
 
-    public void setMyAcDate(TextView myAcDate) {
+    public void setMyAcDate(String myAcDate) {
         this.myAcDate = myAcDate;
     }
 
-    public TextView getMyAcInfo() {
+    public String getMyAcInfo() {
         return myAcInfo;
     }
 
-    public void setMyAcInfo(TextView myAcInfo) {
+    public void setMyAcInfo(String myAcInfo) {
         this.myAcInfo = myAcInfo;
     }
 }

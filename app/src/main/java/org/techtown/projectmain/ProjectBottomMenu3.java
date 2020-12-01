@@ -25,6 +25,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 //슬라이드 내 활동 탭
 public class ProjectBottomMenu3 extends Fragment {
@@ -107,6 +108,67 @@ public class ProjectBottomMenu3 extends Fragment {
                 e.printStackTrace();
             }
             return null;
+        }
+
+        //내 아이디와 알림DB에 있는 내아이디를 조회하여 정보들을 출력하여 list에 추가
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            String myActions = "";
+            myActions = data;
+
+            String[] firstDiv = myActions.split("@");
+            int actionCount = 0;
+            actionCount = firstDiv.length;
+
+            Log.e("values check", Arrays.toString(firstDiv));
+
+            int sequence, sequence2, sequence3, sequence4, sequence5;
+            String[] getWriteId = new String[actionCount];
+            String[] NoticeInfo = new String[actionCount];
+            String[] getContents = new String[actionCount];
+            String[] remainInfo = new String[actionCount];
+            String[] getDate = new String[actionCount];
+            String[] remainProjectKind = new String[actionCount];
+            String[] getProjectName = new String[actionCount];
+            String[] getKind = new String[actionCount];
+
+            for (int i=1; i<actionCount; i++){
+
+                sequence = firstDiv[i].indexOf("/");
+
+                getWriteId[i] = firstDiv[i].substring(0,sequence);
+                NoticeInfo[i] = firstDiv[i].substring(sequence+1);
+
+                sequence2 = NoticeInfo[i].indexOf("!");
+
+                getContents[i] = NoticeInfo[i].substring(0,sequence2);
+                remainInfo[i] = NoticeInfo[i].substring(sequence2+1);
+
+                sequence3 = remainInfo[i].indexOf("?");
+
+                getDate[i] = remainInfo[i].substring(0,sequence3);
+                remainProjectKind[i] = remainInfo[i].substring(sequence3+1);
+
+                sequence4 = remainProjectKind[i].indexOf("_");
+
+                getProjectName[i] = remainProjectKind[i].substring(0,sequence4);
+
+                sequence5 = remainProjectKind[i].indexOf("#");
+
+                getKind[i] = remainProjectKind[i].substring(sequence5+1);
+
+                Log.e("값 제대로 들어가는지 확인", getWriteId[i]+"/"+getContents[i]+"/"+getDate[i]+"/"+getProjectName[i]+"/"+getKind[i]+"");
+
+                MyActivitiesData myActivitiesData = new MyActivitiesData(getWriteId[i],getKind[i],getContents[i],getDate[i],getProjectName[i]);
+
+                //첫번째 줄에 삽입
+                mArrayList.add(0,myActivitiesData);
+                mAdapter.notifyItemInserted(0);
+
+            }
+
         }
     }
 }
