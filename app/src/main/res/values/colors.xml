@@ -5,8 +5,9 @@
     <color name="colorAccent">#00cf78</color>
     <color name="textColor">#ffffff</color>
     <color name="textColorDisable">#80ffffff</color>
+    <color name="jwabBackground">#D6EDFF</color>
 
-    <color name="default_calendar_background_color">@android:color/white</color>
+    <color name="default_calendar_background_color">#D6EDFF</color>
     <color name="default_month_text_color">#595f66</color>
     <color name="default_other_day_text_color">#c9cacd</color>
     <color name="default_day_text_color">#4a4a4a</color>
@@ -19,6 +20,6 @@
     <color name="default_connected_day_text_color">#f00</color>
     <color name="default_connected_day_selected_text_color">#BD1010</color>
     <color name="default_disabled_day_text_color">#c9cacd</color>
-    <color name="default_border_color">#ececec</color>
+    <color name="default_border_color">#D6EDFF</color>
     <color name="default_selection_bar_month_title_text_color">#c9cacd</color>
 </resources>

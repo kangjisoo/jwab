@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/random_game_color">
+    android:background="@color/jwabBackground">
 
     <TextView
         android:id="@+id/textView"
@@ -63,19 +63,19 @@
         app:layout_constraintStart_toEndOf="@+id/memberMinusBt"
         app:layout_constraintTop_toBottomOf="@+id/randomGameTitleView" />
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/gameListRecyclerView"
         android:layout_width="283dp"
         android:layout_height="287dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="16dp"
 
 
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="56dp"
-        android:background="@drawable/border"
+        android:background="@color/jwabBackground"
         app:layout_constraintStart_toEndOf="@+id/textView12"
         app:layout_constraintTop_toBottomOf="@+id/memberCountView" />
-
 
     <Button
         android:id="@+id/ch_Bt"

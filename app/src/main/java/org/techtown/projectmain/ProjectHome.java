@@ -47,13 +47,10 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
     ProjectBottomMenu4 bottom_menu4;
     BoardMainRecycler boardMainRecycler;
 
-
     DrawerLayout drawer;
     Toolbar toolbar;
     public static String t1;
     public static String getsName(){return t1;}
-
-
 
 
     @Override
@@ -68,7 +65,6 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         }else{
             toolbar.setVisibility(View.GONE);
         }
-
 
         //프로필에 사용자 ID 띄우기
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -89,7 +85,6 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
 
         NavigationView navigationView2 = findViewById(R.id.nav_view);
         navigationView2.setNavigationItemSelectedListener(this);
-
 
         fragment0 = new ProjectHomeRecyclerView();
         fragment1 = new ProjectHomeFragment1();
