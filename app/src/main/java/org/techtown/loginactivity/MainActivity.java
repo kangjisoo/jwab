@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 
 import android.content.Context;
@@ -28,19 +29,24 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
+import com.bumptech.glide.Glide;
+
 import org.techtown.projectmain.ProjectHome;
+import org.techtown.projectmain.ProjectHomeFragment2;
 
 
 public class MainActivity extends Activity {
     public static final int REQUEST_CODE_MENU = 101;
     public static final String CONNECTION_IPADDRESS = "rtemd.suwon.ac.kr";    //20.07.29 현재 RTEMD SERVER address
-
+    StringBuffer buffer = new StringBuffer();
     final Context context = this;
     EditText et_id, et_pw;
     CheckBox chk_auto;
     Button btn_login;
+    private ImageView profile_pic;
     SharedPreferences setting;
     SharedPreferences.Editor editor;
+    String img;
     static String sId, sPw;
 
 
@@ -75,6 +81,7 @@ public class MainActivity extends Activity {
         btn_login = (Button) findViewById(R.id.button4); //로그인버튼
         sId = et_id.getText().toString();
         sPw = et_pw.getText().toString();
+        profile_pic =  findViewById(R.id.profile_pic);
 
 
         Button button = findViewById(R.id.SignButton);
@@ -195,8 +202,10 @@ public class MainActivity extends Activity {
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
                                 Intent intent = new Intent(MainActivity.this, ProjectHome.class);
                                 startActivity(intent);
+
                                 finish();
                             }
                         });
@@ -244,4 +253,6 @@ public class MainActivity extends Activity {
 
 
     }
+
+
 }

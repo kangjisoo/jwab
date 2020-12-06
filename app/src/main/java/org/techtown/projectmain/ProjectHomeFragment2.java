@@ -1,12 +1,21 @@
 package org.techtown.projectmain;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,11 +24,21 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.loader.content.CursorLoader;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.error.VolleyError;
 import com.android.volley.misc.AsyncTask;
+import com.android.volley.request.SimpleMultiPartRequest;
+import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 
+import org.techtown.board.BoardAddTest;
+import org.techtown.board.BoardMainRecycler;
+import org.techtown.board.BoardView;
+import org.techtown.board.BoardViewList;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 
@@ -31,12 +50,17 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 
 public class ProjectHomeFragment2 extends Fragment {
 
+    private static final int RESULT_OK = -1;
+    public static ProjectHomeFragment2 mContext;
+    public static StringBuffer buffer = new StringBuffer();
     private TextView profile_name, profile_id, profile_pw, profile_pw_ch;
+    public static ImageView profile_pic;
     private Button profile_bt;
+    public static String img;
+    String imgPath;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,9 +76,17 @@ public class ProjectHomeFragment2 extends Fragment {
         profile_pw = profileDP.findViewById(R.id.profile_pw);
         profile_pw_ch =profileDP.findViewById(R.id.profile_pw_ch);
         profile_bt = profileDP.findViewById(R.id.profile_bt);
+        profile_pic = profileDP.findViewById(R.id.profile_pic);
+
+        mContext=this;
+
 
         GetPrivateProfile getPrivateProfile = new GetPrivateProfile();
         getPrivateProfile.execute();
+//        LoadDB loadDB = new LoadDB();
+//        loadDB.execute();
+
+
 
         profile_bt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,11 +102,13 @@ public class ProjectHomeFragment2 extends Fragment {
                 else if (profile_pw.getText().toString().equals(profile_pw_ch.getText().toString())){
                     SetProfile setProfile = new SetProfile();
                     setProfile.execute();
-
-                    Toast.makeText(getActivity(), "정보 수정 완료. ",Toast.LENGTH_LONG).show();
+                    pic_upload();
 
                     //현재 내 프래그먼트 닫기
-                    removeFragment(ProjectHomeFragment2.this);
+                    //removeFragment(ProjectHomeFragment2.this);
+
+                    Toast.makeText(getContext(), "정보 수정이 완료되었습니다.",Toast.LENGTH_SHORT).show();
+
 
                 }
 
@@ -84,10 +118,84 @@ public class ProjectHomeFragment2 extends Fragment {
             }
         });
 
+        profile_pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //갤러리 or 사진 앱 실행하여 사진을 선택하도록..
+//                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//                intent.setType("image/*");
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, 10);
+            }
+        });
 
         return profileDP;
 
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            profile_pic.setImageResource(0);
+            Toast.makeText(getContext(), "취소 되었습니다.", Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+
+        switch (requestCode) {
+            case 10:
+                if (resultCode == RESULT_OK) {
+                    //선택한 사진의 경로(Uri)객체 얻어오기
+                    Uri uri = data.getData();
+
+                    //사진첨부 했을 때
+                    if(uri!=null){
+                        profile_pic.setImageURI(uri);
+                        imgPath= getRealPathFromUri(uri);
+                        break;
+                    }
+                    else{
+                        Toast.makeText(getContext(), "이미지를 선택하지 않았습니다.",Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                }
+        }
+
+    }//onActivityResult() END
+
+    //Uri -- > 절대경로로 바꿔서 리턴시켜주는 메소드
+    private String getRealPathFromUri (Uri uri){
+        String[] proj = {MediaStore.Images.Media.DATA};
+        CursorLoader loader = new CursorLoader(getContext(), uri, proj, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result = cursor.getString(column_index);
+        cursor.close();
+        return result;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 10:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) //사용자가 허가 했다면
+                {
+                    Toast.makeText(getContext(), "외부 메모리 읽기/쓰기 사용 가능", Toast.LENGTH_SHORT).show();
+
+                } else {//거부했다면
+                    Toast.makeText(getContext(), "외부 메모리 읽기/쓰기 제한", Toast.LENGTH_SHORT).show();
+
+                }
+                break;
+        }
+    }
+
 
     //프래그먼트 닫는 메소드
     private void removeFragment(Fragment fragment) {
@@ -113,6 +221,9 @@ public class ProjectHomeFragment2 extends Fragment {
         }
         return false;
     }
+
+
+
 
     //자신의 정보 가져오는 스레드
     public class GetPrivateProfile extends AsyncTask<Void, Integer, Void> {
@@ -191,6 +302,8 @@ public class ProjectHomeFragment2 extends Fragment {
             String myPw2 = profileData.substring(sequence3+1);
 
             profile_pw_ch.setText(myPw2);
+            LoadDB loadDB = new LoadDB();
+            loadDB.execute();
 
         }
     }
@@ -251,4 +364,109 @@ public class ProjectHomeFragment2 extends Fragment {
             return null;
         }
     }
-}
+    @SuppressLint("LongLogTag")
+    public void pic_upload(){
+
+        //서버로 보낼 데이터
+        String id = MainActivity.getsId();
+
+        //안드로이드에서 보낼 데이터를 받을 php 서버 주소
+        String serverUrl = "http://jwab.dothome.co.kr/Android/profileImg.php";
+
+        //Volley plus Library를 이용해서 파일전송
+        //파일 전송 요청 객체 생성[결과를 String으로 받음]
+        SimpleMultiPartRequest smpr = new SimpleMultiPartRequest(Request.Method.POST, serverUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                    //    new AlertDialog.Builder(ProjectHomeFragment2.this).setMessage("응답:" + response).create().show();
+                        Log.e("php응답: ",response);
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(getContext(), "ERROR", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        //param값 php로 전송
+        smpr.addStringParam("id",id);
+        //이미지 파일 추가
+        if(imgPath == null){
+            smpr.addStringParam("imgPath", "null");
+        }else{
+            smpr.addFile("imgPath", imgPath);
+        }
+
+
+        //요청객체를 서버로 보낼 우체통 같은 객체 생성
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(smpr);
+
+    }
+    public static class LoadDB extends AsyncTask<Void, Integer, Void> {
+
+
+        @SuppressLint("LongLogTag")
+        @Override
+        protected Void doInBackground(Void... unused) {
+            String id = MainActivity.getsId();
+            Log.e("ProjectHomeFragment2실행됨!!!","오오올오");
+            String param = "id=" + id + "";
+            String serverUri = "http://jwab.dothome.co.kr/Android/profileImgLoad.php";
+
+            try {
+                URL url = new URL(serverUri);
+
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setDoInput(true);
+                //connection.setDoOutput(true);// 이 예제는 필요 없다.
+                connection.setUseCaches(false);
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = connection.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                InputStream is = connection.getInputStream();
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader reader = new BufferedReader(isr);
+
+                buffer = new StringBuffer();
+                String line = reader.readLine();
+                while (line != null) {
+                    buffer.append(line + "\n");
+                    line = reader.readLine();
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @SuppressLint("LongLogTag")
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            String Contents = buffer.toString();
+            Log.e("이미지경로로로로로", Contents);
+
+            img = "http://jwab.dothome.co.kr/Android/" + Contents;
+
+            //게시물 내용과 사진 set해주기
+            Glide.with(mContext).load(img).into(profile_pic);
+
+        }
+    }
+
+
+    }
+

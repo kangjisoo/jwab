@@ -376,9 +376,6 @@ public class BoardView extends AppCompatActivity {
             String[] rows = buffer.toString().split(";");
 
 
-            //대량의 데이터 초기화
-           // boardCommentList.clear();
-
             for (String row : rows) {
                 //한줄 데이터에서 한 칸씩 분리
                 String[] datas = row.split("&");

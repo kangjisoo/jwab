@@ -1,5 +1,6 @@
 package org.techtown.projectmain;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -7,9 +8,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -59,6 +62,8 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         super.onCreate(savedInstanceState);
         setContentView(R.layout.project_home_slide_menu);
 
+
+
         //상단바
         toolbar = findViewById(R.id.toolbar);
         if(useToolbar()){
@@ -66,7 +71,6 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         }else{
             toolbar.setVisibility(View.GONE);
         }
-
 
 
 
@@ -80,6 +84,10 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         //프로필에 사용자 이름 띄우는 DB
         getNameDB getnameDB = new getNameDB();
         getnameDB.execute();
+
+        //ProjectHomeFragment2 projectHomeFragment2 = (ProjectHomeFragment2) getSupportFragmentManager().findFragmentById(R.id.);
+        //((ProjectHomeFragment2) getSupportFragmentManager().findFragmentByTag("myFragmentTag")).;
+
 
         //슬라이드메뉴
         drawer = findViewById(R.id.drawer_layout);
