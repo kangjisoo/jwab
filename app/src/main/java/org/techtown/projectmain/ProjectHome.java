@@ -36,6 +36,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 //ProjectHome메인
 
+
 public class ProjectHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentCallback {
     ProjectHomeRecyclerView fragment0; //로그인 후 첫화면
     ProjectHomeFragment1 fragment1;
