@@ -47,8 +47,8 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
     ProjectBottomMenu2 bottom_menu2;
     ProjectBottomMenu3 bottom_menu3;
     ProjectBottomMenu4 bottom_menu4;
-
-
+    public static StringBuffer buffer = new StringBuffer();
+    public static String img;
     DrawerLayout drawer;
     Toolbar toolbar;
     public static String t1;
@@ -289,5 +289,62 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
             return null;
         }
     }
+    public class Loaddb extends com.android.volley.misc.AsyncTask<Void, Integer, Void> {
 
+
+        @SuppressLint("LongLogTag")
+        @Override
+        protected Void doInBackground(Void... unused) {
+            String id = MainActivity.getsId();
+            String param = "id=" + id + "";
+            String serverUri = "http://jwab.dothome.co.kr/Android/profileImgLoad.php";
+
+            try {
+                URL url = new URL(serverUri);
+
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setDoInput(true);
+                //connection.setDoOutput(true);// 이 예제는 필요 없다.
+                connection.setUseCaches(false);
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = connection.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                InputStream is = connection.getInputStream();
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader reader = new BufferedReader(isr);
+
+                buffer = new StringBuffer();
+                String line = reader.readLine();
+                while (line != null) {
+                    buffer.append(line + "\n");
+                    line = reader.readLine();
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @SuppressLint("LongLogTag")
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            String Contents = buffer.toString();
+
+            Log.e("이미지경로로로로로", Contents);
+
+            img = "http://jwab.dothome.co.kr/Android/" + Contents.trim();
+            //Glide.with(ProjectHome.this).load(img).error(R.drawable.ic_menu_camera).into(profile_pic);
+
+
+        }
+    }
 }

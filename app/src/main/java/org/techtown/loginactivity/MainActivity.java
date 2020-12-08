@@ -210,7 +210,7 @@ public class MainActivity extends Activity {
                             }
                         });
                 AlertDialog dialog = alertBuilder.create();
-                dialog.show();
+                 dialog.show();
             }
 
             //id존재, pw오류일경우

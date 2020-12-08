@@ -174,7 +174,6 @@ public class BoardView extends AppCompatActivity {
             //읽어온 문자열에서 row(레코드)별로 분리하여 배열로 리턴하기
             String[] rows = buffer.toString().split(";");
 
-
             //대량의 데이터 초기화
             boardViewLists.clear();
 

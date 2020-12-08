@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -34,6 +36,9 @@ import com.android.volley.misc.AsyncTask;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.ObjectKey;
 
 import org.techtown.board.BoardAddTest;
 import org.techtown.board.BoardMainRecycler;
@@ -42,6 +47,7 @@ import org.techtown.board.BoardViewList;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,6 +56,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 
 public class ProjectHomeFragment2 extends Fragment {
 
@@ -57,7 +64,7 @@ public class ProjectHomeFragment2 extends Fragment {
     public static ProjectHomeFragment2 mContext;
     public static StringBuffer buffer = new StringBuffer();
     private TextView profile_name, profile_id, profile_pw, profile_pw_ch;
-    public static ImageView profile_pic;
+    public ImageView profile_pic;
     private Button profile_bt;
     public static String img;
     String imgPath;
@@ -78,13 +85,14 @@ public class ProjectHomeFragment2 extends Fragment {
         profile_bt = profileDP.findViewById(R.id.profile_bt);
         profile_pic = profileDP.findViewById(R.id.profile_pic);
 
+
         mContext=this;
 
 
         GetPrivateProfile getPrivateProfile = new GetPrivateProfile();
         getPrivateProfile.execute();
-//        LoadDB loadDB = new LoadDB();
-//        loadDB.execute();
+        Loaddb loadDB = new Loaddb();
+        loadDB.execute();
 
 
 
@@ -302,8 +310,7 @@ public class ProjectHomeFragment2 extends Fragment {
             String myPw2 = profileData.substring(sequence3+1);
 
             profile_pw_ch.setText(myPw2);
-            LoadDB loadDB = new LoadDB();
-            loadDB.execute();
+
 
         }
     }
@@ -407,14 +414,13 @@ public class ProjectHomeFragment2 extends Fragment {
         requestQueue.add(smpr);
 
     }
-    public static class LoadDB extends AsyncTask<Void, Integer, Void> {
+    public class Loaddb extends AsyncTask<Void, Integer, Void> {
 
 
         @SuppressLint("LongLogTag")
         @Override
         protected Void doInBackground(Void... unused) {
             String id = MainActivity.getsId();
-            Log.e("ProjectHomeFragment2실행됨!!!","오오올오");
             String param = "id=" + id + "";
             String serverUri = "http://jwab.dothome.co.kr/Android/profileImgLoad.php";
 
@@ -457,16 +463,19 @@ public class ProjectHomeFragment2 extends Fragment {
             super.onPostExecute(aVoid);
 
             String Contents = buffer.toString();
+
             Log.e("이미지경로로로로로", Contents);
 
-            img = "http://jwab.dothome.co.kr/Android/" + Contents;
+            img = "http://jwab.dothome.co.kr/Android/" + Contents.trim();
+            pic_load();
 
-            //게시물 내용과 사진 set해주기
-            Glide.with(mContext).load(img).into(profile_pic);
 
         }
     }
-
+        public void pic_load(){
+            //프로필사진 set해주기
+            Glide.with(ProjectHomeFragment2.this).load(img).error(R.drawable.ic_menu_camera).into(profile_pic);
+        }
 
     }
 
