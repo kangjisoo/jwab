@@ -16,6 +16,7 @@
         android:text="정보수정"
         android:textSize="25dp"
         android:textStyle="bold"
+        android:textColor="@color/basicColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,6 +30,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="58dp"
         android:layout_marginRight="58dp"
+        android:gravity="left|center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/profile_idView"
         app:layout_constraintTop_toBottomOf="@+id/profile_name" />
@@ -42,6 +44,7 @@
         android:layout_marginTop="56dp"
         android:text="비밀번호 :"
         android:textSize="15dp"
+        android:textColor="@color/basicColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_idView" />
 
@@ -57,6 +60,7 @@
         android:ems="10"
         android:hint="이름"
         android:inputType="textPersonName"
+        android:textColor="@color/basicColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/profile_nameView"
         app:layout_constraintTop_toBottomOf="@+id/imageView6" />
@@ -102,6 +106,7 @@
         android:layout_marginTop="56dp"
         android:text="아이디 :"
         android:textSize="15dp"
+        android:textColor="@color/basicColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_nameView" />
 
@@ -111,6 +116,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
         android:text="확인"
+        android:background="#5B5C56"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -125,6 +132,7 @@
         android:layout_marginTop="56dp"
         android:text="비밀번호 확인 :"
         android:textSize="15dp"
+        android:textColor="@color/basicColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
@@ -137,6 +145,7 @@
         android:layout_marginTop="40dp"
         android:text="이름 : "
         android:textSize="15dp"
+        android:textColor="@color/basicColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 

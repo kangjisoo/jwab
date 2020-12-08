@@ -58,7 +58,7 @@ public class ProjectAdd extends AppCompatActivity {
     final Context context = this;
     private ArrayList<ProjectPerson> mArrayList;
     private ProjectPersonAdapter mAdapter;
-
+    
     //리스트에 추가할 번호 변수
     private int count =0;
     private String value;

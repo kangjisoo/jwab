@@ -6,6 +6,7 @@
     <color name="textColor">#ffffff</color>
     <color name="textColorDisable">#80ffffff</color>
     <color name="jwabBackground">#D6EDFF</color>
+    <color name="basicColor">#5B5C56</color>
 
     <color name="default_calendar_background_color">#D6EDFF</color>
     <color name="default_month_text_color">#595f66</color>

@@ -1,6 +1,11 @@
 package org.techtown.projectmain;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,10 +49,20 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.ViewHolder
     public void onBindViewHolder(NoticeAdapter.ViewHolder viewHolder, final int position) {
          final NoticeData noticeData = nlist.get(position);
 
+         String content = noticeData.getNoticeId()+"님이 "+noticeData.getNoticeKind()+"을 올렸습니다 : "+"\""+noticeData.getNoticeContents()+"\"";
+
+        SpannableString spannableString = new SpannableString(content);
+        if (noticeData.getNoticeKind().equals("게시판")||noticeData.getNoticeKind().equals("투표")||noticeData.getNoticeKind().equals("댓글")) {
+
+            int start = content.indexOf(noticeData.getNoticeKind());
+            int end = start + noticeData.getNoticeKind().length();
+            spannableString.setSpan(new StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new RelativeSizeSpan(1.1f), start, end, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        }
         viewHolder.notice_title.setText("프로젝트 이름 : " + noticeData.getNoticePojectInfo());
         viewHolder.notice_date.setText(noticeData.getNoticeDate());
-        viewHolder.notice_contents.setText(noticeData.getNoticeId()+"님이 "+noticeData.getNoticeKind()+"을 올렸습니다 : "+"\""+noticeData.getNoticeContents()+"\"");
-
+        viewHolder.notice_contents.setText(spannableString);
         viewHolder.notice_date.setTextColor(Color.parseColor("#c9cacd"));
 
 
