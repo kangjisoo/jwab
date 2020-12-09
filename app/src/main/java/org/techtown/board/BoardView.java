@@ -29,6 +29,7 @@ import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 import org.techtown.loginactivity.SignActivty;
 import org.techtown.projectinner.InnerMainRecycler;
+import org.techtown.projectmain.ProjectHomeFragment2;
 import org.techtown.projectmain.ProjectHomeListAdapter;
 
 import java.io.BufferedReader;
@@ -47,7 +48,7 @@ import java.util.Date;
 public class BoardView extends AppCompatActivity {
     private static String pname, pkey;
     public static final int REQUEST_CODE_MENU = 101;
-
+    public static BoardView mContext;
 
     StringBuffer buffer = new StringBuffer();
     TextView title, writer, date, contents;
@@ -60,7 +61,7 @@ public class BoardView extends AppCompatActivity {
     ArrayList<BoardViewList> boardViewLists = new ArrayList<>();
     ArrayList<BoardCommentList> boardCommentList = new ArrayList<>();
 
-    String Date ,Title;
+    String Date ,Title, Writer;
     static String  img1, img2, img3, img4, img5;
     public static String getsImg1() { return img1; }
     public static String getsImg2() { return img2; }
@@ -74,6 +75,7 @@ public class BoardView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.board_post);
 
+        mContext=this;
 
         title = findViewById(R.id.post_title);
         writer = findViewById(R.id.post_writer);
@@ -88,13 +90,14 @@ public class BoardView extends AppCompatActivity {
         Img4 = findViewById(R.id.post_img4);
         Img5 = findViewById(R.id.post_img5);
 
+
         Title = BoardMainRecycler.getsTitle();
-        String Writer = BoardMainRecycler.getsWriter();
+        Writer = BoardMainRecycler.getsWriter();
         Date = BoardMainRecycler.getsDate();
 
-        title.setText(Title);
-        writer.setText(Writer);
-        date.setText(Date);
+
+
+
 
         boardViewAdapter = new BoardViewAdapter(getLayoutInflater(), boardViewLists);
         boardCommentAdapter = new BoardCommentAdapter(getLayoutInflater(), boardCommentList);
@@ -202,6 +205,9 @@ public class BoardView extends AppCompatActivity {
 
                 CommentDB commentDB = new CommentDB();
                 commentDB.execute();
+                //게시물 작성자 프로필사진 set
+                profileImgDB profileImgdb = new profileImgDB();
+                profileImgdb.execute();
 
                 Img1.setOnClickListener(new MyListener());
                 Img2.setOnClickListener(new MyListener());
@@ -464,6 +470,66 @@ public class BoardView extends AppCompatActivity {
         }
     }
 
+    //게시글 작성자의 프로필사진, 이름, 날짜, 제목 set해주는 스레드
+    public class profileImgDB extends com.android.volley.misc.AsyncTask<Void, Integer, Void> {
+        @SuppressLint("LongLogTag")
+        @Override
+        protected Void doInBackground(Void... unused) {
+            String id = MainActivity.getsId();
+            String param = "id=" + id + "";
+            String serverUri = "http://jwab.dothome.co.kr/Android/profileImgLoad.php";
+
+            try {
+                URL url = new URL(serverUri);
+
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setDoInput(true);
+                //connection.setDoOutput(true);// 이 예제는 필요 없다.
+                connection.setUseCaches(false);
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = connection.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                InputStream is = connection.getInputStream();
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader reader = new BufferedReader(isr);
+
+                buffer = new StringBuffer();
+                String line = reader.readLine();
+                while (line != null) {
+                    buffer.append(line + "\n");
+                    line = reader.readLine();
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @SuppressLint("LongLogTag")
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            String Path = buffer.toString();
+
+            ImageView board_img = (ImageView) findViewById(R.id.post_writer_pic);
+
+            String img = "http://jwab.dothome.co.kr/Android/" + Path.trim();
+
+            Glide.with(BoardView.this).load(img).error(R.drawable.ic_menu_camera).into(board_img);
+            title.setText(Title);
+            writer.setText(Writer);
+            date.setText(Date);
+
+        }
+    }
 }
 
 

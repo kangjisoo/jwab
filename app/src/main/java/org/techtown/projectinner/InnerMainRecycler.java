@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,9 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.google.android.material.navigation.NavigationView;
 
 import org.techtown.board.BoardMainRecycler;
 import org.techtown.calendar.innercalendar;
@@ -59,14 +63,14 @@ import org.techtown.projectmain.ProjectHomeListAdapter;
 public class InnerMainRecycler extends Fragment {
     Context context;
     BoardMainRecycler boardMainRecycler;
-    private String personIdString;
+    public static String personIdString;
     RecyclerView recyclerView;
     private String[] splited2;
     private String message;
     private static String  pname;
     private static String  pkey;
+    private StringBuffer buffer;
 
-//    BoardMainRecycler board = new BoardMainRecycler();
     public static String getPname(){
         return pname;
     }
@@ -82,6 +86,7 @@ public class InnerMainRecycler extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         //툴바의 옵션메뉴 동작
         setHasOptionsMenu(true);
 
@@ -96,6 +101,9 @@ public class InnerMainRecycler extends Fragment {
 
         InnerDB innerDB = new InnerDB();
         innerDB.execute();
+
+        myProfileImgDB myProfileImgdb = new myProfileImgDB();
+        myProfileImgdb.execute();
 
         return rootView;
     }
@@ -279,7 +287,6 @@ public class InnerMainRecycler extends Fragment {
 
             //String으로 받아온 "@이름_상메@..."를 "@"로 구분
             String[] splited = personNameString.split("@");
-
             String[] onlyName = new String[splited.length];
             String[] splitedMessage = new String[splited.length];
 
@@ -473,6 +480,124 @@ public class InnerMainRecycler extends Fragment {
             //DB에서 가져온 상태메시지를 띄워줌
             TextView myMessage = getView().findViewById(R.id.my_message);
             myMessage.setText(data);
+        }
+    }
+    public class myProfileImgDB extends com.android.volley.misc.AsyncTask<Void, Integer, Void> {
+
+
+        @SuppressLint("LongLogTag")
+        @Override
+        protected Void doInBackground(Void... unused) {
+            String id = MainActivity.getsId();
+            String param = "id=" + id + "";
+            String serverUri = "http://jwab.dothome.co.kr/Android/profileImgLoad.php";
+
+            try {
+                URL url = new URL(serverUri);
+
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setDoInput(true);
+                //connection.setDoOutput(true);// 이 예제는 필요 없다.
+                connection.setUseCaches(false);
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = connection.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                InputStream is = connection.getInputStream();
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader reader = new BufferedReader(isr);
+
+                buffer = new StringBuffer();
+                String line = reader.readLine();
+                while (line != null) {
+                    buffer.append(line + "\n");
+                    line = reader.readLine();
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @SuppressLint("LongLogTag")
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            String Contents = buffer.toString();
+
+            ImageView inner_img = (ImageView) getView().findViewById(R.id.my_image);
+
+            String img = "http://jwab.dothome.co.kr/Android/" + Contents.trim();
+
+            Glide.with(InnerMainRecycler.this).load(img).error(R.drawable.ic_menu_camera).into(inner_img);
+
+        }
+    }
+
+    public class profileImgDB extends com.android.volley.misc.AsyncTask<Void, Integer, Void> {
+
+
+        @SuppressLint("LongLogTag")
+        @Override
+        protected Void doInBackground(Void... unused) {
+            String id = MainActivity.getsId();
+            String member = personIdString;
+            String param = "id=" + id + "&member=" + member + "";
+            String serverUri = "http://jwab.dothome.co.kr/Android/memberProfile.php";
+
+            try {
+                URL url = new URL(serverUri);
+
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setDoInput(true);
+                //connection.setDoOutput(true);// 이 예제는 필요 없다.
+                connection.setUseCaches(false);
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = connection.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                InputStream is = connection.getInputStream();
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader reader = new BufferedReader(isr);
+
+                buffer = new StringBuffer();
+                String line = reader.readLine();
+                while (line != null) {
+                    buffer.append(line + "\n");
+                    line = reader.readLine();
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @SuppressLint("LongLogTag")
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            String Contents = buffer.toString();
+
+            ImageView inner_img = (ImageView) getView().findViewById(R.id.my_image);
+
+            String img = "http://jwab.dothome.co.kr/Android/" + Contents.trim();
+
+            Glide.with(InnerMainRecycler.this).load(img).error(R.drawable.ic_menu_camera).into(inner_img);
+
         }
     }
 }

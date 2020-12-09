@@ -2,7 +2,9 @@ package org.techtown.projectmain;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,9 +26,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import org.techtown.board.BoardView;
 import org.techtown.loginactivity.FragmentCallback;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
+import org.techtown.projectinner.InnerMainRecycler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,12 +51,17 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
     ProjectBottomMenu2 bottom_menu2;
     ProjectBottomMenu3 bottom_menu3;
     ProjectBottomMenu4 bottom_menu4;
+
     public static StringBuffer buffer = new StringBuffer();
     public static String img;
     DrawerLayout drawer;
     Toolbar toolbar;
     public static String t1;
+    private ProjectHome Context;
+
     public static String getsName(){return t1;}
+
+    ImageView board_img;
 
 
 
@@ -63,6 +72,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         setContentView(R.layout.project_home_slide_menu);
 
 
+        Context = this;
 
         //상단바
         toolbar = findViewById(R.id.toolbar);
@@ -85,8 +95,9 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         getNameDB getnameDB = new getNameDB();
         getnameDB.execute();
 
-        //ProjectHomeFragment2 projectHomeFragment2 = (ProjectHomeFragment2) getSupportFragmentManager().findFragmentById(R.id.);
-        //((ProjectHomeFragment2) getSupportFragmentManager().findFragmentByTag("myFragmentTag")).;
+        profileImgDB profileImgdb = new profileImgDB();
+        profileImgdb.execute();
+
 
 
         //슬라이드메뉴
@@ -99,6 +110,8 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         NavigationView navigationView2 = findViewById(R.id.nav_view);
         navigationView2.setNavigationItemSelectedListener(this);
 
+
+        board_img = findViewById(R.id.post_writer_pic);
 
         fragment0 = new ProjectHomeRecyclerView();
         fragment1 = new ProjectHomeFragment1();
@@ -269,7 +282,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
                 data = buff.toString().trim();
 
                 /* 서버에서 응답 */
-                Log.e("getName : ", data);
+
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -289,7 +302,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
             return null;
         }
     }
-    public class Loaddb extends com.android.volley.misc.AsyncTask<Void, Integer, Void> {
+    public class profileImgDB extends com.android.volley.misc.AsyncTask<Void, Integer, Void> {
 
 
         @SuppressLint("LongLogTag")
@@ -339,11 +352,14 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
 
             String Contents = buffer.toString();
 
-            Log.e("이미지경로로로로로", Contents);
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            View headerView = navigationView.getHeaderView(0);
+            ImageView drawer_img = (ImageView) headerView.findViewById(R.id.profile_image);
+
+            ImageView inner_img = (ImageView) findViewById(R.id.my_image);
 
             img = "http://jwab.dothome.co.kr/Android/" + Contents.trim();
-            //Glide.with(ProjectHome.this).load(img).error(R.drawable.ic_menu_camera).into(profile_pic);
-
+            Glide.with(headerView).load(img).error(R.drawable.ic_menu_camera).into(drawer_img);
 
         }
     }
