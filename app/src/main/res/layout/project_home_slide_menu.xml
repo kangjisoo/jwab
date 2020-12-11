@@ -25,12 +25,12 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@null"
-
-                app:elevation="0dp"
+                android:layout_height="65dp"
+                android:theme="@style/Theme.Dark"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                />
+                app:subtitleTextAppearance="@color/appMainColor"
+                app:subtitleTextColor="@color/appMainColor"
+                app:titleTextColor="@color/appMainColor" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <FrameLayout
