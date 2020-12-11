@@ -3,6 +3,7 @@ package org.techtown.loginactivity;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.techtown.projectinner.InnerMainRecycler;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +25,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class SignActivty extends AppCompatActivity {
     final Context context = this;
@@ -31,6 +36,8 @@ public class SignActivty extends AppCompatActivity {
 
     //중복확인 시 아이디를 수정했을때 확인할 수 있게 도와주는 변수
     static String doubleChekId=null;
+
+    private StringBuffer buffer;
 
 
     EditText NameText, PhoneText, IdText, PasswordText1, PasswordText2;
@@ -100,6 +107,8 @@ public class SignActivty extends AppCompatActivity {
                     Toast.makeText(this, "가입완료", Toast.LENGTH_LONG).show();
                     registDB rdb = new registDB();
                     rdb.execute();
+                    profileImgDB profileimgDB = new profileImgDB();
+                    profileimgDB.execute();
                     finish();
                 }
                 //중복확인을 되었으나 비밀번호가 맞지 않을경우 메시지
@@ -370,9 +379,54 @@ public class SignActivty extends AppCompatActivity {
                 e.printStackTrace();
             }
 
+
             return null;
 
 
         }
+
     }
-}
+    public class profileImgDB extends com.android.volley.misc.AsyncTask<Void, Integer, Void> {
+
+
+        @SuppressLint("LongLogTag")
+        @Override
+        protected Void doInBackground(Void... unused) {
+            String id = sid;
+            String param = "id=" + sid + "";
+            String serverUri = "http://jwab.dothome.co.kr/Android/signProfileImg.php";
+
+            try {
+                URL url = new URL(serverUri);
+
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setDoInput(true);
+                //connection.setDoOutput(true);// 이 예제는 필요 없다.
+                connection.setUseCaches(false);
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = connection.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                InputStream is = connection.getInputStream();
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader reader = new BufferedReader(isr);
+
+                buffer = new StringBuffer();
+                String line = reader.readLine();
+                while (line != null) {
+                    buffer.append(line + "\n");
+                    line = reader.readLine();
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+    }

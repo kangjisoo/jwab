@@ -60,7 +60,7 @@ public class ProjectAdd extends AppCompatActivity {
     private ProjectPersonAdapter mAdapter;
 
     //리스트에 추가할 번호 변수
-    private int count =0;
+    public static int count =0;
     private String value;
     private EditText projectName;
     private String nameValue;

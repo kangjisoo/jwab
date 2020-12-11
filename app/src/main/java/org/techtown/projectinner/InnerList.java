@@ -1,9 +1,12 @@
 package org.techtown.projectinner;
 
+import android.graphics.drawable.Drawable;
+
 public class InnerList {
     String personName;
     String message;
     String key;
+    String img;
     String myName;
     String myMessage;
 
@@ -11,6 +14,14 @@ public class InnerList {
     public InnerList(String personName, String message){
         this.personName = personName;
         this.message = message;
+
+    }
+
+    public InnerList(String personName, String message, String img){
+        this.personName = personName;
+        this.message = message;
+        this.img = img;
+
     }
 
     public String getPersonName() {
@@ -29,7 +40,10 @@ public class InnerList {
         this.message = message;
     }
 
-    public String getKey(){return key;}
+    public String getImg(){return img;}
 
-    public void setKey(String key){this.key = key; }
+    public void setImg(String img) {
+        this.img = img;
+    }
+
 }

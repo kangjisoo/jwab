@@ -1,12 +1,17 @@
 package org.techtown.projectinner;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+
 import org.techtown.loginactivity.R;
 import java.util.ArrayList;
 
@@ -44,17 +49,23 @@ public class InnerListAdapter  extends RecyclerView.Adapter<InnerListAdapter.Vie
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView textView, textView2;
+        ImageView inner_img;
 
         public ViewHolder(View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.person_name);
             textView2 = itemView.findViewById(R.id.person_message);
-
+            inner_img = itemView.findViewById(R.id.person_image);
         }
 
         public void setItem(InnerList item) {
             textView.setText(item.getPersonName());
             textView2.setText(item.getMessage());
+
+            String img = "http://jwab.dothome.co.kr/Android/" + item.getImg();
+            Log.e("img어댑터",img);
+
+            Glide.with(itemView.getContext()).load(img.trim()).error(R.drawable.ic_menu_camera).into(inner_img);
         }
     }
 }

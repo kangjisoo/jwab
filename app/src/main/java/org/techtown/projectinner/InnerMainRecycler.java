@@ -36,6 +36,7 @@ import org.techtown.calendar.innercalendar;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 import org.techtown.projectmain.ItemTouchHelperCallback;
+import org.techtown.projectmain.ProjectAdd;
 import org.techtown.projectmain.ProjectHome;
 import org.techtown.projectmain.ProjectHomeList;
 import org.techtown.projectmain.ProjectHomeListAdapter;
@@ -64,12 +65,17 @@ public class InnerMainRecycler extends Fragment {
     Context context;
     BoardMainRecycler boardMainRecycler;
     public static String personIdString;
+    public static String Contents;
+
     RecyclerView recyclerView;
     private String[] splited2;
     private String message;
     private static String  pname;
     private static String  pkey;
     private StringBuffer buffer;
+    private static String[] onlyName;
+    private static String[] splitedMessage;
+
 
     public static String getPname(){
         return pname;
@@ -104,6 +110,9 @@ public class InnerMainRecycler extends Fragment {
 
         myProfileImgDB myProfileImgdb = new myProfileImgDB();
         myProfileImgdb.execute();
+
+        profileImgDB profileImgdb = new profileImgDB();
+        profileImgdb.execute();
 
         return rootView;
     }
@@ -287,8 +296,8 @@ public class InnerMainRecycler extends Fragment {
 
             //String으로 받아온 "@이름_상메@..."를 "@"로 구분
             String[] splited = personNameString.split("@");
-            String[] onlyName = new String[splited.length];
-            String[] splitedMessage = new String[splited.length];
+            onlyName = new String[splited.length];
+            splitedMessage = new String[splited.length];
 
 
             //personName만을 추출
@@ -298,12 +307,13 @@ public class InnerMainRecycler extends Fragment {
                 nameIndex = splited[i].indexOf("_");
 
                 //onlyName[0] = "이름"
-                onlyName[i] = splited[i].substring(0,nameIndex);
+                          onlyName[i] = splited[i].substring(0,nameIndex);
 
                 //로그인 된 아이디와 이름을 비교하여 나의 프로필이면 제일 상단의 카드뷰에 내 프로필 삽입
                 /*네비게이션뷰의 이름과 splited[i]를 비교, 네비게이션뷰의 아이디와 프로젝트에 삽입된 아이디를 and 연산하여
                 true이면 맨 위 카드뷰인 my_name에 내 닉네임 삽입*/
                 String userName = ProjectHome.getsName();
+
                 if ((userName.equals(onlyName[i])) && (MainActivity.getsId().equals(splited2[i]))) {
                     TextView myName = getView().findViewById(R.id.my_name);
                     myName.setText(onlyName[i]);
@@ -313,7 +323,7 @@ public class InnerMainRecycler extends Fragment {
                 splitedMessage[i] = splited[i].substring(messageIndex+1);
 
                 //나의 프로필과 맞지 않으면 리사이클러뷰의 아이템에 삽입
-                adapter.addItem(new InnerList(onlyName[i], splitedMessage[i]));
+              adapter.addItem(new InnerList(onlyName[i], splitedMessage[i]));
             }
             //내 프로필에 해당하는 카드뷰 선언
             CardView cardView = getView().findViewById(R.id.my_profile_card);
@@ -589,14 +599,42 @@ public class InnerMainRecycler extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            InnerListAdapter adapter = new InnerListAdapter(getActivity());
+            Contents = buffer.toString();
+            int pathIndex, nameIndex;
+            Log.e("buffer에 무엇이 들어완나", Contents);
 
-            String Contents = buffer.toString();
+            //String으로 받아온 "@이름_상메@..."를 "@"로 구분
+            String[] splited = Contents.split("@");
+            String[] userName = new String[splited.length];
+            String[] userImg = new String[splited.length];
 
-            ImageView inner_img = (ImageView) getView().findViewById(R.id.my_image);
+            //personName만을 추출
+            for (int i = 1; i < splited.length; i++) {
+                //"splited = 이름_상메" 형태로 되어있음. "_"로 구분해야하므로 이름과 상메 인덱스에 위치 저장
+                nameIndex = splited[i].indexOf("!");
+                pathIndex = splited[i].indexOf("!");
 
-            String img = "http://jwab.dothome.co.kr/Android/" + Contents.trim();
+                //onlyName[0] = "이름"
+                userName[i] = splited[i].substring(0,nameIndex);
+                userImg[i] = splited[i].substring(pathIndex+1);
 
-            Glide.with(InnerMainRecycler.this).load(img).error(R.drawable.ic_menu_camera).into(inner_img);
+                Log.e("userImg[i]",userImg[i]);
+
+                //로그인 된 아이디와 이름을 비교하여 나의 프로필이면 제일 상단의 카드뷰에 내 프로필 삽입
+                /*네비게이션뷰의 이름과 splited[i]를 비교, 네비게이션뷰의 아이디와 프로젝트에 삽입된 아이디를 and 연산하여
+                true이면 맨 위 카드뷰인 my_name에 내 닉네임 삽입*/
+                String userId = MainActivity.getsId();
+                if (userId.equals(userName[i])){
+
+                }else{
+                    adapter.addItem(new InnerList(onlyName[i], splitedMessage[i], userImg[i]));
+                }
+            }
+            recyclerView.setAdapter(adapter);
+
+
+
 
         }
     }
