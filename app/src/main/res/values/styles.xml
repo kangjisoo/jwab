@@ -1,16 +1,69 @@
 
 <resources>
 
+
 <!-- Base application theme. -->
 <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
     <!-- Customize your theme here. -->
     <item name="windowActionBar">false</item>
     <item name="windowNoTitle">true</item>
 
-    <item name="colorPrimary">@color/colorPrimary</item>
-    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="windowActionBarOverlay">true</item>
+    <item name="android:windowActionBarOverlay">true</item>
+
+    <item name="colorPrimary">#00D4FF00</item>
+    <item name="colorPrimaryDark">#5B5C56</item>
     <item name="colorAccent">@color/colorAccent</item>
+    <item name="colorButtonNormal">#31317B</item>
+    <item name="android:textColor">#31317B</item> <!-- Toolbar의 타이틀 텍스트 색상-->
+<item name="colorControlNormal">#31317B</item>
+
+
 </style>
+
+    <style name="Theme.Dark" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="toolbarStyle">@style/ToolbarStyle.Dark</item> <!--Toolbar 스타일-->
+        <item name="actionMenuTextColor">@color/appMainColor</item> <!--액션 메뉴의 텍스트 색상-->
+        <item name="colorControlNormal">@color/appMainColor</item> <!--홈/뒤로가기 버튼의 색상-->
+    </style>
+
+    <!--Toolbar 스타일-->
+    <style name="ToolbarStyle.Dark" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/textColor</item> <!-- Toolbar의 배경색-->
+        <item name="titleTextAppearance">@style/ToolbarTitleStyle.Dark</item> <!-- Toolbar의 타이틀 텍스트-->
+        <item name="subtitleTextAppearance">@style/ToolbarSubtitleStyle.Dark</item> <!-- Toolbar의 서브타이틀 텍스트-->
+    </style>
+
+    <!-- Toolbar의 타이틀 텍스트-->
+    <style name="ToolbarTitleStyle.Dark" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">@color/appMainColor</item> <!-- Toolbar의 타이틀 텍스트 색상-->
+        <item name="android:textSize">15dp</item> <!-- Toolbar의 타이틀 텍스트 사이즈-->
+    </style>
+
+    <!-- Toolbar의 서브타이틀 텍스트-->
+    <style name="ToolbarSubtitleStyle.Dark" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:textColor">@color/appMainColor</item> <!-- Toolbar의 서브타이틀 텍스트 색상-->
+        <item name="android:textSize">12dp</item> <!-- Toolbar의 서브타이틀 텍스트 사이즈-->
+    </style>
+
+
+
+
+
+
+
+
+
+    <style name="YourAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="android:windowActionBarOverlay">true</item>
+    </style>
+
+    <!--로딩화면-->
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/lodingdp2</item>
+    </style>
 
 <style name="AppTheme.NoActionBar">
     <item name="windowActionBar">false</item>
@@ -19,6 +72,7 @@
 
 <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"
+    />
 
 </resources>

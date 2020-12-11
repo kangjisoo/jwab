@@ -12,7 +12,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -20,8 +22,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -53,9 +57,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class ProjectAdd extends AppCompatActivity {
+public class ProjectAdd extends Fragment {
     private static final Object TAG = "MAIN";
-    final Context context = this;
+
     private ArrayList<ProjectPerson> mArrayList;
     private ProjectPersonAdapter mAdapter;
 
@@ -77,28 +81,29 @@ public class ProjectAdd extends AppCompatActivity {
     Button makeButton;
     private String myId;
 
-
+    @Override
+    public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.project_add);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        final ViewGroup createProject = (ViewGroup) inflater.inflate(R.layout.project_add, container, false);
 
         //총 조원의 수를 나타내기 위해 textview를 받은 변수 (전역 변수로 설정한 이유는 삭제 버튼을 클릭했을 때도 실행, 추가 버튼을 눌렀을 때도 실행되야하기 때문)
-        membercount = (TextView) findViewById(R.id.project_add_membercountview);
+        membercount = (TextView) createProject.findViewById(R.id.project_add_membercountview);
 
         //프로젝트 이름
-        projectName = (EditText)findViewById(R.id.project_add_name);
+        projectName = (EditText)createProject.findViewById(R.id.project_add_name);
 
         //로그인된 자신의 아이디
         myId = MainActivity.getsId();
 
 
         //리싸이클러뷰를 xml파일에 리싸이클러뷰에 연동
-        final RecyclerView recyclerView =(RecyclerView) findViewById(R.id.project_add_recyclerView);
+        final RecyclerView recyclerView =(RecyclerView) createProject.findViewById(R.id.project_add_recyclerView);
 
         LinearLayoutManager layoutManager =
-                new LinearLayoutManager(this);
+                new LinearLayoutManager(getContext());
 
         recyclerView.setLayoutManager(layoutManager);
 
@@ -114,21 +119,21 @@ public class ProjectAdd extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         //추가버튼을 누르면 실행되는 코드
-        Button button = (Button)findViewById(R.id.project_add_addbutton);
+        Button button = (Button)createProject.findViewById(R.id.project_add_addbutton);
         button.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v){
-                insertText = (EditText)findViewById(R.id.project_add_insert_id);
+                insertText = (EditText)createProject.findViewById(R.id.project_add_insert_id);
                 stridPhone = (String)insertText.getText().toString();
 
-                 //비어 있을 경우 메세지창 띄우기
+                //비어 있을 경우 메세지창 띄우기
                 if (stridPhone.equals("")){
-                    Toast.makeText(ProjectAdd.this,"추가할 조원의 아이디를 입력해주세요",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),"추가할 조원의 아이디를 입력해주세요",Toast.LENGTH_LONG).show();
                 }
 
                 else if (stridPhone.equals(myId)){
-                    Toast.makeText(ProjectAdd.this,"본인 아이디는 자동으로 추가됩니다.",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),"본인 아이디는 자동으로 추가됩니다.",Toast.LENGTH_LONG).show();
                 }
                 //비어있지 않으면 실행
                 else {
@@ -144,7 +149,7 @@ public class ProjectAdd extends AppCompatActivity {
 
 
         //삭제 버튼을 클릭시 선택된 리스트 삭제
-        Button deleteButton = (Button)findViewById(R.id.project_add_deletebutton);
+        Button deleteButton = (Button)createProject.findViewById(R.id.project_add_deletebutton);
         deleteButton.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View v){
 
@@ -189,17 +194,17 @@ public class ProjectAdd extends AppCompatActivity {
                 }
 
                 if (listSizeCheck==deleteListSize){
-                    Toast.makeText(ProjectAdd.this, "삭제된 조원이 없습니다.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "삭제된 조원이 없습니다.", Toast.LENGTH_LONG).show();
                 }
                 else
-                    Toast.makeText(ProjectAdd.this, "삭제 완료", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "삭제 완료", Toast.LENGTH_LONG).show();
 
             }
         });
 
 
         //전체선택 체크박스를 체크할 때 발생하는 리스너
-        final CheckBox allCheckBox = (CheckBox)findViewById(R.id.project_add_allcheckbox);
+        final CheckBox allCheckBox = (CheckBox)createProject.findViewById(R.id.project_add_allcheckbox);
         allCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -231,17 +236,17 @@ public class ProjectAdd extends AppCompatActivity {
         });
 
         //만들기 버튼 클릭시 수행되는 리스너
-        makeButton=(Button)findViewById(R.id.project_add_makebutton);
+        makeButton=(Button)createProject.findViewById(R.id.project_add_makebutton);
         makeButton.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(final View view) {
 
                 //프로젝트 이름이 비어 있는지 확인하기 위해
                 nameValue=(String)projectName.getText().toString();
-                final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(ProjectAdd.this);
+                final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
 
                 //dialog에 textview를 넣어주기 위해
-                final EditText projectPassword = new EditText(ProjectAdd.this);
+                final EditText projectPassword = new EditText(getContext());
                 String message = "※공백이나 특수문자는 사용할 수 없습니다.※";
 
                 alertBuilder
@@ -257,26 +262,26 @@ public class ProjectAdd extends AppCompatActivity {
 
                                 //프로젝트이름이 비어있는지 확인
                                 if (nameValue.length()==0){
-                                    Toast.makeText(ProjectAdd.this,"프로젝트 이름을 입력해주세요",Toast.LENGTH_LONG).show();
-                                   // dialog.dismiss();
+                                    Toast.makeText(getContext(),"프로젝트 이름을 입력해주세요",Toast.LENGTH_LONG).show();
+                                    // dialog.dismiss();
                                 }
 
                                 //프로젝트 이름의 공백과 특수문자 유무확인
                                 else if (spaceCheck(nameValue)||specialCharacters(nameValue)){
-                                    Toast.makeText(ProjectAdd.this,"프로젝트 이름에 공백이나 특수문자가 존재합니다 ",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getContext(),"프로젝트 이름에 공백이나 특수문자가 존재합니다 ",Toast.LENGTH_LONG).show();
                                 }
 
                                 //비어있지 않으면서 공백과 특수문자가 없다면 실행
                                 else{
                                     value = projectPassword.getText().toString();
                                     if (value.length()==0) {
-                                        Toast.makeText(ProjectAdd.this, "비밀번호를 입력해주세요", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getContext(), "비밀번호를 입력해주세요", Toast.LENGTH_LONG).show();
                                     }
                                     else if (spaceCheck(value)) {
-                                        Toast.makeText(ProjectAdd.this, "비밀번호에 공백이 존재합니다 다시 입력해주세요", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getContext(), "비밀번호에 공백이 존재합니다 다시 입력해주세요", Toast.LENGTH_LONG).show();
                                     }
                                     else if (specialCharacters(value)){
-                                        Toast.makeText(ProjectAdd.this, "비밀번호에 특수문자가 존재합니다 다시 입력해주세요", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getContext(), "비밀번호에 특수문자가 존재합니다 다시 입력해주세요", Toast.LENGTH_LONG).show();
                                     }
                                     else {
                                         Log.v("TAG", "확인 버튼 클릭");
@@ -287,8 +292,7 @@ public class ProjectAdd extends AppCompatActivity {
                                         makeProjectDB.execute();
 
 
-
-                                        finish();
+                                        getActivity().finish();
                                     }
                                 }
                             }
@@ -310,7 +314,13 @@ public class ProjectAdd extends AppCompatActivity {
             }
         });
 
+
+
+        return createProject;
+
     }
+
+
 
 
     //공백이 있는지 없는지 검출해주는 메소드(공백이 있으면 true 없으면 false)
@@ -413,7 +423,7 @@ public class ProjectAdd extends AppCompatActivity {
                     if (stridPhone.equals(tmp.getSearchId())){
                         Log.e("RESULT","이미 추가된 조원");
 
-                        Toast.makeText(ProjectAdd.this, "이미 추가된 조원 입니다.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "이미 추가된 조원 입니다.", Toast.LENGTH_LONG).show();
                         alreadyExistIdCheck=true;
                         break;
 
@@ -456,21 +466,21 @@ public class ProjectAdd extends AppCompatActivity {
             //db에서 없는 아이디이면 data 1을 출력
             else if (data.equals("1")) {
                 Log.e("RESULT", "찾을 수 없는 아이디");
-                Toast.makeText(ProjectAdd.this, "찾을 수 없는 아이디 입니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "찾을 수 없는 아이디 입니다.", Toast.LENGTH_LONG).show();
             }
 
             //입력창이 비어 있으면 data -1을 출력
             else if (data.equals("-1")){
                 Log.e("RESULT", "입력창이 빈칸");
-                Toast.makeText(ProjectAdd.this, "입력창이 비어 있음", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "입력창이 비어 있음", Toast.LENGTH_LONG).show();
             }
 
             //다른 값이 들어가면 출력되는 문
             else
             {
                 Log.e("RESULT", "알 수 없는 에러 ERRCODE = " + data);
-                Toast.makeText(ProjectAdd.this, "시스템 오류 입니다. 잠시후 다시 시도해 주세요", Toast.LENGTH_LONG).show();
-                finish();
+                Toast.makeText(getContext(), "시스템 오류 입니다. 잠시후 다시 시도해 주세요", Toast.LENGTH_LONG).show();
+                getActivity().finish();
             }
         }
     }
@@ -571,13 +581,13 @@ public class ProjectAdd extends AppCompatActivity {
                     public void onResponse(String response) {
 
                         Log.e("clickAdd() @@@@@@@@@@@@@@응답: ",response);
-                        Toast.makeText(ProjectAdd.this, "프로젝트가 생성되었습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "프로젝트가 생성되었습니다.", Toast.LENGTH_SHORT).show();
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(ProjectAdd.this, "ERROR", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "ERROR", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -586,7 +596,7 @@ public class ProjectAdd extends AppCompatActivity {
         smpr.addStringParam("pkey", projectKey);
 
      //요청객체를 서버로 보낼 우체통 같은 객체 생성
-        RequestQueue requestQueue= Volley.newRequestQueue(this);
+        RequestQueue requestQueue= Volley.newRequestQueue(getContext());
         requestQueue.add(smpr);
 
     }

@@ -136,6 +136,7 @@ public class InnerMainRecycler extends Fragment {
                 Toast.makeText(getContext(),"게시판 클릭됨",Toast.LENGTH_LONG).show();
                 boardMainRecycler = new BoardMainRecycler();
 
+
                 Intent intent2 = new Intent(getContext(), BoardMainRecycler.class);
                 startActivity(intent2);
                 return true;
@@ -335,7 +336,11 @@ public class InnerMainRecycler extends Fragment {
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                    //상태메시지 변경후 다시 눌렀을때 나는 오류 해결을 위한 코드
+                    if (stageMessage.getParent() != null)
+                        ((ViewGroup) stageMessage.getParent()).removeView(stageMessage);
 
                     builder
                             .setTitle("상태메시지")
@@ -351,6 +356,7 @@ public class InnerMainRecycler extends Fragment {
                                     //상태메시지를 변경했을 시 호출되는 DB
                                     stateMessageDB messageDB = new stateMessageDB();
                                     messageDB.execute();
+
                                 }
                             });
 
@@ -487,6 +493,7 @@ public class InnerMainRecycler extends Fragment {
         @Override
         public void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+
             //DB에서 가져온 상태메시지를 띄워줌
             TextView myMessage = getView().findViewById(R.id.my_message);
             myMessage.setText(data);

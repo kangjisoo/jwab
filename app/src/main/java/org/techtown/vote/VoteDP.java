@@ -159,6 +159,7 @@ public class VoteDP extends AppCompatActivity {
             }
         });
 
+        //투표 항목 클릭시 투표할 수 있는 화면으로 전환
         dAdapter.setOnItemClicklistener(new OnPersonItemClickListener() {
             @Override
             public void onItemClick(VoteDPAdapter.ViewHolder holder, View view, int position) {
@@ -236,6 +237,7 @@ public class VoteDP extends AppCompatActivity {
             itemCount= div.length;
             Log.e("체크", Arrays.toString(div));
 
+            //받아온 값 나누기
             int sequence, sequenceS;
             String[] getVoteName = new String[div.length];
             String[] getVoteInfo = new String[div.length];

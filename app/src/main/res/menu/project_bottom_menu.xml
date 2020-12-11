@@ -1,18 +1,30 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:itemIconTint="@drawable/menu_selector_color"
+    app:itemTextColor="@drawable/menu_selector_color"
+
+    >
 
     <item
-    android:id="@+id/tab1"
-    android:icon="@android:drawable/ic_dialog_email"
-    android:title="홈"/>
+        android:id="@+id/tab1"
+        android:icon="@android:drawable/ic_dialog_email"
+        android:title="내정보"
+        android:enabled="true"
+        android:checked="true"
+
+        />
     <item
         android:id="@+id/tab2"
         android:icon="@android:drawable/ic_dialog_email"
-        android:title="게시판"/>
+        android:title="홈"
+        android:enabled="true"
+        android:checked="true"/>
     <item
         android:id="@+id/tab3"
         android:icon="@android:drawable/ic_dialog_email"
-        android:title="알림"/>
+        android:title="알림"
+        android:enabled="true"
+        android:checked="true"/>
 
 
 </menu>

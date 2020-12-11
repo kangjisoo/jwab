@@ -23,7 +23,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:padding="5dp"
-                app:srcCompat="@mipmap/ic_launcher"/>
+                app:srcCompat="@drawable/basic_people2"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -34,15 +34,21 @@
                 <TextView
                     android:id="@+id/person_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="37dp"
+                    android:gravity="left|center"
                     android:text="프로젝트 이름"
-                    android:textSize="30dp"/>
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/basicColor"
+                    />
+
                 <TextView
                     android:id="@+id/person_message"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:text="구성원"
-                    android:textSize="20dp"/>
+                    android:textSize="15dp"
+                    android:textColor="@color/basicColor"/>
             </LinearLayout>
 
         </LinearLayout>

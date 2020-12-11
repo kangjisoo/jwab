@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/jwabBackground"
     tools:ignore="ExtraText">
 
 
@@ -110,8 +111,8 @@
         android:gravity="center"
         android:text="프로젝트 달력"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="#00897B"
-        android:textSize="24sp"
+        android:textColor="@color/basicColor"
+        android:textSize="25dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

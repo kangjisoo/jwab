@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/jwabBackground">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/my_profile_card"
@@ -22,11 +23,11 @@
 
             <ImageView
                 android:id="@+id/my_image"
-                android:layout_width="196dp"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="5dp"
-                app:srcCompat="@drawable/ic_launcher_foreground"
+                app:srcCompat="@drawable/basic_people2"
                 tools:ignore="VectorDrawableCompat" />
 
             <LinearLayout
@@ -38,16 +39,18 @@
                 <TextView
                     android:id="@+id/my_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="37dp"
+                    android:gravity="left|center"
                     android:text="나의ID"
-                    android:textSize="30dp" />
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/my_message"
                     android:layout_width="match_parent"
-                    android:layout_height="38dp"
+                    android:layout_height="37dp"
                     android:text="나의 상태메시지"
-                    android:textSize="20dp" />
+                    android:textSize="15dp" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -61,25 +64,21 @@
             android:id="@+id/progressBar2"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:indeterminateTint="#BFBFBF"/>
 
         <TextView
             android:id="@+id/team_text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="       내 친구들" />
+            android:layout_height="25dp"
+            android:text="       프로젝트 멤버" />
 
-        <ProgressBar
-            android:id="@+id/progressBar3"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/inner_recycler"
         android:layout_width="match_parent"
-        android:layout_height="518dp">
+        android:layout_height="560dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 

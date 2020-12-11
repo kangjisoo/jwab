@@ -58,6 +58,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+//하단바 내정보 탭
 public class ProjectHomeFragment2 extends Fragment {
 
     private static final int RESULT_OK = -1;

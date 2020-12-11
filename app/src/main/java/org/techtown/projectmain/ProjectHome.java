@@ -25,8 +25,11 @@ import androidx.fragment.app.Fragment;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import org.techtown.board.BoardView;
+import org.techtown.board.BoardMainRecycler;
 import org.techtown.loginactivity.FragmentCallback;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
@@ -42,6 +45,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 //ProjectHome메인
 
+
 public class ProjectHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentCallback {
     ProjectHomeRecyclerView fragment0; //로그인 후 첫화면
     ProjectHomeFragment1 fragment1;
@@ -54,6 +58,8 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
 
     public static StringBuffer buffer = new StringBuffer();
     public static String img;
+    BoardMainRecycler boardMainRecycler;
+
     DrawerLayout drawer;
     Toolbar toolbar;
     public static String t1;
@@ -121,6 +127,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         bottom_menu2 = new ProjectBottomMenu2();
         bottom_menu3 = new ProjectBottomMenu3();
         bottom_menu4 = new ProjectBottomMenu4();
+        boardMainRecycler = new BoardMainRecycler();
 
         //가장 처음에 나오는 액티비티(아무것도 누르지 않은 상태)
         getSupportFragmentManager().beginTransaction().add(R.id.container, fragment0).commit();
@@ -134,19 +141,19 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.tab1:
-                                Toast.makeText(getApplicationContext(), "첫번째 탭 선택", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "내 정보 선택", Toast.LENGTH_LONG).show();
+                                onFragmentSelected(5, null);
+                                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment2).commit();
+                                return true;
+
+                            case R.id.tab2:
+                                Toast.makeText(getApplicationContext(), "홈 선택", Toast.LENGTH_LONG).show();
                                 onFragmentSelected(3, null);
                                 getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment0).commit();
                                 return true;
 
-                            case R.id.tab2:
-                                Toast.makeText(getApplicationContext(), "두번째 탭 선택", Toast.LENGTH_LONG).show();
-                                onFragmentSelected(5, null);
-                                getSupportFragmentManager().beginTransaction().replace(R.id.container, bottom_menu3).commit();
-                                return true;
-
                             case R.id.tab3:
-                                Toast.makeText(getApplicationContext(), "세번째 탭 선택", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "알림 선택", Toast.LENGTH_LONG).show();
                                 onFragmentSelected(6, null);
                                 getSupportFragmentManager().beginTransaction().replace(R.id.container, bottom_menu4).commit();
                                 return true;
@@ -156,6 +163,12 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
                 }
         );
     }   //onCreate() 끝
+
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, fragment).commit();      // Fragment로 사용할 MainActivity내의 layout공간을 선택합니다.
+    }
 
     //툴바를 사용할지 말지 정함
     protected boolean useToolbar(){
@@ -177,11 +190,11 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
 
             int id = item.getItemId();
             if (id == R.id.menu1) {
-                Toast.makeText(this, "첫 번째 메뉴 선택됨", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "내 프로젝트 선택", Toast.LENGTH_LONG).show();
                 onFragmentSelected(0, null);
 
             } else if (id == R.id.menu2) {
-                Toast.makeText(this, "두 번째 메뉴 선택됨", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "내 활동 선택", Toast.LENGTH_LONG).show();
                 onFragmentSelected(1, null);
             } else if (id == R.id.menu3) {
                 Toast.makeText(this, "로그아웃", Toast.LENGTH_LONG).show();
@@ -215,8 +228,9 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
                 curFragment = fragment0;
                 toolbar.setTitle("프로젝트 홈");
             } else if (position == 1) {
-                curFragment = fragment2;
-                toolbar.setTitle("두 번째 화면");
+                //
+                curFragment = bottom_menu3;
+                toolbar.setTitle("내 활동");
             } else if (position == 2) {
                 curFragment = fragment3;
                 toolbar.setTitle("세 번째 화면");
@@ -227,12 +241,14 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
                 curFragment = bottom_menu2;
                 toolbar.setTitle("두 번째 탭");
             } else if (position == 5) {
-                curFragment = bottom_menu3;
-                toolbar.setTitle("게시판");
+                curFragment = fragment2;
+                //
+                toolbar.setTitle("내 정보");
             }else if (position == 6) {
                 curFragment = bottom_menu4;
                 toolbar.setTitle("알림");
             }
+
             getSupportFragmentManager().beginTransaction().replace(R.id.container, curFragment).commit();
         }
 

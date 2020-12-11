@@ -34,6 +34,7 @@ public class ProjectHomeRecyclerView extends Fragment {
     ImageButton imageButton;    //플러스버튼
     ItemTouchHelper helper;
     RecyclerView recyclerView;
+    ProjectAdd projectAdd;
 
 
     @Override
@@ -53,13 +54,15 @@ public class ProjectHomeRecyclerView extends Fragment {
         ProjectHomeListAdapter adapter = new ProjectHomeListAdapter(getActivity());
         recyclerView.setAdapter(adapter);
 
+        projectAdd=new ProjectAdd();
+
         //플러스 버튼 누르면 프로젝트생성 액티비티로 전환
         imageButton = (ImageButton) rootView.findViewById(R.id.ladderGamePlusButton);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ProjectAdd.class);
-                startActivity(intent);
+                ((ProjectHome)getActivity()).replaceFragment(projectAdd);
+
             }
         });
         MyProjectDB m = new MyProjectDB();
