@@ -101,7 +101,6 @@ public class BoardMainRecycler extends AppCompatActivity {
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setDoInput(true);
-                //connection.setDoOutput(true);// 이 예제는 필요 없다.
                 connection.setUseCaches(false);
 
                 /* 안드로이드 -> 서버 파라메터값 전달 */

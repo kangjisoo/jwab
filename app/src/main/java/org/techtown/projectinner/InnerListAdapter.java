@@ -63,9 +63,8 @@ public class InnerListAdapter  extends RecyclerView.Adapter<InnerListAdapter.Vie
             textView2.setText(item.getMessage());
 
             String img = "http://jwab.dothome.co.kr/Android/" + item.getImg();
-            Log.e("img어댑터",img);
 
-            Glide.with(itemView.getContext()).load(img.trim()).error(R.drawable.ic_menu_camera).into(inner_img);
+            Glide.with(itemView.getContext()).load(img.trim()).error(R.drawable.basic_people2).into(inner_img);
         }
     }
 }

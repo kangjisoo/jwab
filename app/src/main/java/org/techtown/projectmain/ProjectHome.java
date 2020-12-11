@@ -375,7 +375,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
             ImageView inner_img = (ImageView) findViewById(R.id.my_image);
 
             img = "http://jwab.dothome.co.kr/Android/" + Contents.trim();
-            Glide.with(headerView).load(img).error(R.drawable.ic_menu_camera).into(drawer_img);
+            Glide.with(headerView).load(img).error(R.drawable.basic_people2).into(drawer_img);
 
         }
     }
