@@ -19,14 +19,18 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:theme="@style/AppTheme.AppBarOverlay"
+            >
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimaryDark"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+                android:background="@null"
+
+                app:elevation="0dp"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                />
         </com.google.android.material.appbar.AppBarLayout>
 
         <FrameLayout
@@ -43,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="0dp"
-            app:itemBackground="@color/basicColor"
+            app:itemBackground="@color/appMainColor"
             app:itemIconTint="@color/cardview_light_background"
             app:itemTextColor="@color/cardview_light_background"
             app:layout_anchor="@+id/container"

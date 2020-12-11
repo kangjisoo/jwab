@@ -69,6 +69,10 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
+        //로딩화면
+        Intent intent = new Intent(this, LoadingActivity.class);
+        startActivity(intent);
+
         et_id = (EditText) findViewById(R.id.editTextTextEmailAddress);
         et_pw = (EditText) findViewById(R.id.editTextTextPassword);
         chk_auto = (CheckBox) findViewById(R.id.project_add_allcheckbox);  //자동로그인 체크박스

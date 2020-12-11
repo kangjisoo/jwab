@@ -29,12 +29,10 @@
             android:required="false"
             android:screenOrientation="portrait" />
 
-        <activity
-            android:name="org.techtown.projectmain.ProjectAdd"
-            android:label="프로젝트 만들기"
-            android:screenOrientation="portrait"
-            >
-        </activity>
+        <activity android:name=".LoadingActivity"
+            android:theme="@style/SplashTheme"
+            android:screenOrientation="portrait"/>
+
 
         <activity
             android:name="org.techtown.board.BoardAddTest"

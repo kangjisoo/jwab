@@ -20,6 +20,8 @@ import androidx.fragment.app.Fragment;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import org.techtown.board.BoardMainRecycler;
 import org.techtown.loginactivity.FragmentCallback;
@@ -131,6 +133,12 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
                 }
         );
     }   //onCreate() 끝
+
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, fragment).commit();      // Fragment로 사용할 MainActivity내의 layout공간을 선택합니다.
+    }
 
     //툴바를 사용할지 말지 정함
     protected boolean useToolbar(){
