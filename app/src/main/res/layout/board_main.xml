@@ -17,7 +17,8 @@
         android:id="@+id/post_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@drawable/plusbt_4"
+        android:background="@android:color/transparent"/>
 
 
 
