@@ -42,6 +42,7 @@ import org.techtown.projectmain.ProjectHomeList;
 import org.techtown.projectmain.ProjectHomeListAdapter;
 import org.techtown.projectmain.ProjectHomeRecyclerView;
 import org.techtown.randomgame.RandomGameFirst;
+import org.techtown.randomgame.RandomGameSecond;
 import org.techtown.vote.VoteDP;
 import org.techtown.vote.VoteMain;
 import org.w3c.dom.Text;
@@ -644,4 +645,5 @@ public class InnerMainRecycler extends Fragment {
 
         }
     }
+
 }

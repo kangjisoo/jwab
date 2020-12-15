@@ -26,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -291,8 +292,13 @@ public class ProjectAdd extends Fragment {
                                         MakeProjectDB makeProjectDB = new MakeProjectDB();
                                         makeProjectDB.execute();
 
+                                        Toast.makeText(getContext(), "프로젝트가 생성되었습니다.", Toast.LENGTH_LONG).show();
+                             //           getActivity().finish();
+                                        Intent intent = new Intent(getContext(), ProjectHome.class);
+                                        startActivity(intent);
 
-                                        getActivity().finish();
+
+
                                     }
                                 }
                             }
@@ -579,9 +585,7 @@ public class ProjectAdd extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
-                        Log.e("clickAdd() @@@@@@@@@@@@@@응답: ",response);
-                        Toast.makeText(getContext(), "프로젝트가 생성되었습니다.", Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(getContext(), "프로젝트가 생성되었습니다.", Toast.LENGTH_SHORT).show();
 
                     }
                 }, new Response.ErrorListener() {

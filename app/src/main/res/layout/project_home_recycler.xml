@@ -8,12 +8,13 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/project_home_list_recyclerView"
-        android:layout_width="410dp"
-        android:layout_height="730dp"
+        android:layout_width="407dp"
+        android:layout_height="660dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
         android:id="@+id/ladderGamePlusButton"

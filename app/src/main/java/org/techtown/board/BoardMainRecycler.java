@@ -145,13 +145,14 @@ public class BoardMainRecycler extends AppCompatActivity {
             for (String row : rows) {
                 //한줄 데이터에서 한 칸씩 분리
                 String[] datas = row.split("&");
-                if (datas.length != 3) continue;
+                if (datas.length != 4) continue;
 
                 String title = datas[0];
                 String id = datas[1];
                 String date = datas[2];
+                String profileImg = datas[3];
 
-                adapter.addItem(new BoardList(title, id, date));
+                adapter.addItem(new BoardList(title, id, date, profileImg));
 
             }
 

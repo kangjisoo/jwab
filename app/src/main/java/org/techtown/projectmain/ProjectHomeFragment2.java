@@ -382,7 +382,7 @@ public class ProjectHomeFragment2 extends Fragment {
         String serverUrl = "http://jwab.dothome.co.kr/Android/profileImg.php";
 
         //Volley plus Library를 이용해서 파일전송
-        //파일 전송 요청 객체 생성[결과를 String으로 받음]
+        //파일 전송 요청 객체 생성[결과를 String으로 받음]a
         SimpleMultiPartRequest smpr = new SimpleMultiPartRequest(Request.Method.POST, serverUrl,
                 new Response.Listener<String>() {
                     @Override
@@ -475,7 +475,7 @@ public class ProjectHomeFragment2 extends Fragment {
     }
         public void pic_load(){
             //프로필사진 set해주기
-            Glide.with(ProjectHomeFragment2.this).load(img).error(R.drawable.ic_menu_camera).into(profile_pic);
+            Glide.with(ProjectHomeFragment2.this).load(img).error(R.drawable.basic_people2).into(profile_pic);
         }
 
     }
