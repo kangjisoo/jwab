@@ -55,6 +55,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
     ProjectBottomMenu2 bottom_menu2;
     ProjectBottomMenu3 bottom_menu3;
     ProjectBottomMenu4 bottom_menu4;
+    ProjectHelp projectHelp;
 
     public static StringBuffer buffer = new StringBuffer();
     public static String img;
@@ -121,11 +122,20 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
 
         fragment0 = new ProjectHomeRecyclerView();
         fragment1 = new ProjectHomeFragment1();
+
+        //하단바 내 정보탭
         fragment2 = new ProjectHomeFragment2();
         fragment3 = new ProjectHomeFragment3();
+
         bottom_menu1 = new ProjectBottomMenu1();
         bottom_menu2 = new ProjectBottomMenu2();
+
+        //슬라이드 도움말 탭
+        projectHelp = new ProjectHelp();
+
+        //슬라이드 내활동 탭
         bottom_menu3 = new ProjectBottomMenu3();
+        //하단바 알림 탭
         bottom_menu4 = new ProjectBottomMenu4();
         boardMainRecycler = new BoardMainRecycler();
 
@@ -199,9 +209,12 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
             } else if (id == R.id.menu3) {
                 Toast.makeText(this, "로그아웃", Toast.LENGTH_LONG).show();
                 //onFragmentSelected(2, null);
-
                 logOut(ProjectHome.this);
+            } else if(id == R.id.menu4){
+                Toast.makeText(this, "도움말",Toast.LENGTH_LONG).show();
+                onFragmentSelected(7, null);
             }
+
 
             drawer.closeDrawer(GravityCompat.START);
 
@@ -247,6 +260,9 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
             }else if (position == 6) {
                 curFragment = bottom_menu4;
                 toolbar.setTitle("알림");
+            }else if(position==7){
+                curFragment = projectHelp;
+                toolbar.setTitle("도움말");
             }
 
             getSupportFragmentManager().beginTransaction().replace(R.id.container, curFragment).commit();

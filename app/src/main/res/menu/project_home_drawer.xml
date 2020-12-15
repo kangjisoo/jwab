@@ -16,5 +16,11 @@
             android:id="@+id/menu3"
             android:icon="@drawable/ic_menu_share"
             android:title="로그아웃" />
+
+        <item
+            android:id="@+id/menu4"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="도움말" />
+
     </group>
 </menu>

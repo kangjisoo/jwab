@@ -157,7 +157,9 @@
                 android:layout_gravity="left"
                 android:layout_marginRight="80dp"
                 android:onClick="clickBtn"
-                android:text="사진" />
+                android:text="사진"
+                android:textStyle="bold"
+                android:textColor="@color/textColor"/>
 
             <Button
                 android:id="@+id/board_upload_bt"
@@ -166,7 +168,9 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="80dp"
                 android:onClick="clickUpload"
-                android:text="업로드" />
+                android:text="업로드"
+                android:textStyle="bold"
+                android:textColor="@color/textColor"/>
 
         </LinearLayout>
 
