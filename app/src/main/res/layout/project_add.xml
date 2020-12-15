@@ -145,7 +145,7 @@
                 android:text="추가"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
-                android:background="@color/basicColor"/>
+                android:background="@color/appMainColor"/>
         </LinearLayout>
 
         <View
@@ -165,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_marginRight="83dp"
-                android:background="@color/basicColor"
+                android:background="@color/appMainColor"
                 android:text="삭제"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold" />
@@ -176,7 +176,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginLeft="87dp"
-                android:background="@color/basicColor"
+                android:background="@color/appMainColor"
                 android:text="만들기"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold" />

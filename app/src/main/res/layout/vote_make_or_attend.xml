@@ -20,7 +20,9 @@
             android:layout_marginTop="15dp"
             android:gravity="center"
             android:layout_gravity="center"
-            android:textSize="20dp" />
+            android:textSize="25dp"
+            android:textColor="@color/appMainColor"
+            />
 
         <RadioGroup
             android:id="@+id/voteRadioGroup"
@@ -31,19 +33,23 @@
                 android:id="@+id/voteRadioAll"
                 android:layout_width="match_parent"
                 android:layout_height="23dp"
-                android:text="전체" />
+                android:text="전체"
+                android:buttonTint="@color/appMainColor"/>
 
             <RadioButton
                 android:id="@+id/voteRadioAt"
                 android:layout_width="match_parent"
                 android:layout_height="23dp"
-                android:text="참여한 투표" />
+                android:text="참여한 투표"
+                android:buttonTint="@color/appMainColor"
+                />
 
             <RadioButton
                 android:id="@+id/voteRadioNat"
                 android:layout_width="match_parent"
                 android:layout_height="23dp"
-                android:text="불참한 투표" />
+                android:text="불참한 투표"
+                android:buttonTint="@color/appMainColor"/>
         </RadioGroup>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -63,6 +69,8 @@
         android:layout_marginRight="45dp"
         android:layout_marginBottom="60dp"
         android:text="투표 만들기"
+        android:textColor="@color/textColor"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

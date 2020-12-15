@@ -586,6 +586,7 @@ public class innercalendar extends AppCompatActivity {
                 return;
             }
 
+            //빨간점 찍어주는
             calendarView.removeDecorators();
             calendarView.addDecorator(new CalendarEventDecorator(Color.RED, calendarDays, innercalendar.this));
 
@@ -620,7 +621,7 @@ public class innercalendar extends AppCompatActivity {
 
                     }
                     else {
-                        calendarView.addDecorator(new TermEventDecorator(Color.DKGRAY, calendarDays, innercalendar.this));
+                        calendarView.addDecorator(new TermEventDecorator(Color.GREEN, calendarDays, innercalendar.this));
                     }
                 }
             });

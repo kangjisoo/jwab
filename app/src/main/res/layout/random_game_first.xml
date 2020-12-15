@@ -69,11 +69,9 @@
         android:layout_width="283dp"
         android:layout_height="287dp"
         android:layout_marginStart="16dp"
-
-
         android:layout_marginLeft="16dp"
         android:layout_marginTop="56dp"
-        android:background="@color/jwabBackground"
+        android:background="@drawable/border"
         app:layout_constraintStart_toEndOf="@+id/textView12"
         app:layout_constraintTop_toBottomOf="@+id/memberCountView" />
 
@@ -83,6 +81,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:text="확인"
+        android:textStyle="bold"
+        android:textColor="@color/textColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -96,9 +96,10 @@
         android:ems="10"
         android:gravity="center"
         android:hint="뽑기 제목"
-        android:inputType="textPersonName"
+
+        android:backgroundTint = "@color/appMainColor"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -109,6 +110,7 @@
         android:layout_marginStart="55dp"
         android:layout_marginLeft="55dp"
         android:layout_marginTop="53dp"
+        android:background="@android:color/transparent"
         app:layout_constraintStart_toEndOf="@+id/textView11"
         app:layout_constraintTop_toBottomOf="@+id/randomGameTitleView"
         app:srcCompat="@drawable/minus" />
@@ -120,6 +122,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="53dp"
+        android:background="@android:color/transparent"
         app:layout_constraintStart_toEndOf="@+id/memberCountView"
         app:layout_constraintTop_toBottomOf="@+id/randomGameTitleView"
         app:srcCompat="@drawable/plus" />

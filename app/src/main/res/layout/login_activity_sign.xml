@@ -15,7 +15,7 @@
         android:text="회원가입"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:textColor="#5B5C56"
+        android:textColor="@color/appMainColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,9 +36,9 @@
             android:layout_height="58dp"
             android:hint="이름"
             android:inputType="textPersonName"
-            android:textColor="#5B5C56"
+            android:textColor="#000000"
             android:textColorHint="#888888"
-            android:backgroundTint = "#5B5C56"
+            android:backgroundTint = "@color/appMainColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -49,9 +49,9 @@
             android:ems="10"
             android:hint="전화번호"
             android:inputType="textPersonName"
-            android:textColor="#5B5C56"
+            android:textColor="#000000"
             android:textColorHint="#888888"
-            android:backgroundTint = "#5B5C56"
+            android:backgroundTint = "@color/appMainColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -67,10 +67,10 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="아이디"
-                android:textColor="#5B5C56"
+                android:textColor="#000000"
                 android:inputType="textPersonName"
                 android:textColorHint="#888888"
-                android:backgroundTint = "#5B5C56"/>
+                android:backgroundTint = "@color/appMainColor"/>
 
             <Button
                 android:id="@+id/IdCheckButton"
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="bt_idcheck"
-                android:background="#5B5C56"
+                android:background="@color/appMainColor"
                 android:textStyle="bold"
                 android:text="중복확인" />
         </LinearLayout>
@@ -90,9 +90,9 @@
             android:ems="10"
             android:hint="비밀번호"
             android:inputType="textPassword"
-            android:textColor="#5B5C56"
+            android:textColor="#000000"
             android:textColorHint="#888888"
-            android:backgroundTint = "#5B5C56"
+            android:backgroundTint = "@color/appMainColor"
             />
 
         <EditText
@@ -102,9 +102,9 @@
             android:ems="10"
             android:hint="비밀번호 확인"
             android:inputType="textPassword"
-            android:textColor="#5B5C56"
+            android:textColor="#000000"
             android:textColorHint="#888888"
-            android:backgroundTint = "#5B5C56"
+            android:backgroundTint = "@color/appMainColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -122,7 +122,7 @@
                 android:layout_weight="1"
                 android:text="◀"
                 android:textStyle="bold"
-                android:background="#5B5C56"
+                android:background="@color/appMainColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -135,7 +135,7 @@
                 android:onClick="bt_Join"
                 android:text="가입하기"
                 android:textStyle="bold"
-                android:background="#5B5C56"
+                android:background="@color/appMainColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

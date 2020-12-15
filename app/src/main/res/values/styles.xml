@@ -14,7 +14,9 @@
     <item name="colorPrimaryDark">#5B5C56</item>
     <item name="colorAccent">@color/colorAccent</item>
     <item name="android:textColor">@color/appMainColor</item>
-    <item name="colorControlNormal">#31317B</item>
+
+    <!-- 밑줄 색상 변경-->
+    <item name="colorControlNormal">@color/appMainColor</item>
     <item name="colorButtonNormal">@color/appMainColor</item>
 
 </style>

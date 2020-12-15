@@ -16,7 +16,7 @@
         android:text="정보수정"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:textColor="@color/basicColor"
+        android:textColor="@color/appMainColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -116,7 +116,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
         android:text="확인"
-        android:background="#5B5C56"
+        android:background="@color/appMainColor"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
