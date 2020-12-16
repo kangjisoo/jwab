@@ -42,6 +42,7 @@ import org.techtown.projectmain.ProjectHomeList;
 import org.techtown.projectmain.ProjectHomeListAdapter;
 import org.techtown.projectmain.ProjectHomeRecyclerView;
 import org.techtown.randomgame.RandomGameFirst;
+import org.techtown.randomgame.RandomGameSecond;
 import org.techtown.vote.VoteDP;
 import org.techtown.vote.VoteMain;
 import org.w3c.dom.Text;
@@ -65,7 +66,7 @@ public class InnerMainRecycler extends Fragment {
     Context context;
     BoardMainRecycler boardMainRecycler;
     public static String personIdString;
-    public static String Contents;
+    public static String Contents, myContents;
 
     RecyclerView recyclerView;
     private String[] splited2;
@@ -547,13 +548,13 @@ public class InnerMainRecycler extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            String Contents = buffer.toString();
+            myContents = buffer.toString();
 
             ImageView inner_img = (ImageView) getView().findViewById(R.id.my_image);
 
-            String img = "http://jwab.dothome.co.kr/Android/" + Contents.trim();
+            String img = "http://jwab.dothome.co.kr/Android/" + myContents.trim();
 
-            Glide.with(InnerMainRecycler.this).load(img).error(R.drawable.ic_menu_camera).into(inner_img);
+            Glide.with(InnerMainRecycler.this).load(img).error(R.drawable.basic_people2).into(inner_img);
 
         }
     }
@@ -609,7 +610,6 @@ public class InnerMainRecycler extends Fragment {
             InnerListAdapter adapter = new InnerListAdapter(getActivity());
             Contents = buffer.toString();
             int pathIndex, nameIndex;
-            Log.e("buffer에 무엇이 들어완나", Contents);
 
             //String으로 받아온 "@이름_상메@..."를 "@"로 구분
             String[] splited = Contents.split("@");
@@ -645,4 +645,5 @@ public class InnerMainRecycler extends Fragment {
 
         }
     }
+
 }

@@ -28,6 +28,8 @@ import com.bumptech.glide.Glide;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 import org.techtown.loginactivity.SignActivty;
+import org.techtown.projectinner.InnerList;
+import org.techtown.projectinner.InnerListAdapter;
 import org.techtown.projectinner.InnerMainRecycler;
 import org.techtown.projectmain.ProjectHomeFragment2;
 import org.techtown.projectmain.ProjectHomeListAdapter;
@@ -260,7 +262,7 @@ public class BoardView extends AppCompatActivity {
         pname = ProjectHomeListAdapter.getProjectNameImsi() +
                       "_" + ProjectHomeListAdapter.getSee();    //프로젝트명_프로젝트키
         String name = Title;                                    //게시물의 제목
-
+        String profileImg = InnerMainRecycler.myContents;       //댓글 남기는 사용자의 프로필사진 경로
 
 
         //안드로이드에서 보낼 데이터를 받을 php 서버 주소
@@ -289,6 +291,7 @@ public class BoardView extends AppCompatActivity {
         smpr.addStringParam("name", name);
         smpr.addStringParam("contents", contents);
         smpr.addStringParam("boardDate",boardDate);
+        smpr.addStringParam("profileImg",profileImg);
 
 //현재날짜 저장 변수
         long now = System.currentTimeMillis();
@@ -301,7 +304,7 @@ public class BoardView extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(smpr);
 
-        adapter.addItem(new BoardCommentList(contents, id, time));
+        adapter.addItem(new BoardCommentList(contents, id, time, profileImg));
         adapter.notifyItemInserted(adapter.getItemCount());
         adapter.notifyDataSetChanged();
 
@@ -330,6 +333,8 @@ public class BoardView extends AppCompatActivity {
             pname = ProjectHomeListAdapter.getProjectNameImsi() + "_" + ProjectHomeListAdapter.getSee();
             String boardDate = Date;
             String boardTitle = Title;
+
+
 
 
             String param = "pname=" + pname + "&boardDate=" + boardDate + "&boardTitle=" + boardTitle +"";
@@ -384,14 +389,15 @@ public class BoardView extends AppCompatActivity {
             for (String row : rows) {
                 //한줄 데이터에서 한 칸씩 분리
                 String[] datas = row.split("&");
-                if (datas.length != 3) continue;
+                if (datas.length != 4) continue;
 
                 String comment = datas[0];
                 String id = datas[1];
                 String date = datas[2];
+                String profileImg = datas[3];
 
 
-                adapter.addItem(new BoardCommentList(comment, id, date));
+                adapter.addItem(new BoardCommentList(comment, id, date, profileImg));
 
 
             }
@@ -475,7 +481,7 @@ public class BoardView extends AppCompatActivity {
         @SuppressLint("LongLogTag")
         @Override
         protected Void doInBackground(Void... unused) {
-            String id = MainActivity.getsId();
+            String id = Writer;
             String param = "id=" + id + "";
             String serverUri = "http://jwab.dothome.co.kr/Android/profileImgLoad.php";
 
@@ -523,13 +529,16 @@ public class BoardView extends AppCompatActivity {
 
             String img = "http://jwab.dothome.co.kr/Android/" + Path.trim();
 
-            Glide.with(BoardView.this).load(img).error(R.drawable.ic_menu_camera).into(board_img);
+            Glide.with(BoardView.this).load(img).error(R.drawable.basic_people2).into(board_img);
             title.setText(Title);
             writer.setText(Writer);
             date.setText(Date);
 
         }
     }
+
+
+
 }
 
 

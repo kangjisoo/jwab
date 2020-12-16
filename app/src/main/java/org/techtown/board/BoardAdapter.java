@@ -1,6 +1,7 @@
 package org.techtown.board;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,12 +63,14 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder>
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView title, writer, date;
+        ImageView profileImg;
 
         public ViewHolder(View itemView, final BoardItemClickListener listener) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             writer = itemView.findViewById(R.id.writer);
             date = itemView.findViewById(R.id.date);
+            profileImg = itemView.findViewById(R.id.board_picture);
 
 
             itemView.setOnClickListener(new View.OnClickListener(){
@@ -86,6 +89,9 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder>
             title.setText(item.getTitle());
             writer.setText(item.getWriter());
             date.setText(item.getDate());
+            String img = "http://jwab.dothome.co.kr/Android/" + item.getProfileImg();
+
+            Glide.with(itemView.getContext()).load(img.trim()).error(R.drawable.ic_menu_camera).into(profileImg);
         }
     }
 

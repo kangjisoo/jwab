@@ -3,10 +3,13 @@ package org.techtown.board;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import org.techtown.loginactivity.R;
 
@@ -45,12 +48,14 @@ public class BoardCommentAdapter extends RecyclerView.Adapter<BoardCommentAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView comment, writer, date;
-        //ImageView img1, img2, img3, img4, img5;
+        ImageView profileImg;
+
         public ViewHolder(View itemView) {
             super(itemView);
             comment = itemView.findViewById(R.id.comment);
             writer = itemView.findViewById(R.id.comment_writer);
             date = itemView.findViewById(R.id.comment_date);
+            profileImg = itemView.findViewById(R.id.comment_picture);
         }
 
         public void setItem(BoardCommentList item) {
@@ -58,6 +63,9 @@ public class BoardCommentAdapter extends RecyclerView.Adapter<BoardCommentAdapte
             comment.setText(item.getComment());
             writer.setText(item.getWriter());
             date.setText(item.getDate());
+            String img = "http://jwab.dothome.co.kr/Android/" + item.getProfileImg();
+
+            Glide.with(itemView.getContext()).load(img.trim()).error(R.drawable.basic_people2).into(profileImg);
         }
     }
 

@@ -2,12 +2,13 @@ package org.techtown.board;
 
 public class BoardCommentList {
 
-    String comment, writer, date;
+    String comment, writer, date, profileImg;
 
-    public BoardCommentList(String comment, String writer, String date){
+    public BoardCommentList(String comment, String writer, String date, String profileImg){
         this.comment = comment;
         this.writer = writer;
         this.date = date;
+        this.profileImg = profileImg;
     }
 
     public String getComment() {
@@ -33,6 +34,15 @@ public class BoardCommentList {
     public void setDate(String date) {
         this.date = date;
     }
+
+    public String getProfileImg() {
+        return profileImg;
+    }
+
+    public void setProfileImg(String profileImg) {
+        this.profileImg = profileImg;
+    }
+
 
 
 }

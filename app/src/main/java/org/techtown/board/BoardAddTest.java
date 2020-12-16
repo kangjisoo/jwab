@@ -9,6 +9,7 @@ import androidx.loader.content.CursorLoader;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -291,7 +292,8 @@ public class BoardAddTest extends AppCompatActivity {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-//                            new AlertDialog.Builder(BoardAddTest.this).setMessage("응답:" + response).create().show();
+                            Log.e("응답", response);
+                          //  new AlertDialog.Builder(BoardAddTest.this).setMessage("응답:" + response).create().show();
 
                 Intent intent = new Intent(BoardAddTest.this, BoardMainRecycler.class);
                 startActivity(intent);
@@ -305,6 +307,8 @@ public class BoardAddTest extends AppCompatActivity {
                 }
             });
 
+            String profileImg = InnerMainRecycler.myContents;   //게시물 올리는 사용자의 프로필사진 경로
+            Log.e("BoardAddTest ImgPath", profileImg);
 
             //param값 php로 전송
             smpr.addStringParam("id",id);
@@ -314,6 +318,8 @@ public class BoardAddTest extends AppCompatActivity {
             smpr.addStringParam("contents", contents);
             smpr.addStringParam("count", String.valueOf(count));
             smpr.addStringParam("imgTest",imgPath1);
+            smpr.addStringParam("profileImg", profileImg.trim());
+
             //이미지 파일 추가
             if(imgPath1 == null){
                 smpr.addStringParam("img1", "null");
