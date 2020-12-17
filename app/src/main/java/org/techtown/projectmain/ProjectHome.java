@@ -71,8 +71,6 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
     ImageView board_img;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

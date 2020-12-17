@@ -8,11 +8,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
@@ -27,6 +29,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeListAdapter.ViewHolder>
         implements ItemTouchHelperListener {
@@ -35,6 +38,9 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
     ArrayList<ProjectHomeList> items = new ArrayList<ProjectHomeList>();
     private static String projectNameImsi;
     private static String see;
+    private static String checkInHere;
+    private String projectPwStore;
+    private String projectPW;
     InnerMainRecycler innerMainRecycler;
 
     Context context;
@@ -51,7 +57,7 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
 
         public ViewHolder(View itemView) {
             super(itemView);
-//
+
 
             //itemView클릭 시 InnerMainRecycler로 화면 전환
             itemView.setOnClickListener(new View.OnClickListener(){
@@ -62,8 +68,9 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
                projectNameImsi= items.get(ViewHolder.super.getAdapterPosition()).getProjectName();
               see = items.get(ViewHolder.super.getAdapterPosition()).getKey();
 
-                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().
-                        replace(R.id.container, innerMainRecycler).commit();
+               GetProjectCheckInDB getProjectCheckInDB = new GetProjectCheckInDB();
+               getProjectCheckInDB.execute();
+
 
                 Log.e("ClickTest","Ok");
             }
@@ -168,7 +175,6 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
         AlertDialog dialog = builder.create();
         dialog.show();
 
-
     }
 
     //삭제버튼 누를 시 DB의 프로젝트 정보 삭제
@@ -227,5 +233,107 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
             return null;
         }
 
+    }
+
+    //프로젝트를 한번 이상 들어갔는지 확인하는 스레드
+    public class GetProjectCheckInDB extends AsyncTask<Void,Integer,Void>{
+        String data = "";
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+
+            //자신의 아이디, 프로젝트이름과 키를 넘겨줌
+            String param = "myId=" + MainActivity.getsId() + "&projectName=" + projectNameImsi+ "&key="+see+ "";
+
+            try {
+
+                /* 서버연결 */
+                URL url = new URL(
+                        "http://rtemd.suwon.ac.kr/guest/projectCheckIn.php");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+                Log.e("ServerTest","test");
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+
+                outs.flush();
+                outs.close();
+
+                /* 서버 -> 안드로이드 파라메터값 전달 */
+                InputStream is = null;
+                BufferedReader in = null;
+
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ((line = in.readLine()) != null) {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+
+                /* 서버에서 응답 */
+                Log.e("check in!", data);
+
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+    }
+
+        @Override
+        public void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            final EditText stageMessage = new EditText(context);
+
+            String projectInfo = data;
+            final String[] splited = projectInfo.split("_");
+
+            checkInHere = splited[0];
+            projectPwStore = splited[1];
+
+            androidx.appcompat.app.AlertDialog.Builder alertBuilder = new androidx.appcompat.app.AlertDialog.Builder(context);
+            if (checkInHere.equals("0")){
+                alertBuilder
+                        .setTitle("비밀번호를 입력해주세요(최초 1회 입력)")
+                        .setView(stageMessage)
+                        .setCancelable(true)
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                projectPW = stageMessage.getText().toString();
+
+                                //비밀번호 일치
+                                if (projectPW.equals(splited[1])){
+
+                                    Toast.makeText(context,"비밀번호 일치",Toast.LENGTH_LONG).show();
+                                    //프레그먼트 전환
+                                    ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().
+                                            replace(R.id.container, innerMainRecycler).commit();
+                                }
+
+                                //비밀번호 불일치
+                                else{
+                                    Toast.makeText(context,"비밀번호 불일치",Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                androidx.appcompat.app.AlertDialog dialog = alertBuilder.create();
+                dialog.show();
+            }
+
+        }
     }
 }
