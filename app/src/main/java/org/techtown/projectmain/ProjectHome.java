@@ -73,6 +73,8 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
 
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +99,10 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         View headerView = navigationView.getHeaderView(0);
         TextView navUserId = (TextView) headerView.findViewById(R.id.profile_email);
         navUserId.setText(MainActivity.getsId());
+
+        //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        //View headerView = navigationView.getHeaderView(0);
+
 
         //프로필에 사용자 이름 띄우는 DB
         getNameDB getnameDB = new getNameDB();
@@ -336,6 +342,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
     }
     public class profileImgDB extends com.android.volley.misc.AsyncTask<Void, Integer, Void> {
 
+        Context context;
 
         @SuppressLint("LongLogTag")
         @Override
@@ -383,12 +390,9 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
             super.onPostExecute(aVoid);
 
             String Contents = buffer.toString();
-
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             View headerView = navigationView.getHeaderView(0);
             ImageView drawer_img = (ImageView) headerView.findViewById(R.id.profile_image);
-
-            ImageView inner_img = (ImageView) findViewById(R.id.my_image);
 
             img = "http://jwab.dothome.co.kr/Android/" + Contents.trim();
             Glide.with(headerView).load(img).error(R.drawable.basic_people2).into(drawer_img);

@@ -211,6 +211,7 @@ public class BoardView extends AppCompatActivity {
                 profileImgDB profileImgdb = new profileImgDB();
                 profileImgdb.execute();
 
+
                 Img1.setOnClickListener(new MyListener());
                 Img2.setOnClickListener(new MyListener());
                 Img3.setOnClickListener(new MyListener());

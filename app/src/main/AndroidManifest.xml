@@ -51,6 +51,12 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity
+            android:name="org.techtown.projectmain.MemberAdd"
+            tools:ignore="Instantiatable"
+            android:screenOrientation="portrait">
+        </activity>
+
 
         <activity android:name="org.techtown.projectinner.InnerMainRecycler"
             android:label="projectInner"
@@ -119,6 +125,8 @@
             android:screenOrientation="portrait">
 
         </activity>
+
+
 
     </application>
 

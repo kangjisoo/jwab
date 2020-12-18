@@ -39,6 +39,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.signature.ObjectKey;
+import com.google.android.material.navigation.NavigationView;
 
 import org.techtown.board.BoardAddTest;
 import org.techtown.board.BoardMainRecycler;
@@ -149,7 +150,7 @@ public class ProjectHomeFragment2 extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) {
-            profile_pic.setImageResource(0);
+            //profile_pic.setImageResource(0);
             Toast.makeText(getContext(), "취소 되었습니다.", Toast.LENGTH_SHORT).show();
 
             return;
@@ -476,6 +477,8 @@ public class ProjectHomeFragment2 extends Fragment {
         public void pic_load(){
             //프로필사진 set해주기
             Glide.with(ProjectHomeFragment2.this).load(img).error(R.drawable.basic_people2).into(profile_pic);
+//            ProjectHome.profileImgDB profileImgDB = new ProjectHome.profileImgDB();
+//            profileImgDB.execute();
         }
 
     }

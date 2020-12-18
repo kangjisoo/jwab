@@ -36,6 +36,7 @@ import org.techtown.calendar.innercalendar;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 import org.techtown.projectmain.ItemTouchHelperCallback;
+import org.techtown.projectmain.MemberAdd;
 import org.techtown.projectmain.ProjectAdd;
 import org.techtown.projectmain.ProjectHome;
 import org.techtown.projectmain.ProjectHomeList;
@@ -71,17 +72,18 @@ public class InnerMainRecycler extends Fragment {
     RecyclerView recyclerView;
     private String[] splited2;
     private String message;
-    private static String  pname;
-    private static String  pkey;
+    private static String pname;
+    private static String pkey;
     private StringBuffer buffer;
     private static String[] onlyName;
     private static String[] splitedMessage;
 
 
-    public static String getPname(){
+    public static String getPname() {
         return pname;
     }
-    public static String getPkey(){
+
+    public static String getPkey() {
         return pkey;
     }
 
@@ -121,42 +123,46 @@ public class InnerMainRecycler extends Fragment {
     //툴바 오른쪽 메뉴 설정(캘린더, 게시판...)
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    super.onCreateOptionsMenu(menu, inflater);
-    inflater.inflate(R.menu.inner_menu, menu);
-}
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.inner_menu, menu);
+    }
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings1:
-                Toast.makeText(getContext(),"캘린더 클릭됨",Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "캘린더", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getContext(), innercalendar.class);
                 startActivity(intent);
                 return true;
 
             case R.id.action_settings2:
-                Toast.makeText(getContext(),"게시판 클릭됨",Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "게시판", Toast.LENGTH_LONG).show();
                 boardMainRecycler = new BoardMainRecycler();
-
-
                 Intent intent2 = new Intent(getContext(), BoardMainRecycler.class);
                 startActivity(intent2);
                 return true;
             case R.id.action_settings3:
-                Toast.makeText(getContext(),"뽑기 클릭됨",Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "뽑기", Toast.LENGTH_LONG).show();
 
                 Intent intent3 = new Intent(getContext(), RandomGameFirst.class);
                 startActivity(intent3);
                 return true;
-            default:
 
-                Toast.makeText(getContext(),"투표 클릭됨",Toast.LENGTH_LONG).show();
+            case R.id.action_settings4:
+                Toast.makeText(getContext(), "투표", Toast.LENGTH_LONG).show();
 
                 Intent intent4 = new Intent(getContext(), VoteDP.class);
                 startActivity(intent4);
                 return true;
 
+            default:
+                Toast.makeText(getContext(), "멤버초대", Toast.LENGTH_LONG).show();
+
+                return true;
         }
     }
+
 
     //선택된 프로젝트에 속한 팀원들의 id를 가져오는 DB
     public class InnerDB extends AsyncTask<Void, Integer, Void> {

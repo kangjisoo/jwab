@@ -184,7 +184,7 @@ public class ProjectHomeRecyclerView extends Fragment {
                 adapter.addItem(new ProjectHomeList(projectName[i], MainActivity.getsId() +"님 외 " + countMember[i] +"명"));
                 adapter.items.get(i-1).setKey(inn[i]);
                 adapter.notifyItemInserted(adapter.getItemCount());
-               adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
 
 
 
