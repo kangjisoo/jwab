@@ -16,10 +16,6 @@
     $sql="select contents, img1, img2, img3, img4, img5 from ".$pname."_".$pkey." where date = '" .$date."'";
     $result=mysqli_query($conn, $sql);
 
-  
-       // $row= mysqli_query($conn, $sql);
-       //    echo "$row[contents]&$row[img1]&$row[img2]&$row[img3]&$row[img4]&$row[img5];"; 
-
      //결과의 총 레코드 수(줄 수, 행의 개수)
    
         //데이터 한줄을 연관배열(키값으로 구분)로 받아오기

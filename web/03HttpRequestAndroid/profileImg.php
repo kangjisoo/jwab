@@ -23,9 +23,8 @@
         $dstName1= "uploads/".date('Ymd_his').$srcName1;
         $result1=move_uploaded_file($tmpName1, $dstName1);
       }
-       
- 
-  
+    
+
    //글 작성 시간 변수
     $now= date('Y-m-d H:i:s');
 
@@ -33,15 +32,19 @@
     $sql="select id from profile_img where id = '" .$id. "'";
     $result = mysqli_query($connect, $sql);
     $rowCnt= mysqli_num_rows($result);
-    echo $sql;
+    
 
       if($rowCnt>=1){
         $sql = "update profile_img set imgPath = '$dstName1' where id = '$id'";
         $result = mysqli_query($connect, $sql);
+     
       }else{
         $sql="insert into profile_img (id, imgPath) values ('$id', '$dstName1')";
         $result = mysqli_query($connect, $sql);
       }
+      echo $dstName1;
+
+
   
         
 

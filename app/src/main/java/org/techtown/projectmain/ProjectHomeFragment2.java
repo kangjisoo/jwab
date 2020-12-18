@@ -68,7 +68,7 @@ public class ProjectHomeFragment2 extends Fragment {
     private TextView profile_name, profile_id, profile_pw, profile_pw_ch;
     public ImageView profile_pic;
     private Button profile_bt;
-    public static String img;
+    public static String img, projectName, myImgPath;
     String imgPath;
 
     @Override
@@ -117,8 +117,9 @@ public class ProjectHomeFragment2 extends Fragment {
                     //현재 내 프래그먼트 닫기
                     //removeFragment(ProjectHomeFragment2.this);
 
+                    SearchProject searchProject = new SearchProject();
+                    searchProject.execute();
                     Toast.makeText(getContext(), "정보 수정이 완료되었습니다.",Toast.LENGTH_SHORT).show();
-
 
                 }
 
@@ -390,6 +391,8 @@ public class ProjectHomeFragment2 extends Fragment {
                     public void onResponse(String response) {
                     //    new AlertDialog.Builder(ProjectHomeFragment2.this).setMessage("응답:" + response).create().show();
                         Log.e("php응답: ",response);
+                        myImgPath = response;
+
 
 
                     }
@@ -469,17 +472,122 @@ public class ProjectHomeFragment2 extends Fragment {
             Log.e("이미지경로로로로로", Contents);
 
             img = "http://jwab.dothome.co.kr/Android/" + Contents.trim();
-            pic_load();
+            Glide.with(ProjectHomeFragment2.this).load(img).error(R.drawable.basic_people2).into(profile_pic);
+
 
 
         }
     }
-        public void pic_load(){
-            //프로필사진 set해주기
-            Glide.with(ProjectHomeFragment2.this).load(img).error(R.drawable.basic_people2).into(profile_pic);
-//            ProjectHome.profileImgDB profileImgDB = new ProjectHome.profileImgDB();
-//            profileImgDB.execute();
+
+    //로그인된 사용자의 프로젝트 이름 모두 가져오는 스레드
+    public class SearchProject extends AsyncTask<Void, Integer, Void> {
+
+
+        @SuppressLint("LongLogTag")
+        @Override
+        protected Void doInBackground(Void... unused) {
+            String id = MainActivity.getsId();
+            String param = "id=" + id + "";
+            String serverUri = "http://rtemd.suwon.ac.kr/guest/getProjectName.php";
+
+            try {
+                URL url = new URL(serverUri);
+
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setDoInput(true);
+                //connection.setDoOutput(true);// 이 예제는 필요 없다.
+                connection.setUseCaches(false);
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = connection.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                InputStream is = connection.getInputStream();
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader reader = new BufferedReader(isr);
+
+                buffer = new StringBuffer();
+                String line = reader.readLine();
+                while (line != null) {
+                    buffer.append(line + "\n");
+                    line = reader.readLine();
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
+        @SuppressLint("LongLogTag")
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            projectName = buffer.toString();
+
+            UpdateProfileImg updateProfileImg = new UpdateProfileImg();
+            updateProfileImg.execute();
+
+        }
+    }
+    public class UpdateProfileImg extends AsyncTask<Void, Integer, Void> {
+
+
+        @SuppressLint("LongLogTag")
+        @Override
+        protected Void doInBackground(Void... unused) {
+            String id = MainActivity.getsId();
+            String param = "id=" + id + "&projectName=" + projectName + "&imgPath=" + myImgPath + "";
+            String serverUri = "http://jwab.dothome.co.kr/Android/updateProfileImg.php";
+
+            try {
+                URL url = new URL(serverUri);
+
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setDoInput(true);
+                //connection.setDoOutput(true);// 이 예제는 필요 없다.
+                connection.setUseCaches(false);
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = connection.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                InputStream is = connection.getInputStream();
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader reader = new BufferedReader(isr);
+
+                buffer = new StringBuffer();
+                String line = reader.readLine();
+                while (line != null) {
+                    buffer.append(line + "\n");
+                    line = reader.readLine();
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @SuppressLint("LongLogTag")
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            String count = buffer.toString();
+            Log.e("프로젝트 첫번째 이름", count);
+
+
+        }
+    }
     }
 

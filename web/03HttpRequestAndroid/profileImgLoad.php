@@ -8,7 +8,7 @@
 
  
     //쿼리문 작성
-    $sql="select imgpath from profile_img where id = '" .$id. "'";
+    $sql="select imgPath from profile_img where id = '" .$id. "'";
     $result=mysqli_query($conn, $sql);
 
   
@@ -19,7 +19,7 @@
    
         //데이터 한줄을 연관배열(키값으로 구분)로 받아오기
         $row= mysqli_fetch_array($result, MYSQLI_ASSOC);
-        echo "$row[imgpath]";
+        echo "$row[imgPath]";
     mysqli_close($conn);
  
 ?>
