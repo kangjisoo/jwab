@@ -198,7 +198,7 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
                 conn.setRequestMethod("POST");
                 conn.setDoInput(true);
                 conn.connect();
-                Log.e("ServerTest","test");
+                //Log.e("ServerTest","test");
                 /* 안드로이드 -> 서버 파라메터값 전달 */
                 OutputStream outs = conn.getOutputStream();
                 outs.write(param.getBytes("UTF-8"));
@@ -256,7 +256,7 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
                 conn.setRequestMethod("POST");
                 conn.setDoInput(true);
                 conn.connect();
-                Log.e("ServerTest","test");
+                //Log.e("ServerTest","test");
                 /* 안드로이드 -> 서버 파라메터값 전달 */
                 OutputStream outs = conn.getOutputStream();
                 outs.write(param.getBytes("UTF-8"));
@@ -281,8 +281,6 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
                 /* 서버에서 응답 */
                 Log.e("check in!", data);
 
-
-
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -301,10 +299,23 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
             String projectInfo = data;
             final String[] splited = projectInfo.split("_");
 
-            checkInHere = splited[0];
-            projectPwStore = splited[1];
+            //이미 비밀번호가 입력됐을때
+            if (splited.length==1){
+
+                //isProjectManager값
+                checkInHere = splited[0];
+
+                //비밀번호가 한번도 입력되지 않을 때
+            }else{
+
+                //isProjectManager값과 projectPassword
+                checkInHere = splited[0];
+                projectPwStore = splited[1];
+            }
 
             androidx.appcompat.app.AlertDialog.Builder alertBuilder = new androidx.appcompat.app.AlertDialog.Builder(context);
+
+            //isProjectManager가 0이면 한번도 프로젝트 패스워드를 입력하지 않은 상태
             if (checkInHere.equals("0")){
                 alertBuilder
                         .setTitle("비밀번호를 입력해주세요(최초 1회 입력)")
@@ -319,6 +330,11 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
                                 if (projectPW.equals(splited[1])){
 
                                     Toast.makeText(context,"비밀번호 일치",Toast.LENGTH_LONG).show();
+
+                                    // DB입력 완료
+                                    SetProjectPwDB setProjectPwDB = new SetProjectPwDB();
+                                    setProjectPwDB.execute();
+
                                     //프레그먼트 전환
                                     ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().
                                             replace(R.id.container, innerMainRecycler).commit();
@@ -332,8 +348,71 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
                         });
                 androidx.appcompat.app.AlertDialog dialog = alertBuilder.create();
                 dialog.show();
+
+                //비밀 번호를 1회이상 입력하였을 때
+            }else{
+                //프레그먼트 전환
+                ((FragmentActivity)context).getSupportFragmentManager().beginTransaction().
+                        replace(R.id.container, innerMainRecycler).commit();
             }
 
         }
+    }
+
+    //DB에 isProjectManger를 1로 변경해주는 스레드
+    public class SetProjectPwDB extends AsyncTask<Void,Integer,Void>{
+        String data = "";
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+
+            //자신의 아이디, 프로젝트이름과 키를 넘겨줌
+            String param = "checkMyId=" + MainActivity.getsId() + "&checkProjectName=" + projectNameImsi+ "&checkKey="+see+ "";
+
+            try {
+
+                /* 서버연결 */
+                URL url = new URL(
+                        "http://rtemd.suwon.ac.kr/guest/SetProjectPw.php");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+                Log.e("Set Project Pw",data);
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+
+                outs.flush();
+                outs.close();
+
+                /* 서버 -> 안드로이드 파라메터값 전달 */
+                InputStream is = null;
+                BufferedReader in = null;
+
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ((line = in.readLine()) != null) {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+
+                /* 서버에서 응답 */
+                Log.e("set check complite!", data);
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
     }
 }
