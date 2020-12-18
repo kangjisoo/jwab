@@ -65,7 +65,7 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:indeterminateTint="#BFBFBF"/>
+            android:indeterminateTint="#BFBFBF" />
 
         <TextView
             android:id="@+id/team_text"
@@ -73,14 +73,33 @@
             android:layout_height="25dp"
             android:text="       프로젝트 멤버" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/inner_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="560dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <ImageButton
+                android:id="@+id/inner_project_memberBt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="56dp"
+                android:layout_marginRight="56dp"
+                android:layout_marginBottom="80dp"
+                android:background="@color/textColor"
+                app:layout_constraintBottom_toBottomOf="@+id/inner_recycler"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/plusbt_4"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/inner_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="560dp">
-
-    </androidx.recyclerview.widget.RecyclerView>
 
 
 </LinearLayout>

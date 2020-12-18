@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
                 android:gravity="center"
-
+                android:textColor="@color/appMainColor"
                 android:text="멤버 초대"
                 android:textSize="30dp"
                 android:textStyle="bold" />
@@ -65,6 +65,9 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="0dp"
+                    android:backgroundTint="@color/appMainColor"
+                    android:textColor="@color/appMainColor"
+                    android:buttonTint="@color/appMainColor"
                     android:text="전체선택" />
 
 
@@ -101,6 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_gravity="center"
+                android:textColor="@color/appMainColor"
                 android:text="조원" />
 
             <EditText
@@ -109,7 +113,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
+                android:textColor="#000000"
                 android:hint="초대할 조원의 아이디"
+                android:backgroundTint = "@color/appMainColor"
+                android:textColorHint="@color/default_week_day_title_text_color"
                 android:inputType="textPersonName" />
 
             <Button

@@ -71,7 +71,6 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
                GetProjectCheckInDB getProjectCheckInDB = new GetProjectCheckInDB();
                getProjectCheckInDB.execute();
 
-
                 Log.e("ClickTest","Ok");
             }
 

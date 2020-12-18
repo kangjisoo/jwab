@@ -59,7 +59,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class MemberAdd extends Fragment {
+public class MemberAdd extends AppCompatActivity {
     private static final Object TAG = "MAIN";
 
     private ArrayList<ProjectPerson> mArrayList;
@@ -84,33 +84,23 @@ public class MemberAdd extends Fragment {
     private String myId;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState);
+        setContentView(R.layout.member_add);
 
 
-
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        final ViewGroup memberAdd = (ViewGroup) inflater.inflate(R.layout.member_add, container, false);
-
-        Log.e("aksdjf실행됩니까","ㅇㅇㅇㅇ");
         //총 조원의 수를 나타내기 위해 textview를 받은 변수 (전역 변수로 설정한 이유는 삭제 버튼을 클릭했을 때도 실행, 추가 버튼을 눌렀을 때도 실행되야하기 때문)
-        membercount = (TextView) memberAdd.findViewById(R.id.project_add_membercountview);
+        membercount = (TextView) findViewById(R.id.project_add_membercountview);
 
         //프로젝트 이름
-        projectName = (EditText)memberAdd.findViewById(R.id.project_add_name);
+        projectName = (EditText)findViewById(R.id.project_add_name);
 
         //로그인된 자신의 아이디
         myId = MainActivity.getsId();
 
-
         //리싸이클러뷰를 xml파일에 리싸이클러뷰에 연동
-        final RecyclerView recyclerView =(RecyclerView) memberAdd.findViewById(R.id.member_add_recyclerView);
+        final RecyclerView recyclerView =(RecyclerView) findViewById(R.id.member_add_recyclerView);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
         recyclerView.setLayoutManager(layoutManager);
 
@@ -126,30 +116,29 @@ public class MemberAdd extends Fragment {
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         //추가버튼을 누르면 실행되는 코드
-        Button button = (Button)memberAdd.findViewById(R.id.member_add_addbutton);
+        Button button = (Button)findViewById(R.id.member_add_addbutton);
         button.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v){
-                insertText = (EditText)memberAdd.findViewById(R.id.member_add_insert_id);
+                insertText = (EditText)findViewById(R.id.member_add_insert_id);
                 stridPhone = (String)insertText.getText().toString();
 
                 //비어 있을 경우 메세지창 띄우기
                 if (stridPhone.equals("")){
-                    Toast.makeText(getContext(),"추가할 조원의 아이디를 입력해주세요",Toast.LENGTH_LONG).show();
+                    Toast.makeText(MemberAdd.this,"추가할 조원의 아이디를 입력해주세요",Toast.LENGTH_LONG).show();
                 }
 
                 else if (stridPhone.equals(myId)){
-                    Toast.makeText(getContext(),"본인 아이디는 자동으로 추가됩니다.",Toast.LENGTH_LONG).show();
+                    Toast.makeText(MemberAdd.this,"본인 아이디는 자동으로 추가됩니다.",Toast.LENGTH_LONG).show();
                 }
+
                 //비어있지 않으면 실행
                 else {
 //                    FindMyMemberDB findMyMemberDB = new FindMyMemberDB();
 //                    findMyMemberDB.execute();
                     ProjectMemberDB projectMemberDB = new ProjectMemberDB();
                     projectMemberDB.execute();
-
-
 
 
                     //초기화
@@ -161,7 +150,7 @@ public class MemberAdd extends Fragment {
 
 
         //삭제 버튼을 클릭시 선택된 리스트 삭제
-        Button deleteButton = (Button)memberAdd.findViewById(R.id.member_add_deletebutton);
+        Button deleteButton = (Button)findViewById(R.id.member_add_deletebutton);
         deleteButton.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View v){
 
@@ -206,17 +195,17 @@ public class MemberAdd extends Fragment {
                 }
 
                 if (listSizeCheck==deleteListSize){
-                    Toast.makeText(getContext(), "삭제된 조원이 없습니다.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MemberAdd.this, "삭제된 조원이 없습니다.", Toast.LENGTH_LONG).show();
                 }
                 else
-                    Toast.makeText(getContext(), "삭제 완료", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MemberAdd.this, "삭제 완료", Toast.LENGTH_LONG).show();
 
             }
         });
 
 
         //전체선택 체크박스를 체크할 때 발생하는 리스너
-        final CheckBox allCheckBox = (CheckBox)memberAdd.findViewById(R.id.member_add_allcheckbox);
+        final CheckBox allCheckBox = (CheckBox)findViewById(R.id.member_add_allcheckbox);
         allCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -248,7 +237,7 @@ public class MemberAdd extends Fragment {
         });
 
         //초대하기 버튼 클릭시 수행되는 리스너
-        makeButton=(Button)memberAdd.findViewById(R.id.member_add_makebutton);
+        makeButton=(Button)findViewById(R.id.member_add_makebutton);
         makeButton.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(final View view) {
@@ -256,16 +245,13 @@ public class MemberAdd extends Fragment {
 //                                        memberAdd memberadd = new memberAdd();
 //                                        memberadd.execute();
 
-                                        Toast.makeText(getContext(), "멤버 초대가 완료되었습니다..", Toast.LENGTH_LONG).show();
-                                        //           getActivity().finish();
-                                        Intent intent = new Intent(getContext(), InnerMainRecycler.class);
-                                        startActivity(intent);
+                Toast.makeText(MemberAdd.this, "멤버 초대가 완료되었습니다..", Toast.LENGTH_LONG).show();
+                //           getActivity().finish();
+                Intent intent = new Intent(MemberAdd.this, InnerMainRecycler.class);
+                startActivity(intent);
 
-                                    }
-                                });
-
-
-        return memberAdd;
+            }
+        });
 
     }
 
@@ -349,7 +335,7 @@ public class MemberAdd extends Fragment {
                     if (stridPhone.equals(tmp.getSearchId())){
                         Log.e("RESULT","이미 추가된 조원");
 
-                        Toast.makeText(getContext(), "이미 추가된 조원 입니다.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MemberAdd.this, "이미 추가된 조원 입니다.", Toast.LENGTH_LONG).show();
                         alreadyExistIdCheck=true;
                         break;
 
@@ -392,21 +378,21 @@ public class MemberAdd extends Fragment {
             //db에서 없는 아이디이면 data 1을 출력
             else if (data.equals("1")) {
                 Log.e("RESULT", "찾을 수 없는 아이디");
-                Toast.makeText(getContext(), "찾을 수 없는 아이디 입니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(MemberAdd.this, "찾을 수 없는 아이디 입니다.", Toast.LENGTH_LONG).show();
             }
 
             //입력창이 비어 있으면 data -1을 출력
             else if (data.equals("-1")){
                 Log.e("RESULT", "입력창이 빈칸");
-                Toast.makeText(getContext(), "입력창이 비어 있음", Toast.LENGTH_LONG).show();
+                Toast.makeText(MemberAdd.this, "입력창이 비어 있음", Toast.LENGTH_LONG).show();
             }
 
             //다른 값이 들어가면 출력되는 문
             else
             {
                 Log.e("RESULT", "알 수 없는 에러 ERRCODE = " + data);
-                Toast.makeText(getContext(), "시스템 오류 입니다. 잠시후 다시 시도해 주세요", Toast.LENGTH_LONG).show();
-                getActivity().finish();
+                Toast.makeText(MemberAdd.this, "시스템 오류 입니다. 잠시후 다시 시도해 주세요", Toast.LENGTH_LONG).show();
+                MemberAdd.this.finish();
             }
         }
     }
@@ -492,7 +478,7 @@ public class MemberAdd extends Fragment {
                     if (stridPhone.equals(tmp.getSearchId())){
                         Log.e("RESULT","이미 추가된 조원");
 
-                        Toast.makeText(getContext(), "이미 추가된 조원 입니다.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MemberAdd.this, "이미 추가된 조원 입니다.", Toast.LENGTH_LONG).show();
                         alreadyExistIdCheck=true;
                         break;
 
@@ -502,7 +488,7 @@ public class MemberAdd extends Fragment {
                 if (alreadyExistIdCheck==false) {
 
                     //membercount.setText(count);라고 쓰면 오류남 count가 string형이 아니기 때문에
-                    membercount.setText(String.valueOf(mArrayList.size()+1));
+                    //membercount.setText(String.valueOf(mArrayList.size()+1));
 
 
 
@@ -535,27 +521,27 @@ public class MemberAdd extends Fragment {
             //db에서 없는 아이디이면 data 1을 출력
             else if (data.equals("1")) {
                 Log.e("RESULT", "찾을 수 없는 아이디");
-                Toast.makeText(getContext(), "찾을 수 없는 아이디 입니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(MemberAdd.this, "찾을 수 없는 아이디 입니다.", Toast.LENGTH_LONG).show();
             }
 
             //입력창이 비어 있으면 data -1을 출력
             else if (data.equals("-1")){
                 Log.e("RESULT", "입력창이 빈칸");
-                Toast.makeText(getContext(), "입력창이 비어 있습니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(MemberAdd.this, "입력창이 비어 있습니다.", Toast.LENGTH_LONG).show();
             }
 
             //이미 프로젝트에 존재하는 멤버이면 2를 출력
             else if (data.equals("2")){
                 Log.e("RESULT", "이미 프로젝트에 존재하는 멤버");
-                Toast.makeText(getContext(), "이미 프로젝트 멤버입니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(MemberAdd.this, "이미 프로젝트 멤버입니다.", Toast.LENGTH_LONG).show();
             }
 
             //다른 값이 들어가면 출력되는 문
             else
             {
                 Log.e("RESULT", "알 수 없는 에러 ERRCODE = " + data);
-                Toast.makeText(getContext(), "시스템 오류 입니다. 잠시후 다시 시도해 주세요", Toast.LENGTH_LONG).show();
-                getActivity().finish();
+                Toast.makeText(MemberAdd.this, "시스템 오류 입니다. 잠시후 다시 시도해 주세요", Toast.LENGTH_LONG).show();
+                MemberAdd.this.finish();
             }
         }
     }
