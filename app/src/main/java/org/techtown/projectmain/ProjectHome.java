@@ -71,6 +71,8 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
     ImageView board_img;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -381,12 +383,9 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
             super.onPostExecute(aVoid);
 
             String Contents = buffer.toString();
-
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             View headerView = navigationView.getHeaderView(0);
             ImageView drawer_img = (ImageView) headerView.findViewById(R.id.profile_image);
-
-            ImageView inner_img = (ImageView) findViewById(R.id.my_image);
 
             img = "http://jwab.dothome.co.kr/Android/" + Contents.trim();
             Glide.with(headerView).load(img).error(R.drawable.basic_people2).into(drawer_img);

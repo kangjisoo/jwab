@@ -26,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -58,7 +59,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class ProjectAdd extends Fragment {
+public class MemberAdd extends Fragment {
     private static final Object TAG = "MAIN";
 
     private ArrayList<ProjectPerson> mArrayList;
@@ -83,28 +84,33 @@ public class ProjectAdd extends Fragment {
     private String myId;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        final ViewGroup createProject = (ViewGroup) inflater.inflate(R.layout.project_add, container, false);
+        final ViewGroup memberAdd = (ViewGroup) inflater.inflate(R.layout.member_add, container, false);
 
+        Log.e("aksdjf실행됩니까","ㅇㅇㅇㅇ");
         //총 조원의 수를 나타내기 위해 textview를 받은 변수 (전역 변수로 설정한 이유는 삭제 버튼을 클릭했을 때도 실행, 추가 버튼을 눌렀을 때도 실행되야하기 때문)
-        membercount = (TextView) createProject.findViewById(R.id.project_add_membercountview);
+        membercount = (TextView) memberAdd.findViewById(R.id.project_add_membercountview);
 
         //프로젝트 이름
-        projectName = (EditText)createProject.findViewById(R.id.project_add_name);
+        projectName = (EditText)memberAdd.findViewById(R.id.project_add_name);
 
         //로그인된 자신의 아이디
         myId = MainActivity.getsId();
 
 
         //리싸이클러뷰를 xml파일에 리싸이클러뷰에 연동
-        final RecyclerView recyclerView =(RecyclerView) createProject.findViewById(R.id.project_add_recyclerView);
+        final RecyclerView recyclerView =(RecyclerView) memberAdd.findViewById(R.id.member_add_recyclerView);
 
-        LinearLayoutManager layoutManager =
-                new LinearLayoutManager(getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
         recyclerView.setLayoutManager(layoutManager);
 
@@ -120,12 +126,12 @@ public class ProjectAdd extends Fragment {
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         //추가버튼을 누르면 실행되는 코드
-        Button button = (Button)createProject.findViewById(R.id.project_add_addbutton);
+        Button button = (Button)memberAdd.findViewById(R.id.member_add_addbutton);
         button.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v){
-                insertText = (EditText)createProject.findViewById(R.id.project_add_insert_id);
+                insertText = (EditText)memberAdd.findViewById(R.id.member_add_insert_id);
                 stridPhone = (String)insertText.getText().toString();
 
                 //비어 있을 경우 메세지창 띄우기
@@ -138,8 +144,13 @@ public class ProjectAdd extends Fragment {
                 }
                 //비어있지 않으면 실행
                 else {
-                    FindMyMemberDB findMyMemberDB = new FindMyMemberDB();
-                    findMyMemberDB.execute();
+//                    FindMyMemberDB findMyMemberDB = new FindMyMemberDB();
+//                    findMyMemberDB.execute();
+                    ProjectMemberDB projectMemberDB = new ProjectMemberDB();
+                    projectMemberDB.execute();
+
+
+
 
                     //초기화
                     dbDataCheck = "-2";
@@ -150,7 +161,7 @@ public class ProjectAdd extends Fragment {
 
 
         //삭제 버튼을 클릭시 선택된 리스트 삭제
-        Button deleteButton = (Button)createProject.findViewById(R.id.project_add_deletebutton);
+        Button deleteButton = (Button)memberAdd.findViewById(R.id.member_add_deletebutton);
         deleteButton.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View v){
 
@@ -205,7 +216,7 @@ public class ProjectAdd extends Fragment {
 
 
         //전체선택 체크박스를 체크할 때 발생하는 리스너
-        final CheckBox allCheckBox = (CheckBox)createProject.findViewById(R.id.project_add_allcheckbox);
+        final CheckBox allCheckBox = (CheckBox)memberAdd.findViewById(R.id.member_add_allcheckbox);
         allCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -236,120 +247,29 @@ public class ProjectAdd extends Fragment {
             }
         });
 
-        //만들기 버튼 클릭시 수행되는 리스너
-        makeButton=(Button)createProject.findViewById(R.id.project_add_makebutton);
+        //초대하기 버튼 클릭시 수행되는 리스너
+        makeButton=(Button)memberAdd.findViewById(R.id.member_add_makebutton);
         makeButton.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(final View view) {
 
-                //프로젝트 이름이 비어 있는지 확인하기 위해
-                nameValue=(String)projectName.getText().toString();
-                final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+//                                        memberAdd memberadd = new memberAdd();
+//                                        memberadd.execute();
 
-                //dialog에 textview를 넣어주기 위해
-                final EditText projectPassword = new EditText(getContext());
-                String message = "※공백이나 특수문자는 사용할 수 없습니다.※";
-
-                alertBuilder
-                        .setTitle("프로젝트의 비밀번호를 생성해주세요")
-                        .setMessage("※공백이나 특수문자는 사용할 수 없습니다.※")
-                        .setCancelable(true)
-                        .setView(projectPassword)
-
-                        //확인 버튼 클릭시
-                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                //프로젝트이름이 비어있는지 확인
-                                if (nameValue.length()==0){
-                                    Toast.makeText(getContext(),"프로젝트 이름을 입력해주세요",Toast.LENGTH_LONG).show();
-                                    // dialog.dismiss();
-                                }
-
-                                //프로젝트 이름의 공백과 특수문자 유무확인
-                                else if (spaceCheck(nameValue)||specialCharacters(nameValue)){
-                                    Toast.makeText(getContext(),"프로젝트 이름에 공백이나 특수문자가 존재합니다 ",Toast.LENGTH_LONG).show();
-                                }
-
-                                //비어있지 않으면서 공백과 특수문자가 없다면 실행
-                                else{
-                                    value = projectPassword.getText().toString();
-                                    if (value.length()==0) {
-                                        Toast.makeText(getContext(), "비밀번호를 입력해주세요", Toast.LENGTH_LONG).show();
-                                    }
-                                    else if (spaceCheck(value)) {
-                                        Toast.makeText(getContext(), "비밀번호에 공백이 존재합니다 다시 입력해주세요", Toast.LENGTH_LONG).show();
-                                    }
-                                    else if (specialCharacters(value)){
-                                        Toast.makeText(getContext(), "비밀번호에 특수문자가 존재합니다 다시 입력해주세요", Toast.LENGTH_LONG).show();
-                                    }
-                                    else {
-                                        Log.v("TAG", "확인 버튼 클릭");
-                                        Log.v("ProjectPw : ", value);
-
-
-                                        MakeProjectDB makeProjectDB = new MakeProjectDB();
-                                        makeProjectDB.execute();
-
-                                        Toast.makeText(getContext(), "프로젝트가 생성되었습니다.", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getContext(), "멤버 초대가 완료되었습니다..", Toast.LENGTH_LONG).show();
                                         //           getActivity().finish();
-                                        Intent intent = new Intent(getContext(), ProjectHome.class);
+                                        Intent intent = new Intent(getContext(), InnerMainRecycler.class);
                                         startActivity(intent);
 
-
-
                                     }
-                                }
-                            }
-                        });
-
-                //취소 버튼 클릭시
-                alertBuilder
-                        .setNeutralButton("취소", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                                Log.v("TAG : ","취소버튼");
-                                dialogInterface.dismiss();
-                            }
-                        });
-
-                AlertDialog dialog = alertBuilder.create();
-                dialog.show();
-            }
-        });
+                                });
 
 
-
-        return createProject;
+        return memberAdd;
 
     }
 
 
-
-
-    //공백이 있는지 없는지 검출해주는 메소드(공백이 있으면 true 없으면 false)
-    public boolean spaceCheck(String spaceCheck)
-    {
-        for(int i = 0 ; i < spaceCheck.length() ; i++)
-        {
-            if(spaceCheck.charAt(i) == ' ')
-                return true;
-        }
-        return false;
-    }
-
-    //특수문자가 있는지 확인해주는 메소드(있으면 false 없으면 true)
-    public boolean specialCharacters(String str) {
-        boolean result;
-
-        result = str.matches("[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힝]*");
-        if (result==true)
-            return false;
-        else
-            return true;
-    }
     //추가 버튼을 눌렀을때 아이디가 존재하는 아이디인지 아닌지 확인하기 위해 php와 연결하여 db를 조사
     public class FindMyMemberDB extends AsyncTask<Void, Integer, Void> {
         String data = "";
@@ -491,11 +411,160 @@ public class ProjectAdd extends Fragment {
         }
     }
 
-
-    //DB에 프로젝트 만들기 위한 스레드
-    public class MakeProjectDB extends AsyncTask<Void, Integer, Void> {
+    //추가 버튼을 눌렀을때 프로젝트에 아이디가 존재하는 아이디인지 아닌지 확인하기 위해 php와 연결하여 db를 조사
+    public class ProjectMemberDB extends AsyncTask<Void, Integer, Void> {
         String data = "";
+        String pname = ProjectHomeListAdapter.getProjectNameImsi();
+        String pkey = ProjectHomeListAdapter.getSee();
+        String projectName = pname+"_"+pkey;
+        @Override
+        protected Void doInBackground(Void... unused) {
+            String param = "u_id=" + stridPhone + "&pname=" + projectName + "";
+            Log.e("POST", param);
+            try {
 
+                /* 서버연결 */
+                URL url = new URL(
+                        "http://rtemd.suwon.ac.kr/guest/findProjectMember.php");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                /* 서버 -> 안드로이드 파라메터값 전달 */
+                InputStream is = null;
+                BufferedReader in = null;
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ((line = in.readLine()) != null) {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+
+                /* 서버에서 응답 */
+                Log.e("RECV DATA", data);
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            /* 서버에서 응답 */
+            Log.e("RECV DATA",data);
+
+
+            //php에서 오는 data를 받아 비교
+            // 1이면 같은 아이디 없음
+            if (data.equals("0")){
+
+                Log.e("RESULT", "추가 가능한 조원");
+
+
+                //ProjectPerson tmp를 null값으로 초기화 시키고 tmp에 추가할 데이터 값인 newMember를 대입
+                ProjectPerson tmp = null;
+                //tmp = newMember;
+
+                //arraylist조회하여 리스트에 새로추가할 newMember가 리스트안에 존재하는 아이디인지 확인하기 위한 코드
+                for (int i=0; i<mArrayList.size();i++){
+
+                    //mArrayList를 get으로 순서대로 받아오기
+                    tmp = mArrayList.get(i);
+
+                    //insert_text에 값이 들어가 있는 stridPhone과 tmp안에 SearchId를 받아서 비교 같으면 반복문 나오기
+                    if (stridPhone.equals(tmp.getSearchId())){
+                        Log.e("RESULT","이미 추가된 조원");
+
+                        Toast.makeText(getContext(), "이미 추가된 조원 입니다.", Toast.LENGTH_LONG).show();
+                        alreadyExistIdCheck=true;
+                        break;
+
+                    }
+                }
+
+                if (alreadyExistIdCheck==false) {
+
+                    //membercount.setText(count);라고 쓰면 오류남 count가 string형이 아니기 때문에
+                    membercount.setText(String.valueOf(mArrayList.size()+1));
+
+
+
+                    //전체선택 체크박스 체크되어 있으면 true상태로 추가
+                    if (allCheckBoxYesOrNo==false) {
+
+                        //카운트를 추가 시키고 member로 아래 목록을 리싸이클러뷰에 띄우기
+                        ProjectPerson newMember = new ProjectPerson("조원", stridPhone, false);
+                        mArrayList.add(newMember);
+                    }
+                    else
+                    {
+                        ProjectPerson newMember = new ProjectPerson("조원", stridPhone, true);
+                        mArrayList.add(newMember);
+                    }
+
+                    //어느 위치에 삽입할지를 정해줌 count 위치에 삽입함으로써 리스트 밑에 삽입
+                    //0을 넣으면 위에 삽입
+                    mAdapter.notifyItemInserted(count);
+                    count++;
+
+
+                    //추가 되고 난 후 insert창을 비워줌줌
+                    insertText.getText().clear();
+
+                }
+
+            }
+
+            //db에서 없는 아이디이면 data 1을 출력
+            else if (data.equals("1")) {
+                Log.e("RESULT", "찾을 수 없는 아이디");
+                Toast.makeText(getContext(), "찾을 수 없는 아이디 입니다.", Toast.LENGTH_LONG).show();
+            }
+
+            //입력창이 비어 있으면 data -1을 출력
+            else if (data.equals("-1")){
+                Log.e("RESULT", "입력창이 빈칸");
+                Toast.makeText(getContext(), "입력창이 비어 있습니다.", Toast.LENGTH_LONG).show();
+            }
+
+            //이미 프로젝트에 존재하는 멤버이면 2를 출력
+            else if (data.equals("2")){
+                Log.e("RESULT", "이미 프로젝트에 존재하는 멤버");
+                Toast.makeText(getContext(), "이미 프로젝트 멤버입니다.", Toast.LENGTH_LONG).show();
+            }
+
+            //다른 값이 들어가면 출력되는 문
+            else
+            {
+                Log.e("RESULT", "알 수 없는 에러 ERRCODE = " + data);
+                Toast.makeText(getContext(), "시스템 오류 입니다. 잠시후 다시 시도해 주세요", Toast.LENGTH_LONG).show();
+                getActivity().finish();
+            }
+        }
+    }
+    //DB에 프로젝트 만들기 위한 스레드
+    public class memberAdd extends AsyncTask<Void, Integer, Void> {
+        String data = "";
+        String pname = ProjectHomeListAdapter.getProjectNameImsi();
+        String pkey = ProjectHomeListAdapter.getSee();
+        String projectName = pname+"_"+pkey;
         @Override
         protected Void doInBackground(Void... unused) {
 
@@ -513,10 +582,10 @@ public class ProjectAdd extends Fragment {
 
 
             }
-            param = param.concat(myId)+",";
+           // param = param.concat(myId)+",";
 
-            //u_member=조원1아이디,조원2아이디,조원3아이디....&u_projectTitle=프로젝트이름&u_howManyMembers=총조원수&u_projectPw=비밀번호
-            param= param.concat("&u_projectTitle=" + nameValue + "&u_howManyMembers=" + (count+1)+ "&u_projectPw=" + value + "");
+            //u_member=조원1아이디,조원2아이디,조원3아이디....&pname=프로젝트이름
+            param= param.concat("&pname=" + projectName + "");
 
             Log.e("POST", param);
             try {
@@ -553,8 +622,6 @@ public class ProjectAdd extends Fragment {
                 //clickAdd()메소드에서 사용됨
                 projectKey = data;
 
-                //프로젝트 만들기 눌렀을 시 실행되는 메소드
-                clickAdd();
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -564,45 +631,6 @@ public class ProjectAdd extends Fragment {
 
             return null;
         }
-    }
-
-    //프로젝트 만들기 눌렀을 시 게시판DB 생성되는 스레드
-    @SuppressLint("LongLogTag")
-    public void clickAdd() {
-
-        //서버로 전송시킬 데이터
-        String prjName = nameValue;
-
-        //안드로이드에서 보낼 데이터를 받을 php 서버 주소
-        String serverUrl="http://jwab.dothome.co.kr/Android/boardTableCreate.php";
-
-        //Volley plus Library를 이용해서
-        //파일 전송하도록..
-        //Volley+는 AndroidStudio에서 검색이 안됨 [google 검색 이용]
-
-        //파일 전송 요청 객체 생성[결과를 String으로 받음]
-        SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        //  Toast.makeText(getContext(), "프로젝트가 생성되었습니다.", Toast.LENGTH_SHORT).show();
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "ERROR", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        //param값 php로 전송
-        smpr.addStringParam("pname", prjName);
-        smpr.addStringParam("pkey", projectKey);
-
-        //요청객체를 서버로 보낼 우체통 같은 객체 생성
-        RequestQueue requestQueue= Volley.newRequestQueue(getContext());
-        requestQueue.add(smpr);
-
     }
 
 }

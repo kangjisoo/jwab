@@ -16,8 +16,12 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
+import org.techtown.projectinner.InnerMainRecycler;
 import org.techtown.projectmain.ProjectHomeListAdapter;
+import org.techtown.randomgame.RandomGameFirst;
+import org.techtown.randomgame.RandomGameSecond;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -90,8 +94,10 @@ public class BoardMainRecycler extends AppCompatActivity {
         protected Void doInBackground(Void... unused) {
             pname = ProjectHomeListAdapter.getProjectNameImsi();
             pkey = ProjectHomeListAdapter.getSee();
+            String id = MainActivity.getsId();
+            String imgPath = InnerMainRecycler.myContents;
 
-            String param = "pname=" + pname + "&pkey=" + pkey + "";
+            String param = "pname=" + pname + "&pkey=" + pkey + "&id=" + id + "&imgPath=" + imgPath + "";
             String serverUri = "http://jwab.dothome.co.kr/Android/loadDB.php";
 
 
@@ -174,5 +180,13 @@ public class BoardMainRecycler extends AppCompatActivity {
 
         }
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        BoardMainRecycler.this.finish();
+        Intent intent = new Intent(BoardMainRecycler.this, InnerMainRecycler.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
 
+    }
 }
