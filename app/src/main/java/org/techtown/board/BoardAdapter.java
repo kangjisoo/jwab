@@ -91,7 +91,7 @@ public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder>
             date.setText(item.getDate());
             String img = "http://jwab.dothome.co.kr/Android/" + item.getProfileImg();
 
-            Glide.with(itemView.getContext()).load(img.trim()).error(R.drawable.ic_menu_camera).into(profileImg);
+            Glide.with(itemView.getContext()).load(img.trim()).error(R.drawable.basic_people2).into(profileImg);
         }
     }
 

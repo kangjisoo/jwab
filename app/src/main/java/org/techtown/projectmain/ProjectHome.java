@@ -60,7 +60,8 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
     public static StringBuffer buffer = new StringBuffer();
     public static String img;
     BoardMainRecycler boardMainRecycler;
-
+    public static NavigationView navigationView;
+    public static View headerView;
     DrawerLayout drawer;
     Toolbar toolbar;
     public static String t1;
@@ -69,6 +70,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
     public static String getsName(){return t1;}
 
     ImageView board_img;
+
 
 
 
@@ -89,12 +91,9 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
             toolbar.setVisibility(View.GONE);
         }
 
-
-
-
         //프로필에 사용자 ID 띄우기
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View headerView = navigationView.getHeaderView(0);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        headerView = navigationView.getHeaderView(0);
         TextView navUserId = (TextView) headerView.findViewById(R.id.profile_email);
         navUserId.setText(MainActivity.getsId());
 
@@ -102,8 +101,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         getNameDB getnameDB = new getNameDB();
         getnameDB.execute();
 
-        profileImgDB profileImgdb = new profileImgDB();
-        profileImgdb.execute();
+
 
 
 
@@ -334,7 +332,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
             return null;
         }
     }
-    public class profileImgDB extends com.android.volley.misc.AsyncTask<Void, Integer, Void> {
+    public static class profileImgDB extends com.android.volley.misc.AsyncTask<Void, Integer, Void> {
 
 
         @SuppressLint("LongLogTag")
@@ -381,15 +379,15 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-
+            Log.e("실행됨??", "ㅇㅋㅇㅋ");
             String Contents = buffer.toString();
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            View headerView = navigationView.getHeaderView(0);
+
             ImageView drawer_img = (ImageView) headerView.findViewById(R.id.profile_image);
 
-            img = "http://jwab.dothome.co.kr/Android/" + Contents.trim();
+            String img = "http://jwab.dothome.co.kr/Android/" + Contents.trim();
             Glide.with(headerView).load(img).error(R.drawable.basic_people2).into(drawer_img);
 
         }
     }
+
 }
