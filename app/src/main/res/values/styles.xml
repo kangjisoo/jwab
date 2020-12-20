@@ -11,7 +11,7 @@
 
 
     <item name="colorPrimary">#00D4FF00</item>
-    <item name="colorPrimaryDark">#5B5C56</item>
+    <item name="colorPrimaryDark">#FAFAFA</item>
     <item name="colorAccent">@color/colorAccent</item>
     <item name="android:textColor">@color/appMainColor</item>
 

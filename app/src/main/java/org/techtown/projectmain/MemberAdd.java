@@ -66,7 +66,7 @@ public class MemberAdd extends AppCompatActivity {
     private ProjectPersonAdapter mAdapter;
 
     //리스트에 추가할 번호 변수
-    public static int count =0;
+    public static int countMember =0;
     private String value;
     private EditText projectName;
     private String nameValue;
@@ -86,6 +86,9 @@ public class MemberAdd extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState);
         setContentView(R.layout.member_add);
+
+        //추가 카운트 초기화
+        countMember=0;
 
 
         //총 조원의 수를 나타내기 위해 textview를 받은 변수 (전역 변수로 설정한 이유는 삭제 버튼을 클릭했을 때도 실행, 추가 버튼을 눌렀을 때도 실행되야하기 때문)
@@ -135,8 +138,8 @@ public class MemberAdd extends AppCompatActivity {
 
                 //비어있지 않으면 실행
                 else {
-//                    FindMyMemberDB findMyMemberDB = new FindMyMemberDB();
-//                    findMyMemberDB.execute();
+
+                    //조원 검색해주는 스레드
                     ProjectMemberDB projectMemberDB = new ProjectMemberDB();
                     projectMemberDB.execute();
 
@@ -183,8 +186,8 @@ public class MemberAdd extends AppCompatActivity {
                                 deleteListSize = mArrayList.size();
 
                                 //count 변수를 감소시키고 총조원 수를 다시 나타냄
-                                count--;
-                                membercount.setText(String.valueOf(mArrayList.size()));
+                                countMember--;
+                                //membercount.setText(String.valueOf(mArrayList.size()));
 
                             }
                         }
@@ -242,14 +245,16 @@ public class MemberAdd extends AppCompatActivity {
             @Override
             public void onClick(final View view) {
 
-//                                        memberAdd memberadd = new memberAdd();
-//                                        memberadd.execute();
+                memberAdd memberadd = new memberAdd();
+                memberadd.execute();
 
                 Toast.makeText(MemberAdd.this, "멤버 초대가 완료되었습니다..", Toast.LENGTH_LONG).show();
                 //           getActivity().finish();
-                Intent intent = new Intent(MemberAdd.this, InnerMainRecycler.class);
-                startActivity(intent);
+//                Intent intent = new Intent(MemberAdd.this, InnerMainRecycler.class);
+//                startActivity(intent);
 
+
+                finish();
             }
         });
 
@@ -364,8 +369,8 @@ public class MemberAdd extends AppCompatActivity {
 
                     //어느 위치에 삽입할지를 정해줌 count 위치에 삽입함으로써 리스트 밑에 삽입
                     //0을 넣으면 위에 삽입
-                    mAdapter.notifyItemInserted(count);
-                    count++;
+                    mAdapter.notifyItemInserted(countMember);
+                    countMember++;
 
 
                     //추가 되고 난 후 insert창을 비워줌줌
@@ -454,7 +459,6 @@ public class MemberAdd extends AppCompatActivity {
             super.onPostExecute(aVoid);
 
             /* 서버에서 응답 */
-            Log.e("RECV DATA",data);
 
 
             //php에서 오는 data를 받아 비교
@@ -507,8 +511,8 @@ public class MemberAdd extends AppCompatActivity {
 
                     //어느 위치에 삽입할지를 정해줌 count 위치에 삽입함으로써 리스트 밑에 삽입
                     //0을 넣으면 위에 삽입
-                    mAdapter.notifyItemInserted(count);
-                    count++;
+                    mAdapter.notifyItemInserted(countMember);
+                    countMember++;
 
 
                     //추가 되고 난 후 insert창을 비워줌줌
@@ -555,30 +559,31 @@ public class MemberAdd extends AppCompatActivity {
         protected Void doInBackground(Void... unused) {
 
             //param값이 하나만 넘어가는 것 같아 param하나의 조원과 프로젝트 이름, 총조원수, 프로젝트비밀번호를 한꺼번에 넘겨줌
-            String partner[] = new String[count];
+            String partner[] = new String[countMember];
             String param = "u_member=";
 
-            for (int i = 0; i<count; i++) {
+            Log.e("확인", countMember+"");
+
+            for (int i = 0; i<countMember; i++) {
 
                 //조원의 아이디를 받아와 배열에 저장
                 partner[i] = mArrayList.get(i).getSearchId();
 
                 //u_member=조원1아이디,조원2아이디,조원3아이디....
                 param = param.concat(partner[i])+",";
-
-
+                
             }
            // param = param.concat(myId)+",";
 
             //u_member=조원1아이디,조원2아이디,조원3아이디....&pname=프로젝트이름
-            param= param.concat("&pname=" + projectName + "");
+            param= param.concat("&pname=" + projectName + "&howManyMember=" + (countMember) + "");
 
             Log.e("POST", param);
             try {
 
                 /* 서버연결 */
                 URL url = new URL(
-                        "http://rtemd.suwon.ac.kr/guest/createProject.php");
+                        "http://rtemd.suwon.ac.kr/guest/memberAdd.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -606,8 +611,9 @@ public class MemberAdd extends AppCompatActivity {
 
                 //프로젝트키를 projectKey변수에 저장
                 //clickAdd()메소드에서 사용됨
-                projectKey = data;
+//                projectKey = data;
 
+                Log.e("확인 멤버 에드", data);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
