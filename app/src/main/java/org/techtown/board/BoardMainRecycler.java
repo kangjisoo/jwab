@@ -180,13 +180,13 @@ public class BoardMainRecycler extends AppCompatActivity {
 
         }
     }
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        BoardMainRecycler.this.finish();
-        Intent intent = new Intent(BoardMainRecycler.this, InnerMainRecycler.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//        BoardMainRecycler.this.finish();
+//        Intent intent = new Intent(BoardMainRecycler.this, InnerMainRecycler.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        startActivity(intent);
+//
+//    }
 }

@@ -1,5 +1,6 @@
 package org.techtown.projectmain;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,12 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.google.android.material.navigation.NavigationView;
 
 import org.techtown.board.BoardCommentList;
 import org.techtown.loginactivity.MainActivity;
@@ -35,7 +40,7 @@ public class ProjectHomeRecyclerView extends Fragment {
     ItemTouchHelper helper;
     RecyclerView recyclerView;
     ProjectAdd projectAdd;
-
+    public static StringBuffer buffer = new StringBuffer();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,7 @@ public class ProjectHomeRecyclerView extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.project_home_recycler, container, false);
+
 
         recyclerView = (RecyclerView)rootView.findViewById(R.id.project_home_list_recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -65,6 +71,9 @@ public class ProjectHomeRecyclerView extends Fragment {
 
             }
         });
+        ProjectHome.profileImgDB profileImgdb = new ProjectHome.profileImgDB();
+        profileImgdb.execute();
+
         MyProjectDB m = new MyProjectDB();
         m.execute();
 

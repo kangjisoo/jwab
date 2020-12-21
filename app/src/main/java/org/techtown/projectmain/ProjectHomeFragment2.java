@@ -59,6 +59,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import static org.techtown.projectmain.ProjectHome.headerView;
+
 //하단바 내정보 탭
 public class ProjectHomeFragment2 extends Fragment {
 
@@ -68,8 +70,8 @@ public class ProjectHomeFragment2 extends Fragment {
     private TextView profile_name, profile_id, profile_pw, profile_pw_ch;
     public ImageView profile_pic;
     private Button profile_bt;
-    public static String img;
-    String imgPath;
+    public static String img, projectName, myImgPath;
+    String imgPath, responseImg;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,14 +92,15 @@ public class ProjectHomeFragment2 extends Fragment {
 
         mContext=this;
 
-
+        SearchProject searchProject = new SearchProject();
+        searchProject.execute();
         GetPrivateProfile getPrivateProfile = new GetPrivateProfile();
         getPrivateProfile.execute();
         Loaddb loadDB = new Loaddb();
         loadDB.execute();
 
 
-
+        //확인버튼
         profile_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,19 +115,27 @@ public class ProjectHomeFragment2 extends Fragment {
                 else if (profile_pw.getText().toString().equals(profile_pw_ch.getText().toString())){
                     SetProfile setProfile = new SetProfile();
                     setProfile.execute();
+
+
                     pic_upload();
 
                     //현재 내 프래그먼트 닫기
                     //removeFragment(ProjectHomeFragment2.this);
 
-                    Toast.makeText(getContext(), "정보 수정이 완료되었습니다.",Toast.LENGTH_SHORT).show();
+                    ProjectHome.profileImgDB profileImgdb = new ProjectHome.profileImgDB();
+                    profileImgdb.execute();
 
+
+                    Toast.makeText(getContext(), "정보 수정이 완료되었습니다.",Toast.LENGTH_SHORT).show();
 
                 }
 
                 else{
                     Toast.makeText(getActivity(), "비밀번호가 일치하지 않습니다. ",Toast.LENGTH_LONG).show();
                 }
+//                ProjectHome.profileImgDB profileImgdb = new ProjectHome.profileImgDB();
+//                profileImgdb.execute();
+
             }
         });
 
@@ -378,6 +389,9 @@ public class ProjectHomeFragment2 extends Fragment {
 
         //서버로 보낼 데이터
         String id = MainActivity.getsId();
+        //프로젝트 이름(문자열)이 들어있는 변수
+        String project = projectName;
+
 
         //안드로이드에서 보낼 데이터를 받을 php 서버 주소
         String serverUrl = "http://jwab.dothome.co.kr/Android/profileImg.php";
@@ -390,19 +404,20 @@ public class ProjectHomeFragment2 extends Fragment {
                     public void onResponse(String response) {
                     //    new AlertDialog.Builder(ProjectHomeFragment2.this).setMessage("응답:" + response).create().show();
                         Log.e("php응답: ",response);
-
+                        responseImg = "http://jwab.dothome.co.kr/Android/" +response.trim();
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //Toast.makeText(getContext(), "ERROR", Toast.LENGTH_SHORT).show();
+
             }
         });
 
 
         //param값 php로 전송
         smpr.addStringParam("id",id);
+        smpr.addStringParam("projectName",project);
         //이미지 파일 추가
         if(imgPath == null){
             smpr.addStringParam("imgPath", "null");
@@ -416,6 +431,8 @@ public class ProjectHomeFragment2 extends Fragment {
         requestQueue.add(smpr);
 
     }
+
+    //내정보 탭을 눌렀을 때 프로필사진 바로 띄워줌
     public class Loaddb extends AsyncTask<Void, Integer, Void> {
 
 
@@ -466,20 +483,69 @@ public class ProjectHomeFragment2 extends Fragment {
 
             String Contents = buffer.toString();
 
-            Log.e("이미지경로로로로로", Contents);
+          //  Log.e("이미지경로로로로로", Contents);
 
             img = "http://jwab.dothome.co.kr/Android/" + Contents.trim();
-            pic_load();
-
+            Glide.with(ProjectHomeFragment2.this).load(img).error(R.drawable.basic_people2).into(profile_pic);
 
         }
     }
-        public void pic_load(){
-            //프로필사진 set해주기
-            Glide.with(ProjectHomeFragment2.this).load(img).error(R.drawable.basic_people2).into(profile_pic);
-//            ProjectHome.profileImgDB profileImgDB = new ProjectHome.profileImgDB();
-//            profileImgDB.execute();
+
+
+    //로그인된 사용자의 프로젝트 이름 모두 가져옴(프로젝트 테이블의 사진 업데이트 할 때 필요)
+    public class SearchProject extends AsyncTask<Void, Integer, Void> {
+
+
+        @SuppressLint("LongLogTag")
+        @Override
+        protected Void doInBackground(Void... unused) {
+            String id = MainActivity.getsId();
+            String param = "id=" + id + "";
+            String serverUri = "http://rtemd.suwon.ac.kr/guest/getProjectName.php";
+
+            try {
+                URL url = new URL(serverUri);
+
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setDoInput(true);
+                //connection.setDoOutput(true);// 이 예제는 필요 없다.
+                connection.setUseCaches(false);
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = connection.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                InputStream is = connection.getInputStream();
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader reader = new BufferedReader(isr);
+
+                buffer = new StringBuffer();
+                String line = reader.readLine();
+                while (line != null) {
+                    buffer.append(line + "\n");
+                    line = reader.readLine();
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
+
+        @SuppressLint("LongLogTag")
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            //!프로젝트이름_0!프로젝트이름_1 ... 문자열로 저장돼있음
+            projectName = buffer.toString();
+
+        }
+    }
 
     }
 

@@ -53,6 +53,7 @@ public class BoardView extends AppCompatActivity {
     public static BoardView mContext;
 
     StringBuffer buffer = new StringBuffer();
+    StringBuffer buffer2 = new StringBuffer();
     TextView title, writer, date, contents;
     EditText comment;
     ImageView Img1, Img2, Img3, Img4, Img5;
@@ -63,7 +64,7 @@ public class BoardView extends AppCompatActivity {
     ArrayList<BoardViewList> boardViewLists = new ArrayList<>();
     ArrayList<BoardCommentList> boardCommentList = new ArrayList<>();
 
-    String Date ,Title, Writer;
+    String Date ,Title, Writer, profileImg;
     static String  img1, img2, img3, img4, img5;
     public static String getsImg1() { return img1; }
     public static String getsImg2() { return img2; }
@@ -104,6 +105,11 @@ public class BoardView extends AppCompatActivity {
         boardViewAdapter = new BoardViewAdapter(getLayoutInflater(), boardViewLists);
         boardCommentAdapter = new BoardCommentAdapter(getLayoutInflater(), boardCommentList);
 
+
+        profileImgDB profileImgdb = new profileImgDB();
+        profileImgdb.execute();
+
+
         ImageButton button = findViewById(R.id.comment_bt);
 
         //댓글 전송 버튼 누를 시
@@ -127,7 +133,7 @@ public class BoardView extends AppCompatActivity {
         LoadDB loadDb = new LoadDB();
         loadDb.execute();
     }
-
+    //게시물의 사진, 댓글 로드해옴
     public class LoadDB extends AsyncTask<Void, Integer, Void> {
 
         @SuppressLint("LongLogTag")
@@ -208,8 +214,8 @@ public class BoardView extends AppCompatActivity {
                 CommentDB commentDB = new CommentDB();
                 commentDB.execute();
                 //게시물 작성자 프로필사진 set
-                profileImgDB profileImgdb = new profileImgDB();
-                profileImgdb.execute();
+//                profileImgDB profileImgdb = new profileImgDB();
+//                profileImgdb.execute();
 
 
                 Img1.setOnClickListener(new MyListener());
@@ -385,6 +391,7 @@ public class BoardView extends AppCompatActivity {
 
             //읽어온 문자열에서 row(레코드)별로 분리하여 배열로 리턴하기
             String[] rows = buffer.toString().split(";");
+            ImageView board_img = (ImageView) findViewById(R.id.post_writer_pic);
 
 
             for (String row : rows) {
@@ -395,7 +402,7 @@ public class BoardView extends AppCompatActivity {
                 String comment = datas[0];
                 String id = datas[1];
                 String date = datas[2];
-                String profileImg = datas[3];
+                profileImg = datas[3];
 
 
                 adapter.addItem(new BoardCommentList(comment, id, date, profileImg));
@@ -403,6 +410,8 @@ public class BoardView extends AppCompatActivity {
 
             }
             recyclerView.setAdapter(adapter);
+
+
 
 
 
@@ -505,10 +514,10 @@ public class BoardView extends AppCompatActivity {
                 InputStreamReader isr = new InputStreamReader(is);
                 BufferedReader reader = new BufferedReader(isr);
 
-                buffer = new StringBuffer();
+                buffer2 = new StringBuffer();
                 String line = reader.readLine();
                 while (line != null) {
-                    buffer.append(line + "\n");
+                    buffer2.append(line + "\n");
                     line = reader.readLine();
                 }
             } catch (MalformedURLException e) {
@@ -524,24 +533,17 @@ public class BoardView extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            String Path = buffer.toString();
+            String Path = buffer2.toString();
 
             ImageView board_img = (ImageView) findViewById(R.id.post_writer_pic);
 
             String img = "http://jwab.dothome.co.kr/Android/" + Path.trim();
-
+            Log.e("dslkafhaisodhgoig",Path);
             Glide.with(BoardView.this).load(img).error(R.drawable.basic_people2).into(board_img);
+
             title.setText(Title);
             writer.setText(Writer);
             date.setText(Date);
-
         }
     }
-
-
-
 }
-
-
-
-

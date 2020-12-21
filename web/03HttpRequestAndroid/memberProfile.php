@@ -26,7 +26,7 @@
         $result=mysqli_query($conn, $sql);
 
          while ($row = mysqli_fetch_array($result)) {   
-            echo "@$row[id]!$row[imgpath]";
+            echo "@$row[id]!$row[imgPath]";
         }
 
     }

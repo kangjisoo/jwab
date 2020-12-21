@@ -13,7 +13,7 @@
      
  
     //쿼리문 작성
-    $sql="select id, contents, date from comment where projectName = '" .$pname."' and boardTitle = '" .$boardTitle. "' and boardDate = '" .$boardDate. "'";
+    $sql="select id, profileImg, contents, date from comment where projectName = '" .$pname."' and boardTitle = '" .$boardTitle. "' and boardDate = '" .$boardDate. "'";
     $result=mysqli_query($conn, $sql);
 
          //결과의 총 레코드 수(줄 수, 행의 개수)
@@ -23,7 +23,7 @@
     for($i=0; $i<$rowCnt; $i++){
         //데이터 한줄을 연관배열(키값으로 구분)로 받아오기
         $row= mysqli_fetch_array($result, MYSQLI_ASSOC);
-        echo "$row[contents]&$row[id]&$row[date];";
+        echo "$row[contents]&$row[id]&$row[date]&$row[profileImg];";
     }
     
 
