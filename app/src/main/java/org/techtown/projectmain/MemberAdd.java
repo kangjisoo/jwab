@@ -84,7 +84,8 @@ public class MemberAdd extends AppCompatActivity {
     private String myId;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.member_add);
 
         //추가 카운트 초기화

@@ -81,6 +81,10 @@
             android:screenOrientation="portrait"
            />
         <activity
+            android:name="org.techtown.projectmain.ProjectInfo"
+            android:screenOrientation="portrait"
+            />
+        <activity
             android:name=".SignActivty"
             android:label="회원가입"
             android:theme="@style/Theme.AppCompat.Dialog"

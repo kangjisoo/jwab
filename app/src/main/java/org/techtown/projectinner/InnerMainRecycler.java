@@ -41,6 +41,7 @@ import org.techtown.projectmain.ProjectHome;
 import org.techtown.projectmain.ProjectHomeList;
 import org.techtown.projectmain.ProjectHomeListAdapter;
 import org.techtown.projectmain.ProjectHomeRecyclerView;
+import org.techtown.projectmain.ProjectInfo;
 import org.techtown.randomgame.RandomGameFirst;
 import org.techtown.randomgame.RandomGameSecond;
 import org.techtown.vote.VoteDP;
@@ -167,7 +168,9 @@ public class InnerMainRecycler extends Fragment {
                 return true;
 
             default:
-                Toast.makeText(getContext(), "멤버초대", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "프로젝트 정보", Toast.LENGTH_LONG).show();
+                Intent intent5 = new Intent(getContext(), ProjectInfo.class);
+                startActivity(intent5);
 
                 return true;
         }

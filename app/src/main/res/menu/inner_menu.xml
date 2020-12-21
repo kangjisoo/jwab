@@ -21,7 +21,7 @@
         android:title="투표"
         app:showAsAction="never"/>
     <item android:id="@+id/action_settings5"
-        android:title="멤버초대"
+        android:title="프로젝트 정보"
         app:showAsAction="never"/>
 
 </menu>

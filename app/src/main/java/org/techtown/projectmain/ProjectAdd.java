@@ -566,7 +566,7 @@ public class ProjectAdd extends Fragment {
         }
     }
 
-    //프로젝트 만들기 눌렀을 시 게시판DB 생성되는 스레드
+    //프로젝트 만들기 눌렀을 시 게시판DB 생성, 프로젝트 이미지 추가되는 스레드
     @SuppressLint("LongLogTag")
     public void clickAdd() {
 
@@ -585,7 +585,7 @@ public class ProjectAdd extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //  Toast.makeText(getContext(), "프로젝트가 생성되었습니다.", Toast.LENGTH_SHORT).show();
+                        Log.e("ProjectAdd response", response);
 
                     }
                 }, new Response.ErrorListener() {
