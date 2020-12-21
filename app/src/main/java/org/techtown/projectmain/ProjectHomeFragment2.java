@@ -62,7 +62,7 @@ import java.net.URLConnection;
 import static org.techtown.projectmain.ProjectHome.headerView;
 
 //하단바 내정보 탭
-public class ProjectHomeFragment2 extends Fragment {
+public class ProjectHomeFragment2 extends Fragment implements onBackPressedListener{
 
     private static final int RESULT_OK = -1;
     public static ProjectHomeFragment2 mContext;
@@ -73,11 +73,26 @@ public class ProjectHomeFragment2 extends Fragment {
     public static String img, projectName, myImgPath;
     String imgPath, responseImg;
 
+    //프래그먼트 종료 시켜주는 메소드
+    private void goToMain(){
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().remove(ProjectHomeFragment2.this).commit();
+        fragmentManager.popBackStack();
+    }
+
+    //뒤로가기 버튼 눌렀을 때 홈화면 전환하고 전 프래그먼트 종료
+    @Override
+    public void onBackPressed() {
+        ((ProjectHome)getActivity()).replaceFragment(ProjectHomeRecyclerView.newInstance());
+        goToMain();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         final ViewGroup profileDP = (ViewGroup)inflater.inflate(R.layout.update_profile, container, false);

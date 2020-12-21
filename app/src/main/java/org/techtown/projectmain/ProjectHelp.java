@@ -14,17 +14,32 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import org.techtown.loginactivity.R;
 
 //도움말
-public class ProjectHelp extends Fragment {
+public class ProjectHelp extends Fragment implements onBackPressedListener{
 
     private TextView helpSubTitle,helpContentsView;
-    private Button helpIntroBt, helpSignBt,helpProjectCreBt,helpBottomBt,helpLeftBt,helpRightBt;
+    private Button helpIntroBt, helpSignBt,helpProjectCreBt,help_memberAddBt,helpBottomBt,helpLeftBt,helpRightBt;
     private Drawable backColor;
     private Integer position;
     private ScrollView helpScrollView;
+
+    //프래그먼트 종료 시켜주는 메소드
+    private void goToMain(){
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().remove(ProjectHelp.this).commit();
+        fragmentManager.popBackStack();
+    }
+
+    //뒤로가기 버튼 눌렀을 때 홈화면 전환하고 전 프래그먼트 종료
+    @Override
+    public void onBackPressed() {
+        ((ProjectHome)getActivity()).replaceFragment(ProjectHomeRecyclerView.newInstance());
+        goToMain();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,6 +54,7 @@ public class ProjectHelp extends Fragment {
         helpSubTitle = helpView.findViewById(R.id.helpSubTitle);
         helpIntroBt = helpView.findViewById(R.id.helpIntroBt);
         helpContentsView = helpView.findViewById(R.id.helpContentsView);
+        help_memberAddBt = helpView.findViewById(R.id.help_memberAddBt);
         helpSignBt=helpView.findViewById(R.id.helpSignBt);
         helpProjectCreBt = helpView.findViewById(R.id.helpProjectCreBt);
         helpBottomBt = helpView.findViewById(R.id.helpBottomBt);
@@ -111,12 +127,29 @@ public class ProjectHelp extends Fragment {
             }
         });
 
+        help_memberAddBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                position=4;
+                init2();
+
+                helpSubTitle.setText("멤버 초대");
+                helpContentsView.setText("-  만들어진 프로젝트를 클릭하여 들어가면 플러스 버튼이 보입니다.\n" +
+                        "\n" +
+                        "플러스 버튼을 클릭하면 프로젝트에 멤버를 초대할 수 있습니다. \n" +
+                        "\n" +
+                        "현재 참여중인 조원을 제외한 다른 조원을 추가하고 싶다면 \n" +
+                        "추가하고 싶은 조원의 아이디를 입력하여 추가를 누르고 초대하기를 누르면 멤버를 초대할 수 있습니다.");
+
+            }
+        });
         //하단버튼 종류 클릭
         helpBottomBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                position=4;
+                position=5;
                 init2();
 
                 helpSubTitle.setText("하단버튼 종류");
@@ -136,7 +169,7 @@ public class ProjectHelp extends Fragment {
         helpLeftBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                position=5;
+                position=6;
                 init2();
 
                 helpSubTitle.setText("최상단 왼쪽 버튼");
@@ -158,7 +191,7 @@ public class ProjectHelp extends Fragment {
         helpRightBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                position=6;
+                position=7;
                 init2();
 
                 helpSubTitle.setText("상단 오른쪽 버튼");
@@ -193,10 +226,18 @@ public class ProjectHelp extends Fragment {
                         "각 항목들을 클릭하여 투표를 참여할 수 있고 선택을 변경 할 수 있습니다.\n" +
                         "\n" +
                         "- 투표를 만들고 싶다면 투표 만들기 버튼을 클릭하여\n" +
-                        "투표주제를 입력하고 투표할 목록을 추가하고 확인을 눌러주면 투표 화면이 나오고 투표를 확인을 누르면 투표가 만들어지고 투표 목록화면에 뜨게 됩니다.");
+                        "투표주제를 입력하고 투표할 목록을 추가하고 확인을 눌러주면 투표 화면이 나오고 투표를 확인을 누르면 투표가 만들어지고 투표 목록화면에 뜨게 됩니다.\n\n" +
+
+                        "5. 프로젝트 정보 탭을 클릭하면 해당 프로젝트에 대한 정보를 볼 수 있습니다.\n" +
+                        "\n" +
+                        "- 프로젝트의 프로필을 클릭하여 사진을 변경 할 수 있습니다.\n" +
+                        "프로젝트의 이름, 생성날짜, 프로젝트 설정 기간, 프로젝트 비밀번호를 알 수 있습니다.\n" +
+                        "프로젝트의 비밀번호를 잃어버렸다면 이곳에서 볼 수 있습니다.");
 
             }
         });
+
+
         return helpView;
 
     }
@@ -211,6 +252,8 @@ public class ProjectHelp extends Fragment {
         helpSignBt.setTextColor(Color.WHITE);
         helpProjectCreBt.setBackground(backColor);
         helpProjectCreBt.setTextColor(Color.WHITE);
+        help_memberAddBt.setBackground(backColor);
+        help_memberAddBt.setTextColor(Color.WHITE);
         helpBottomBt.setBackground(backColor);
         helpBottomBt.setTextColor(Color.WHITE);
         helpLeftBt.setBackground(backColor);
@@ -231,7 +274,7 @@ public class ProjectHelp extends Fragment {
             helpSignBt.setTextColor(Color.YELLOW);
 
             //프로젝트 생성
-        }else if(position==3){
+        }else if(position==3) {
 
             helpProjectCreBt.setBackgroundColor(Color.WHITE);
             helpProjectCreBt.setTextColor(Color.YELLOW);
@@ -239,17 +282,22 @@ public class ProjectHelp extends Fragment {
             //하단 버튼
         }else if (position==4){
 
+            help_memberAddBt.setBackgroundColor(Color.WHITE);
+            help_memberAddBt.setTextColor(Color.YELLOW);
+
+        }else if (position==5){
+
             helpBottomBt.setBackgroundColor(Color.WHITE);
             helpBottomBt.setTextColor(Color.YELLOW);
 
             //최상단 왼쪽 버튼
-        }else if (position==5){
+        }else if (position==6){
 
             helpLeftBt.setBackgroundColor(Color.WHITE);
             helpLeftBt.setTextColor(Color.YELLOW);
 
             //상단 오른쪽 버튼
-       }else if (position==6){
+       }else if (position==7){
 
             helpRightBt.setBackgroundColor(Color.WHITE);
             helpRightBt.setTextColor(Color.YELLOW);

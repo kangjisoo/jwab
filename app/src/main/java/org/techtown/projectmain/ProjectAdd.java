@@ -53,12 +53,14 @@ import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class ProjectAdd extends Fragment {
+public class ProjectAdd extends Fragment implements onBackPressedListener{
     private static final Object TAG = "MAIN";
 
     private ArrayList<ProjectPerson> mArrayList;
@@ -81,6 +83,20 @@ public class ProjectAdd extends Fragment {
     boolean allCheckBoxYesOrNo;
     Button makeButton;
     private String myId;
+
+    //프래그먼트 종료 시켜주는 메소드
+    private void goToMain(){
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().remove(ProjectAdd.this).commit();
+        fragmentManager.popBackStack();
+    }
+
+    //뒤로가기 버튼 눌렀을 때 홈화면 전환하고 전 프래그먼트 종료
+    @Override
+    public void onBackPressed() {
+        ((ProjectHome)getActivity()).replaceFragment(ProjectHomeRecyclerView.newInstance());
+        goToMain();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
@@ -499,6 +515,12 @@ public class ProjectAdd extends Fragment {
         @Override
         protected Void doInBackground(Void... unused) {
 
+            //현재날짜 저장 변수
+            long now = System.currentTimeMillis();
+            Date date = new Date(now);
+            SimpleDateFormat mFormat = new SimpleDateFormat("yyyy/MM/dd");
+            String time = mFormat.format(date);
+
             //param값이 하나만 넘어가는 것 같아 param하나의 조원과 프로젝트 이름, 총조원수, 프로젝트비밀번호를 한꺼번에 넘겨줌
             String partner[] = new String[count];
             String param = "u_member=";
@@ -516,7 +538,7 @@ public class ProjectAdd extends Fragment {
             param = param.concat(myId)+",";
 
             //u_member=조원1아이디,조원2아이디,조원3아이디....&u_projectTitle=프로젝트이름&u_howManyMembers=총조원수&u_projectPw=비밀번호
-            param= param.concat("&u_projectTitle=" + nameValue + "&u_howManyMembers=" + (count+1)+ "&u_projectPw=" + value + "");
+            param= param.concat("&u_projectTitle=" + nameValue + "&u_howManyMembers=" + (count+1)+ "&u_projectPw=" + value + "&u_projectBirth="+time+"");
 
             Log.e("POST", param);
             try {
