@@ -309,7 +309,9 @@ public class ProjectAdd extends Fragment implements onBackPressedListener{
                                         makeProjectDB.execute();
 
                                         Toast.makeText(getContext(), "프로젝트가 생성되었습니다.", Toast.LENGTH_LONG).show();
-                                        //           getActivity().finish();
+
+                                        getActivity().finish();
+
                                         Intent intent = new Intent(getContext(), ProjectHome.class);
                                         startActivity(intent);
 
