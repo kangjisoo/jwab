@@ -252,6 +252,7 @@ public class ProjectAdd extends Fragment implements onBackPressedListener{
             }
         });
 
+
         //만들기 버튼 클릭시 수행되는 리스너
         makeButton=(Button)createProject.findViewById(R.id.project_add_makebutton);
         makeButton.setOnClickListener(new Button.OnClickListener(){
