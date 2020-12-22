@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,11 +29,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 //슬라이드 내 활동 탭
-public class ProjectBottomMenu3 extends Fragment {
+public class ProjectBottomMenu3 extends Fragment implements onBackPressedListener{
 
     private RecyclerView myActivities_RecyclerView;
     private ArrayList<MyActivitiesData> mArrayList;
     private MyActivitiesAdapter mAdapter;
+
+    //프래그먼트 종료 시켜주는 메소드
+    private void goToMain(){
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().remove(ProjectBottomMenu3.this).commit();
+        fragmentManager.popBackStack();
+    }
+
+    //뒤로가기 버튼 눌렀을 때 홈화면 전환하고 전 프래그먼트 종료
+    @Override
+    public void onBackPressed() {
+        ((ProjectHome)getActivity()).replaceFragment(ProjectHomeRecyclerView.newInstance());
+        goToMain();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

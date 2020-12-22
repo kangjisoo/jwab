@@ -62,6 +62,8 @@ import java.util.Arrays;
 
 import org.techtown.projectmain.ProjectHomeListAdapter;
 
+import kotlinx.coroutines.internal.LockFreeLinkedListHead;
+
 //프로젝트에 들어갔을 때 보이는 사용자들의 프로필
 public class InnerMainRecycler extends Fragment {
     Context context;
@@ -635,6 +637,7 @@ public class InnerMainRecycler extends Fragment {
             String[] userName = new String[splited.length];
             String[] userImg = new String[splited.length];
 
+            Log.e("크기 : ",splited.length+"");
             //personName만을 추출
             for (int i = 1; i < splited.length; i++) {
                 //"splited = 이름_상메" 형태로 되어있음. "_"로 구분해야하므로 이름과 상메 인덱스에 위치 저장

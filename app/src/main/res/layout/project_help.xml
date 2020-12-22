@@ -53,6 +53,14 @@
             android:textStyle="bold" />
 
         <Button
+            android:id="@+id/help_memberAddBt"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="멤버초대"
+            android:textColor="@color/textColor"
+            android:textStyle="bold" />
+
+        <Button
             android:id="@+id/helpBottomBt"
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -73,14 +81,6 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="프로젝트    기능"
-            android:textColor="@color/textColor"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/button10"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="Button"
             android:textColor="@color/textColor"
             android:textStyle="bold" />
 

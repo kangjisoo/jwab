@@ -3,10 +3,13 @@ package org.techtown.projectmain;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +20,8 @@ import android.widget.TextView;
 import com.android.volley.misc.AsyncTask;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
+import org.techtown.randomgame.RandomGameFirst;
+import org.techtown.randomgame.RandomGameSecond;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,13 +33,28 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 //하단바 알림 탭
-public class ProjectBottomMenu4 extends Fragment {
+public class ProjectBottomMenu4 extends Fragment implements onBackPressedListener{
 
     private RecyclerView notice_RecyclerView;
     private ArrayList<NoticeData> nArraylist;
     private NoticeAdapter nAdapter;
+
+    //프래그먼트 종료 시켜주는 메소드
+    private void goToMain(){
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().remove(ProjectBottomMenu4.this).commit();
+        fragmentManager.popBackStack();
+    }
+
+    //뒤로가기 버튼 눌렀을 때 홈화면 전환하고 전 프래그먼트 종료
+    @Override
+    public void onBackPressed() {
+        ((ProjectHome)getActivity()).replaceFragment(ProjectHomeRecyclerView.newInstance());
+        goToMain();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,6 +80,7 @@ public class ProjectBottomMenu4 extends Fragment {
 
         return noticeView;
     }
+
 
     //모든 알림 가져오는 스레드
     public class GetEveryNotice extends AsyncTask<Void, Integer, Void>{
@@ -175,4 +196,6 @@ public class ProjectBottomMenu4 extends Fragment {
 
         }
     }
+
+
 }

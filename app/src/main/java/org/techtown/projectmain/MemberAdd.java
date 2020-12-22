@@ -68,7 +68,6 @@ public class MemberAdd extends AppCompatActivity {
     //리스트에 추가할 번호 변수
     public static int countMember =0;
     private String value;
-    private EditText projectName;
     private String nameValue;
     private static String  pname, pkey;
     private String projectKey;
@@ -77,7 +76,6 @@ public class MemberAdd extends AppCompatActivity {
     String stridPhone=null;
     String dbDataCheck="-2";
     boolean alreadyExistIdCheck = true;
-    TextView membercount;
     EditText insertText;
     boolean allCheckBoxYesOrNo;
     Button makeButton;
@@ -90,13 +88,6 @@ public class MemberAdd extends AppCompatActivity {
 
         //추가 카운트 초기화
         countMember=0;
-
-
-        //총 조원의 수를 나타내기 위해 textview를 받은 변수 (전역 변수로 설정한 이유는 삭제 버튼을 클릭했을 때도 실행, 추가 버튼을 눌렀을 때도 실행되야하기 때문)
-        membercount = (TextView) findViewById(R.id.project_add_membercountview);
-
-        //프로젝트 이름
-        projectName = (EditText)findViewById(R.id.project_add_name);
 
         //로그인된 자신의 아이디
         myId = MainActivity.getsId();
@@ -261,148 +252,6 @@ public class MemberAdd extends AppCompatActivity {
 
     }
 
-
-    //추가 버튼을 눌렀을때 아이디가 존재하는 아이디인지 아닌지 확인하기 위해 php와 연결하여 db를 조사
-    public class FindMyMemberDB extends AsyncTask<Void, Integer, Void> {
-        String data = "";
-
-        @Override
-        protected Void doInBackground(Void... unused) {
-            String param = "u_id=" + stridPhone + "";
-            Log.e("POST", param);
-            try {
-
-                /* 서버연결 */
-                URL url = new URL(
-                        "http://rtemd.suwon.ac.kr/guest/projectmemberadd.php");
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                conn.setRequestMethod("POST");
-                conn.setDoInput(true);
-                conn.connect();
-
-                /* 안드로이드 -> 서버 파라메터값 전달 */
-                OutputStream outs = conn.getOutputStream();
-                outs.write(param.getBytes("UTF-8"));
-                outs.flush();
-                outs.close();
-
-                /* 서버 -> 안드로이드 파라메터값 전달 */
-                InputStream is = null;
-                BufferedReader in = null;
-
-                is = conn.getInputStream();
-                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
-                String line = null;
-                StringBuffer buff = new StringBuffer();
-                while ((line = in.readLine()) != null) {
-                    buff.append(line + "\n");
-                }
-                data = buff.toString().trim();
-
-                /* 서버에서 응답 */
-                Log.e("RECV DATA", data);
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            /* 서버에서 응답 */
-            Log.e("RECV DATA",data);
-
-
-            //php에서 오는 data를 받아 비교
-            // 1이면 같은 아이디 없음
-            if (data.equals("0")){
-
-                Log.e("RESULT", "추가 가능한 조원");
-
-
-                //ProjectPerson tmp를 null값으로 초기화 시키고 tmp에 추가할 데이터 값인 newMember를 대입
-                ProjectPerson tmp = null;
-                //tmp = newMember;
-
-                //arraylist조회하여 리스트에 새로추가할 newMember가 리스트안에 존재하는 아이디인지 확인하기 위한 코드
-                for (int i=0; i<mArrayList.size();i++){
-
-                    //mArrayList를 get으로 순서대로 받아오기
-                    tmp = mArrayList.get(i);
-
-                    //insert_text에 값이 들어가 있는 stridPhone과 tmp안에 SearchId를 받아서 비교 같으면 반복문 나오기
-                    if (stridPhone.equals(tmp.getSearchId())){
-                        Log.e("RESULT","이미 추가된 조원");
-
-                        Toast.makeText(MemberAdd.this, "이미 추가된 조원 입니다.", Toast.LENGTH_LONG).show();
-                        alreadyExistIdCheck=true;
-                        break;
-
-                    }
-                }
-
-                if (alreadyExistIdCheck==false) {
-
-                    //membercount.setText(count);라고 쓰면 오류남 count가 string형이 아니기 때문에
-                    membercount.setText(String.valueOf(mArrayList.size()+1));
-
-
-
-                    //전체선택 체크박스 체크되어 있으면 true상태로 추가
-                    if (allCheckBoxYesOrNo==false) {
-
-                        //카운트를 추가 시키고 member로 아래 목록을 리싸이클러뷰에 띄우기
-                        ProjectPerson newMember = new ProjectPerson("조원", stridPhone, false);
-                        mArrayList.add(newMember);
-                    }
-                    else
-                    {
-                        ProjectPerson newMember = new ProjectPerson("조원", stridPhone, true);
-                        mArrayList.add(newMember);
-                    }
-
-                    //어느 위치에 삽입할지를 정해줌 count 위치에 삽입함으로써 리스트 밑에 삽입
-                    //0을 넣으면 위에 삽입
-                    mAdapter.notifyItemInserted(countMember);
-                    countMember++;
-
-
-                    //추가 되고 난 후 insert창을 비워줌줌
-                    insertText.getText().clear();
-
-                }
-
-            }
-
-            //db에서 없는 아이디이면 data 1을 출력
-            else if (data.equals("1")) {
-                Log.e("RESULT", "찾을 수 없는 아이디");
-                Toast.makeText(MemberAdd.this, "찾을 수 없는 아이디 입니다.", Toast.LENGTH_LONG).show();
-            }
-
-            //입력창이 비어 있으면 data -1을 출력
-            else if (data.equals("-1")){
-                Log.e("RESULT", "입력창이 빈칸");
-                Toast.makeText(MemberAdd.this, "입력창이 비어 있음", Toast.LENGTH_LONG).show();
-            }
-
-            //다른 값이 들어가면 출력되는 문
-            else
-            {
-                Log.e("RESULT", "알 수 없는 에러 ERRCODE = " + data);
-                Toast.makeText(MemberAdd.this, "시스템 오류 입니다. 잠시후 다시 시도해 주세요", Toast.LENGTH_LONG).show();
-                MemberAdd.this.finish();
-            }
-        }
-    }
-
     //추가 버튼을 눌렀을때 프로젝트에 아이디가 존재하는 아이디인지 아닌지 확인하기 위해 php와 연결하여 db를 조사
     public class ProjectMemberDB extends AsyncTask<Void, Integer, Void> {
         String data = "";
@@ -444,7 +293,7 @@ public class MemberAdd extends AppCompatActivity {
                 data = buff.toString().trim();
 
                 /* 서버에서 응답 */
-                Log.e("RECV DATA", data);
+                Log.e("MemberAdd : ", data);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -577,7 +426,7 @@ public class MemberAdd extends AppCompatActivity {
            // param = param.concat(myId)+",";
 
             //u_member=조원1아이디,조원2아이디,조원3아이디....&pname=프로젝트이름
-            param= param.concat("&pname=" + projectName + "&howManyMember=" + (countMember) + "");
+            param= param.concat("&pname=" + pname +"&pkey="+ pkey + "&howManyMember=" + (countMember) + "");
 
             Log.e("POST", param);
             try {
@@ -614,7 +463,7 @@ public class MemberAdd extends AppCompatActivity {
                 //clickAdd()메소드에서 사용됨
 //                projectKey = data;
 
-                Log.e("확인 멤버 에드", data);
+                Log.e("memberAdd : ", data);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();

@@ -43,6 +43,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 //ProjectHome메인
 
 
@@ -66,13 +67,11 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
     Toolbar toolbar;
     public static String t1;
     private ProjectHome Context;
+    private long lastTimeBackPressed;
 
     public static String getsName(){return t1;}
 
     ImageView board_img;
-
-
-
 
 
     @Override
@@ -170,8 +169,34 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
                     }
                 }
         );
+
+
     }   //onCreate() 끝
 
+    //뒤로가기 버튼 클릭시 실행
+    @Override
+    public void onBackPressed() {
+
+        //프래그먼트 onBackPressedListener사용
+        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+        for (Fragment fragment : fragmentList) {
+            if (fragment instanceof onBackPressedListener) {
+                ((onBackPressedListener) fragment).onBackPressed();
+                return;
+            }
+        }
+
+        //두 번 클릭시 어플 종료
+        if(System.currentTimeMillis() - lastTimeBackPressed < 1500){
+            finish();
+            return;
+        }
+        lastTimeBackPressed = System.currentTimeMillis();
+        Toast.makeText(this,"'뒤로' 버튼을 한 번 더 누르면 종료됩니다.",Toast.LENGTH_SHORT).show();
+
+    }
+
+    //프래그먼트 전환
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -183,14 +208,14 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         return true;
     }
 
-        @Override
-        public void onBackPressed () {
-            if (drawer.isDrawerOpen(GravityCompat.START)) {
-                drawer.closeDrawer(GravityCompat.START);
-            } else {
-                super.onBackPressed();
-            }
-        }
+//        @Override
+//        public void onBackPressed () {
+//            if (drawer.isDrawerOpen(GravityCompat.START)) {
+//                drawer.closeDrawer(GravityCompat.START);
+//            } else {
+//                super.onBackPressed();
+//            }
+//        }
 
         //슬라이드메뉴
         @Override
@@ -265,6 +290,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
 
             getSupportFragmentManager().beginTransaction().replace(R.id.container, curFragment).commit();
         }
+
 
     //프로필에 사용자 이름 띄우는 DB
     public class getNameDB extends AsyncTask<Void, Integer, Void> {

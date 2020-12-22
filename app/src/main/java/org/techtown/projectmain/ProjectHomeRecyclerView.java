@@ -42,6 +42,10 @@ public class ProjectHomeRecyclerView extends Fragment {
     ProjectAdd projectAdd;
     public static StringBuffer buffer = new StringBuffer();
 
+    public static ProjectHomeRecyclerView newInstance(){
+        return new ProjectHomeRecyclerView();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
