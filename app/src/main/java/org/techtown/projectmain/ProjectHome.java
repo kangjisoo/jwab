@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -144,19 +145,23 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
        BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
        bottomNavigation.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+                    @SuppressLint("ResourceAsColor")
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
                         switch (item.getItemId()) {
-                            case R.id.tab1:
-                                Toast.makeText(getApplicationContext(), "내 정보 선택", Toast.LENGTH_LONG).show();
-                                onFragmentSelected(5, null);
-                                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment2).commit();
-                                return true;
 
                             case R.id.tab2:
                                 Toast.makeText(getApplicationContext(), "홈 선택", Toast.LENGTH_LONG).show();
                                 onFragmentSelected(3, null);
                                 getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment0).commit();
+                                return true;
+
+                            case R.id.tab1:
+                                Toast.makeText(getApplicationContext(), "내 정보 선택", Toast.LENGTH_LONG).show();
+                                onFragmentSelected(5, null);
+                                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment2).commit();
                                 return true;
 
                             case R.id.tab3:
@@ -405,7 +410,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Log.e("실행됨??", "ㅇㅋㅇㅋ");
+
             String Contents = buffer.toString();
 
             ImageView drawer_img = (ImageView) headerView.findViewById(R.id.profile_image);
