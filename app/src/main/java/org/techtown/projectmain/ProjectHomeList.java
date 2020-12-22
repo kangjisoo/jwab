@@ -4,14 +4,16 @@ public class ProjectHomeList {
     String projectName;
     String person;
     String key;
+    String imgPath;
     int position;
 
 
 
-    public ProjectHomeList(String projectName, String person){
+    public ProjectHomeList(String projectName, String person,String imgPath){
         this.projectName = projectName;
         this.person = person;
         this.position = -5;
+        this.imgPath = imgPath;
     }
 
     public String getProjectName() {
@@ -40,5 +42,13 @@ public class ProjectHomeList {
 
     public void setPosition(int position) {
         this.position = position;
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 }

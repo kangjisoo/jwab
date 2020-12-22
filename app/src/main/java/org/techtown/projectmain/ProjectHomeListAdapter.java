@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 import org.techtown.projectinner.InnerMainRecycler;
@@ -54,6 +58,7 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView textView, textView2;
+        ImageView imageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -76,12 +81,16 @@ public class ProjectHomeListAdapter extends RecyclerView.Adapter<ProjectHomeList
 
         });
 
-        textView = itemView.findViewById(R.id.person_name);
+            textView = itemView.findViewById(R.id.person_name);
             textView2 = itemView.findViewById(R.id.person_message);
+            imageView = itemView.findViewById(R.id.project_image);
         }
         public void setItem(ProjectHomeList item) {
             textView.setText(item.getProjectName());
             textView2.setText(item.getPerson());
+            String img = "http://jwab.dothome.co.kr/Android/" + item.getImgPath();
+
+            Glide.with(itemView.getContext()).load(img.trim()).error(R.drawable.basic_people2).into(imageView);
         }
     }
 
