@@ -87,6 +87,7 @@ public class ProjectHomeRecyclerView extends Fragment {
 
 
 
+
         return rootView;
 
     }
@@ -171,11 +172,13 @@ public class ProjectHomeRecyclerView extends Fragment {
                 //projectLoad에서 사용할 로그인된 사용자의 프로젝트 이름 (프로젝트이름_0@프로젝트이름_1@...)
                 projectNameString = projectNameString + "@" + projectName2[i];
 
-                ProjectLoad projectLoad = new ProjectLoad();
-                projectLoad.execute();
+
+
 
             }
-
+            Log.e("프로젝트이름 어떻게 넘어가나", projectNameString);
+            ProjectLoad projectLoad = new ProjectLoad();
+            projectLoad.execute();
         }
     }
         //리사이클러뷰에 프로젝트 사진과 이름, 조원수 표시해줌
@@ -184,7 +187,8 @@ public class ProjectHomeRecyclerView extends Fragment {
             @Override
             protected Void doInBackground(Void... unused) {
 
-                String param = "pData=" + projectNameString.trim() + "";
+                String param = "pData=" + projectNameString + "";
+                Log.e("tqtqtqtqtqkfergjawoiergh", projectNameString);
                 String serverUri = "http://jwab.dothome.co.kr/Android/projectHomeLoad.php";
 
                 try {
@@ -232,6 +236,7 @@ public class ProjectHomeRecyclerView extends Fragment {
                 //프로젝트 이름, 조원수
                 String projectNameString = projectData;
 
+                Log.e("imgString", imgString);
                 //문자열로 받아온 이미지 경로를 "@"로 나눠줌
                 String[] imgPath = imgString.split("@");
 
@@ -266,7 +271,7 @@ public class ProjectHomeRecyclerView extends Fragment {
                     //ex) splited[0]=프로젝트1_0/3 --> 프로젝트 이름: 프로젝트1, projectKey: 0, 총조원 수 : 3명
                     //projectName[0] = 1
                     projectName[i] = splited[i].substring(0, index);
-                    Log.e("projectName[i] ", projectName[i]);
+
 
                     //substring(index+1) -> 찾은 문자부터 끝까지 출력
                     //imsi[0] = 0/3
@@ -282,11 +287,12 @@ public class ProjectHomeRecyclerView extends Fragment {
 
                     //조원의 총 수를 String 형으로 받아와 int형으로 변환 후 -1 (누구님 외 몇명)
                     countMember[i] = Integer.parseInt(splited[i].substring(index2 + 1)) - 1;
-                    Log.e("countMember[i] ", String.valueOf(countMember[i]));
-                    Log.e("imgPath[i]", imgPath[i]);
+                    Log.e("projectName[",i+ "]= " + projectName[i]);
+                    Log.e("countMember[",i+ "]= " + String.valueOf(countMember[i]));
+                    Log.e("imgPath[",i+ "]= " + imgPath[i].trim());
 
                     //카드뷰에 프로젝트 이름과 인원수 입력
-                    adapter.addItem(new ProjectHomeList(projectName[i], MainActivity.getsId() + "님 외 " + countMember[i] + "명",imgPath[i]));
+                    adapter.addItem(new ProjectHomeList(projectName[i], MainActivity.getsId() + "님 외 " + countMember[i] + "명",imgPath[i].trim()));
                     adapter.items.get(i - 1).setKey(inn[i]);
                     adapter.notifyItemInserted(adapter.getItemCount());
                     adapter.notifyDataSetChanged();
