@@ -1,7 +1,5 @@
 package org.techtown.vote;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,8 +24,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class VoteFinish extends AppCompatActivity {
 
@@ -138,7 +134,7 @@ public class VoteFinish extends AppCompatActivity {
                 data = buff.toString().trim();
 
                 /* 서버에서 응답 */
-                Log.e("vote content: ", data);
+                Log.e("voteFinish : ", data);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -192,7 +188,7 @@ public class VoteFinish extends AppCompatActivity {
             String param = "u_id="+myId+"&u_voteName="+nameKey[0]+"&u_votePrkey="+nameKey[1]+"&u_selectNum="+sNum+"";
 
             //Check param
-            Log.e("POST.param", param);
+            Log.e("voteAttend.param", param);
 
 
             try {
@@ -225,7 +221,7 @@ public class VoteFinish extends AppCompatActivity {
                 data = buff.toString().trim();
 
                 /* 서버에서 응답 */
-                Log.e("vote content: ", data);
+                Log.e("voteFinish: ", data);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {

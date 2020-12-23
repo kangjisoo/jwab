@@ -1,11 +1,8 @@
 package org.techtown.projectmain;
 
-import org.techtown.board.BoardAddTest;
-import org.techtown.board.BoardMainRecycler;
 import org.techtown.loginactivity.MainActivity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -24,10 +21,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.OnLifecycleEvent;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,29 +30,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.error.AuthFailureError;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.SimpleMultiPartRequest;
-import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.techtown.loginactivity.R;
-import org.techtown.projectinner.InnerMainRecycler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class ProjectAdd extends Fragment implements onBackPressedListener{
@@ -303,8 +292,6 @@ public class ProjectAdd extends Fragment implements onBackPressedListener{
                                     }
                                     else {
                                         Log.v("TAG", "확인 버튼 클릭");
-                                        Log.v("ProjectPw : ", value);
-
 
                                         MakeProjectDB makeProjectDB = new MakeProjectDB();
                                         makeProjectDB.execute();
@@ -376,7 +363,7 @@ public class ProjectAdd extends Fragment implements onBackPressedListener{
         @Override
         protected Void doInBackground(Void... unused) {
             String param = "u_id=" + stridPhone + "";
-            Log.e("POST", param);
+            Log.e("projectAdd.param: ", param);
             try {
 
                 /* 서버연결 */
@@ -408,7 +395,7 @@ public class ProjectAdd extends Fragment implements onBackPressedListener{
                 data = buff.toString().trim();
 
                 /* 서버에서 응답 */
-                Log.e("RECV DATA", data);
+                Log.e("projectAdd : ", data);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -423,15 +410,12 @@ public class ProjectAdd extends Fragment implements onBackPressedListener{
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            /* 서버에서 응답 */
-            Log.e("RECV DATA",data);
 
 
             //php에서 오는 data를 받아 비교
             // 1이면 같은 아이디 없음
+            //0이면 추가 가능한 조원
             if (data.equals("0")){
-
-                Log.e("RESULT", "추가 가능한 조원");
 
 
                 //ProjectPerson tmp를 null값으로 초기화 시키고 tmp에 추가할 데이터 값인 newMember를 대입
@@ -446,7 +430,6 @@ public class ProjectAdd extends Fragment implements onBackPressedListener{
 
                     //insert_text에 값이 들어가 있는 stridPhone과 tmp안에 SearchId를 받아서 비교 같으면 반복문 나오기
                     if (stridPhone.equals(tmp.getSearchId())){
-                        Log.e("RESULT","이미 추가된 조원");
 
                         Toast.makeText(getContext(), "이미 추가된 조원 입니다.", Toast.LENGTH_LONG).show();
                         alreadyExistIdCheck=true;
@@ -490,13 +473,13 @@ public class ProjectAdd extends Fragment implements onBackPressedListener{
 
             //db에서 없는 아이디이면 data 1을 출력
             else if (data.equals("1")) {
-                Log.e("RESULT", "찾을 수 없는 아이디");
+
                 Toast.makeText(getContext(), "찾을 수 없는 아이디 입니다.", Toast.LENGTH_LONG).show();
             }
 
             //입력창이 비어 있으면 data -1을 출력
             else if (data.equals("-1")){
-                Log.e("RESULT", "입력창이 빈칸");
+
                 Toast.makeText(getContext(), "입력창이 비어 있음", Toast.LENGTH_LONG).show();
             }
 
@@ -543,7 +526,7 @@ public class ProjectAdd extends Fragment implements onBackPressedListener{
             //u_member=조원1아이디,조원2아이디,조원3아이디....&u_projectTitle=프로젝트이름&u_howManyMembers=총조원수&u_projectPw=비밀번호
             param= param.concat("&u_projectTitle=" + nameValue + "&u_howManyMembers=" + (count+1)+ "&u_projectPw=" + value + "&u_projectBirth="+time+"");
 
-            Log.e("POST", param);
+            Log.e("projectAdd.param2: ", param);
             try {
 
                 /* 서버연결 */

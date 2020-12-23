@@ -12,6 +12,8 @@ public class LoadingActivity extends Activity {
         setContentView(R.layout.activity_loading);
         startLoading();
     }
+
+    //로딩화면 3초간 띄우기
     private void startLoading() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -19,6 +21,6 @@ public class LoadingActivity extends Activity {
             public void run() {
                 finish();
             }
-        }, 3000);
+        }, 2000);
     }
 }

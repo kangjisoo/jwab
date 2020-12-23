@@ -9,7 +9,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 
 import android.content.Context;
@@ -29,10 +28,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
-import com.bumptech.glide.Glide;
-
 import org.techtown.projectmain.ProjectHome;
-import org.techtown.projectmain.ProjectHomeFragment2;
+
 
 
 public class MainActivity extends Activity {
@@ -59,13 +56,10 @@ public class MainActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_CODE_MENU) {
-            Toast.makeText(getApplicationContext(),
-                    "onActivityResult 메서드 호출됨. 요청 코드 : " + requestCode +
-                            ", 결과 코드 : " + resultCode, Toast.LENGTH_LONG).show();
+
 
             if (resultCode == RESULT_OK) {
                 String name = data.getStringExtra("name");
-                Toast.makeText(getApplicationContext(), "응답으로 전달된 name : " + name, Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -130,7 +124,7 @@ public class MainActivity extends Activity {
 
             /* 인풋 파라메터값 생성 */
             String param = "u_id=" + sId + "&u_pw=" + sPw + "";
-            Log.e("POST",param);
+            Log.e("MainActivity.param:",param);
             try {
                 /* 서버연결 */
                 URL url = new URL(
@@ -161,7 +155,7 @@ public class MainActivity extends Activity {
                 data = buff.toString().trim();
 
                 /* 서버에서 응답 */
-                Log.e("RECV DATA", data);
+                Log.e("mainActivity:", data);
 
                 if (data.equals("0")) {
                     Log.e("RESULT", "성공적으로 처리되었습니다!");

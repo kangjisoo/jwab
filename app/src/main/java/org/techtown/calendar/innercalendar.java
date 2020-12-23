@@ -642,7 +642,7 @@ public class innercalendar extends AppCompatActivity {
 
             //기간과 선택된 프로젝트테이블 이름을 넘겨줌
             String param = "&u_term=" + sYear+"-"+sMonth+"-"+sDay+"~"+eYear+"-"+eMonth+"-"+eDay+"&u_projectTableName="+pname+"_"+pkey+"";
-            Log.e("POST", param);
+            Log.e("calendar.param:", param);
 
             try {
 
@@ -675,7 +675,7 @@ public class innercalendar extends AppCompatActivity {
                 data = buff.toString().trim();
 
                 /* 서버에서 응답 */
-                Log.e("RECV DATA", data);
+                Log.e("calendar:", data);
 
 
             } catch (MalformedURLException e) {
@@ -700,7 +700,7 @@ public class innercalendar extends AppCompatActivity {
 
 
             String param = "&u_projectTableName="+pname+"_"+pkey+"";
-            Log.e("POST", param);
+            Log.e("calendar.param2:", param);
 
             try {
 
@@ -733,7 +733,7 @@ public class innercalendar extends AppCompatActivity {
                 data = buff.toString().trim();
 
                 /* 서버에서 응답 */
-                Log.e("RECV DATA", data);
+                Log.e("calendar2:", data);
 
 
             } catch (MalformedURLException e) {
@@ -758,7 +758,7 @@ public class innercalendar extends AppCompatActivity {
 
 
             String param ="&u_projectTableName=" + pname + "_" + pkey + "";
-            Log.e("POST", param);
+            Log.e("calendar.param3:", param);
 
             try {
 
@@ -792,7 +792,7 @@ public class innercalendar extends AppCompatActivity {
 
 
                 /* 서버에서 응답 */
-                Log.e("RECV DATA", datas11);
+                Log.e("calendar3:", datas11);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -809,7 +809,7 @@ public class innercalendar extends AppCompatActivity {
             super.onPostExecute(aVoid);
 
             /* 서버에서 응답 */
-            Log.e("RECV DATA", datas11);
+            Log.e("calendar.param4:", datas11);
 
             //DB에서 받아온 값이 0이면 기간이 정해져있지 않음
             if (datas11.equals("0")){

@@ -1,5 +1,6 @@
 package org.techtown.projectmain;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -78,13 +79,14 @@ public class ProjectBottomMenu3 extends Fragment implements onBackPressedListene
         String data="";
         String pId = MainActivity.getsId();
 
+        @SuppressLint("LongLogTag")
         @Override
         protected Void doInBackground(Void... unused) {
 
             String param = "u_id="+pId+"";
 
             //Check param
-            Log.e("ProjectBottomMenu3: ", param);
+            Log.e("ProjectBottomMenu3.param: ", param);
 
             try {
                 /* 서버연결 */
@@ -137,7 +139,6 @@ public class ProjectBottomMenu3 extends Fragment implements onBackPressedListene
             int actionCount = 0;
             actionCount = firstDiv.length;
 
-            Log.e("values check", Arrays.toString(firstDiv));
 
             int sequence, sequence2, sequence3, sequence4, sequence5;
             String[] getWriteId = new String[actionCount];
@@ -174,7 +175,6 @@ public class ProjectBottomMenu3 extends Fragment implements onBackPressedListene
 
                 getKind[i] = remainProjectKind[i].substring(sequence5+1);
 
-                Log.e("값 제대로 들어가는지 확인", getWriteId[i]+"/"+getContents[i]+"/"+getDate[i]+"/"+getProjectName[i]+"/"+getKind[i]+"");
 
                 MyActivitiesData myActivitiesData = new MyActivitiesData(getWriteId[i],getKind[i],getContents[i],getDate[i],getProjectName[i]);
 
