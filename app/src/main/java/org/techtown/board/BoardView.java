@@ -86,31 +86,25 @@ public class BoardView extends AppCompatActivity {
         contents = findViewById(R.id.post_text);
         comment = (EditText)findViewById(R.id.comment);
 
-
+        ImageButton button = findViewById(R.id.comment_bt);
         Img1 = findViewById(R.id.post_img1);
         Img2 = findViewById(R.id.post_img2);
         Img3 = findViewById(R.id.post_img3);
         Img4 = findViewById(R.id.post_img4);
         Img5 = findViewById(R.id.post_img5);
 
-
         Title = BoardMainRecycler.getsTitle();
         Writer = BoardMainRecycler.getsWriter();
         Date = BoardMainRecycler.getsDate();
 
 
-
-
-
         boardViewAdapter = new BoardViewAdapter(getLayoutInflater(), boardViewLists);
         boardCommentAdapter = new BoardCommentAdapter(getLayoutInflater(), boardCommentList);
 
-
+        //게시글 작성자의 프로필사진, id, 게시날짜를 가져옴
         profileImgDB profileImgdb = new profileImgDB();
         profileImgdb.execute();
 
-
-        ImageButton button = findViewById(R.id.comment_bt);
 
         //댓글 전송 버튼 누를 시
         button.setOnClickListener(new View.OnClickListener() {
@@ -122,9 +116,6 @@ public class BoardView extends AppCompatActivity {
                 } else {
 
                     commentload();
-
-
-
                     Toast.makeText(BoardView.this, "commentLoad 실행완료", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -211,11 +202,9 @@ public class BoardView extends AppCompatActivity {
                 Glide.with(BoardView.this).load(img4).into(Img4);
                 Glide.with(BoardView.this).load(img5).into(Img5);
 
+                //게시물의 댓글을 가져옴
                 CommentDB commentDB = new CommentDB();
                 commentDB.execute();
-                //게시물 작성자 프로필사진 set
-//                profileImgDB profileImgdb = new profileImgDB();
-//                profileImgdb.execute();
 
 
                 Img1.setOnClickListener(new MyListener());
@@ -223,10 +212,6 @@ public class BoardView extends AppCompatActivity {
                 Img3.setOnClickListener(new MyListener());
                 Img4.setOnClickListener(new MyListener());
                 Img5.setOnClickListener(new MyListener());
-
-                //댓글 리사이클러뷰
-
-
 
             }
         }
@@ -260,7 +245,6 @@ public class BoardView extends AppCompatActivity {
     @SuppressLint("LongLogTag")
     public void commentload(){
         final BoardCommentAdapter adapter = new BoardCommentAdapter(getLayoutInflater(),boardCommentList);
-        RecyclerView recyclerView = BoardView.this.findViewById(R.id.comment_recycler);
 
         //서버로 보낼 데이터
         String id = MainActivity.getsId();                      //댓글 남기는 사용자의 id
@@ -300,7 +284,7 @@ public class BoardView extends AppCompatActivity {
         smpr.addStringParam("boardDate",boardDate);
         smpr.addStringParam("profileImg",profileImg);
 
-//현재날짜 저장 변수
+        //현재날짜 저장 변수
         long now = System.currentTimeMillis();
         Date date = new Date(now);
         SimpleDateFormat mFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -319,14 +303,8 @@ public class BoardView extends AppCompatActivity {
         SetNoticeDB setNoticeDB = new SetNoticeDB();
         setNoticeDB.execute();
 
-
-
-
-
         //버튼 누르면 댓글창 초기화
         comment.setText(null);
-
-
 
     }
 
@@ -340,8 +318,6 @@ public class BoardView extends AppCompatActivity {
             pname = ProjectHomeListAdapter.getProjectNameImsi() + "_" + ProjectHomeListAdapter.getSee();
             String boardDate = Date;
             String boardTitle = Title;
-
-
 
 
             String param = "pname=" + pname + "&boardDate=" + boardDate + "&boardTitle=" + boardTitle +"";
@@ -391,7 +367,6 @@ public class BoardView extends AppCompatActivity {
 
             //읽어온 문자열에서 row(레코드)별로 분리하여 배열로 리턴하기
             String[] rows = buffer.toString().split(";");
-            ImageView board_img = (ImageView) findViewById(R.id.post_writer_pic);
 
 
             for (String row : rows) {
@@ -435,14 +410,11 @@ public class BoardView extends AppCompatActivity {
             java.util.Date date = new Date(now);
             SimpleDateFormat mFormat = new SimpleDateFormat("yyyy/MM/dd");
             String time = mFormat.format(date);
-
-            Log.e("notice Time check", time);
-
             String projectInfo = pname+"_"+pkey;
 
             String param = "u_nId="+pId+"&u_nContents="+commentTitle+"&u_nDate="+time+"&u_nProjectInfo="+projectInfo+"&u_nKind="+"댓글"+"";
             //Check param
-            Log.e("VoteMain.param", param);
+
 
             try {
                 /* 서버연결 */
@@ -472,9 +444,6 @@ public class BoardView extends AppCompatActivity {
                     buff.append(line + "\n");
                 }
                 data = buff.toString().trim();
-
-                /* 서버에서 응답 */
-                Log.e("notice  : ", data);
 
 
             } catch (MalformedURLException e) {
@@ -538,7 +507,7 @@ public class BoardView extends AppCompatActivity {
             ImageView board_img = (ImageView) findViewById(R.id.post_writer_pic);
 
             String img = "http://jwab.dothome.co.kr/Android/" + Path.trim();
-            Log.e("dslkafhaisodhgoig",Path);
+
             Glide.with(BoardView.this).load(img).error(R.drawable.basic_people2).into(board_img);
 
             title.setText(Title);

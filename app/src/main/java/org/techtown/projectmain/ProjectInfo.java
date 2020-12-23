@@ -2,9 +2,12 @@ package org.techtown.projectmain;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.icu.text.IDNA;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,12 +45,14 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+//프로젝트정보
 public class ProjectInfo extends AppCompatActivity {
     ImageView projectImg;
     TextView name, pw, date, expireDate;
     Button imgBt;
     String imgPath, responseImg;
-    StringBuffer buffer, buffer2;
+    StringBuffer buffer, buffer2, buffer3;
+    Uri uri;
     public static String pname, pkey;
 
     @Override
@@ -73,7 +78,7 @@ public class ProjectInfo extends AppCompatActivity {
         //프로젝트 비밀번호 띄워주기
         InfoPwLoad infoPwLoad = new InfoPwLoad();
         infoPwLoad.execute();
-
+        //프로젝트 생성 날짜와 기간을 로드
         InfoDateLoad infoDateLoad = new InfoDateLoad();
         infoDateLoad.execute();
 
@@ -105,12 +110,14 @@ public class ProjectInfo extends AppCompatActivity {
             case 10:
                 if (resultCode == RESULT_OK) {
                     //선택한 사진의 경로(Uri)객체 얻어오기
-                    Uri uri = data.getData();
+                    uri = data.getData();
 
                     //사진첨부 했을 때
                     if(uri!=null){
-                        projectImg.setImageURI(uri);
                         imgPath= getRealPathFromUri(uri);
+                        projectImg.setImageURI(uri);
+
+                        //프로젝트 사진 로드
                         pic_upload();
                         break;
                     }
@@ -152,16 +159,15 @@ public class ProjectInfo extends AppCompatActivity {
         }
     }
 
+    //프로젝트 사진 로드
     @SuppressLint("LongLogTag")
     public void pic_upload(){
 
-        //서버로 보낼 데이터
-        String id = MainActivity.getsId();
         //프로젝트 이름(문자열)이 들어있는 변수
         pname = ProjectHomeListAdapter.getProjectNameImsi();
         pkey = ProjectHomeListAdapter.getSee();
         String projectName = pname+"_"+pkey;
-        Log.e("projectNAme:::",projectName + "," + imgPath);
+
 
 
         //안드로이드에서 보낼 데이터를 받을 php 서버 주소
@@ -173,8 +179,7 @@ public class ProjectInfo extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //    new AlertDialog.Builder(ProjectHomeFragment2.this).setMessage("응답:" + response).create().show();
-                        Log.e("php응답222222: ",response);
+
                         responseImg = "http://jwab.dothome.co.kr/Android/" +response.trim();
 
                     }
@@ -187,7 +192,6 @@ public class ProjectInfo extends AppCompatActivity {
 
 
         //param값 php로 전송
-        //smpr.addStringParam("id",id);
         smpr.addStringParam("projectName",projectName);
         //이미지 파일 추가
         if(imgPath == null){
@@ -203,7 +207,7 @@ public class ProjectInfo extends AppCompatActivity {
 
     }
 
-    //내정보 탭을 눌렀을 때 프로필사진 바로 띄워줌
+    //프로젝트정보 탭을 눌렀을 때 프로필사진 바로 띄워줌
     public class InfoImgLoad extends AsyncTask<Void, Integer, Void> {
         @SuppressLint("LongLogTag")
         @Override
@@ -266,7 +270,6 @@ public class ProjectInfo extends AppCompatActivity {
         protected Void doInBackground(Void... unused) {
             pname = ProjectHomeListAdapter.getProjectNameImsi();
             pkey = ProjectHomeListAdapter.getSee();
-            String projectName = pname+"_"+pkey;
             String param = "pname=" + pname + "&pkey=" + pkey + "";
             String serverUri = "http://rtemd.suwon.ac.kr/guest/getPassword.php";
 
@@ -289,10 +292,10 @@ public class ProjectInfo extends AppCompatActivity {
                 InputStreamReader isr = new InputStreamReader(is);
                 BufferedReader reader = new BufferedReader(isr);
 
-                buffer = new StringBuffer();
+                buffer3 = new StringBuffer();
                 String line = reader.readLine();
                 while (line != null) {
-                    buffer.append(line + "\n");
+                    buffer3.append(line + "\n");
                     line = reader.readLine();
                 }
             } catch (MalformedURLException e) {
@@ -308,12 +311,12 @@ public class ProjectInfo extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            String setPassword = buffer.toString();
+            String setPassword = buffer3.toString();
             pw.setText(setPassword.trim());
 
         }
     }
-
+    //프로젝트 생성 날짜와 기간을 로드
     public class InfoDateLoad extends AsyncTask<Void, Integer, Void> {
         @SuppressLint("LongLogTag")
         @Override

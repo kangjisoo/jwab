@@ -59,9 +59,9 @@ public class MainActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_CODE_MENU) {
-            Toast.makeText(getApplicationContext(),
-                    "onActivityResult 메서드 호출됨. 요청 코드 : " + requestCode +
-                            ", 결과 코드 : " + resultCode, Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(),
+//                    "onActivityResult 메서드 호출됨. 요청 코드 : " + requestCode +
+//                            ", 결과 코드 : " + resultCode, Toast.LENGTH_LONG).show();
 
             if (resultCode == RESULT_OK) {
                 String name = data.getStringExtra("name");

@@ -33,8 +33,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
-//리사이클러뷰의 Main
 
+//로그인 후 바로 보이는 프로젝트 목록
 public class ProjectHomeRecyclerView extends Fragment {
     ImageButton imageButton;    //플러스버튼
     ItemTouchHelper helper;
@@ -79,14 +79,14 @@ public class ProjectHomeRecyclerView extends Fragment {
 
             }
         });
+
+        //네비게이션바의 사용자 프로필사진 로드
         ProjectHome.profileImgDB profileImgdb = new ProjectHome.profileImgDB();
         profileImgdb.execute();
 
+        //로그인 된 ID에 맞는 프로젝트 가져오기
         MyProjectDB m = new MyProjectDB();
         m.execute();
-
-
-
 
         return rootView;
 
@@ -95,7 +95,6 @@ public class ProjectHomeRecyclerView extends Fragment {
 
     //로그인 된 ID에 맞는 프로젝트 가져오기
     public class MyProjectDB extends AsyncTask<Void, Integer, Void> {
-
 
         @Override
         protected Void doInBackground(Void... unused) {
@@ -133,8 +132,6 @@ public class ProjectHomeRecyclerView extends Fragment {
                 }
                 projectData = buff.toString().trim();
 
-                /* 서버에서 응답 */
-                Log.e("MyProjectDB DATA", projectData);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -149,8 +146,6 @@ public class ProjectHomeRecyclerView extends Fragment {
         public void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            /* 서버에서 응답 */
-            Log.e("ProjectNameString", projectData);
 
             String[] splited = projectData.split("@");
             String projectName2[] = new String[splited.length + 1];
@@ -162,21 +157,19 @@ public class ProjectHomeRecyclerView extends Fragment {
                 //indexOf 몇번째에 있는지 알려주는 변수
                 index = splited[i].indexOf("/");
 
-
                 //substring(0,index) -> 처음부터 index까지만 출력
                 //ex) splited[0]=프로젝트1_0/3 --> 프로젝트 이름: 프로젝트1, projectKey: 0, 총조원 수 : 3명
                 //projectName[0] = 1
                 projectName2[i] = splited[i].substring(0, index);
-                Log.e("split한 프로젝트 이름", projectName2[i]);
+
 
                 //projectLoad에서 사용할 로그인된 사용자의 프로젝트 이름 (프로젝트이름_0@프로젝트이름_1@...)
                 projectNameString = projectNameString + "@" + projectName2[i];
 
 
 
-
             }
-            Log.e("프로젝트이름 어떻게 넘어가나", projectNameString);
+
             ProjectLoad projectLoad = new ProjectLoad();
             projectLoad.execute();
         }
@@ -188,7 +181,6 @@ public class ProjectHomeRecyclerView extends Fragment {
             protected Void doInBackground(Void... unused) {
 
                 String param = "pData=" + projectNameString + "";
-                Log.e("tqtqtqtqtqkfergjawoiergh", projectNameString);
                 String serverUri = "http://jwab.dothome.co.kr/Android/projectHomeLoad.php";
 
                 try {
@@ -236,7 +228,6 @@ public class ProjectHomeRecyclerView extends Fragment {
                 //프로젝트 이름, 조원수
                 String projectNameString = projectData;
 
-                Log.e("imgString", imgString);
                 //문자열로 받아온 이미지 경로를 "@"로 나눠줌
                 String[] imgPath = imgString.split("@");
 
@@ -247,7 +238,6 @@ public class ProjectHomeRecyclerView extends Fragment {
                 //projectName만을 추출
                 String projectName[] = new String[splited.length+1];
 
-                Log.e("projectNameTest= ", Arrays.toString(splited));
 
                 //ItemTouchHelper 생성
                 helper = new ItemTouchHelper(new ItemTouchHelperCallback(adapter));
@@ -272,7 +262,6 @@ public class ProjectHomeRecyclerView extends Fragment {
                     //projectName[0] = 1
                     projectName[i] = splited[i].substring(0, index);
 
-
                     //substring(index+1) -> 찾은 문자부터 끝까지 출력
                     //imsi[0] = 0/3
                     imsi[i] = splited[i].substring(index + 1);
@@ -280,16 +269,11 @@ public class ProjectHomeRecyclerView extends Fragment {
                     //imsi에서 "/"찾기
                     index3 = imsi[i].indexOf("/");
 
-
                     //inn[0] = 0
                     inn[i] = imsi[i].substring(0, index3);
 
-
                     //조원의 총 수를 String 형으로 받아와 int형으로 변환 후 -1 (누구님 외 몇명)
                     countMember[i] = Integer.parseInt(splited[i].substring(index2 + 1)) - 1;
-                    Log.e("projectName[",i+ "]= " + projectName[i]);
-                    Log.e("countMember[",i+ "]= " + String.valueOf(countMember[i]));
-                    Log.e("imgPath[",i+ "]= " + imgPath[i].trim());
 
                     //카드뷰에 프로젝트 이름과 인원수 입력
                     adapter.addItem(new ProjectHomeList(projectName[i], MainActivity.getsId() + "님 외 " + countMember[i] + "명",imgPath[i].trim()));

@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide;
 
 
 import java.util.ArrayList;
-
+//BoardMainRecycler의 어댑터
 public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.ViewHolder>
                                 implements BoardItemClickListener {
     LayoutInflater inflater;

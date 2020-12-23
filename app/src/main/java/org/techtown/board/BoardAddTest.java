@@ -59,7 +59,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
+//게시글 추가하는 클래스
 public class BoardAddTest extends AppCompatActivity {
 
     EditText etName, etMsg;
@@ -104,9 +104,7 @@ public class BoardAddTest extends AppCompatActivity {
 
 
         //업로드 하려면 외부저장소 권한 필요
-        //동적 퍼미션 코드 필요..
-
-
+        //동적 퍼미션 코드 필요.
         //동적퍼미션 작업
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int permissionResult = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -157,7 +155,7 @@ public class BoardAddTest extends AppCompatActivity {
     }//onCreate() ..
 
 
-
+    //메모리 접근권한
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -176,11 +174,9 @@ public class BoardAddTest extends AppCompatActivity {
     }
 
     public void clickBtn(View view) {
-
         //갤러리 or 사진 앱 실행하여 사진을 선택하도록..
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-//        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, 10);
@@ -190,11 +186,6 @@ public class BoardAddTest extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) {
-            iv1.setImageResource(0);
-            iv2.setImageResource(0);
-            iv3.setImageResource(0);
-            iv4.setImageResource(0);
-            iv5.setImageResource(0);
 
             Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
 
@@ -274,7 +265,6 @@ public class BoardAddTest extends AppCompatActivity {
 
         @SuppressLint("LongLogTag")
         public void clickUpload(){
-
             //서버로 보낼 데이터
             String name = etName.getText().toString();
             String contents = etMsg.getText().toString();
@@ -292,7 +282,7 @@ public class BoardAddTest extends AppCompatActivity {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Log.e("응답", response);
+
                           //  new AlertDialog.Builder(BoardAddTest.this).setMessage("응답:" + response).create().show();
 
                 Intent intent = new Intent(BoardAddTest.this, BoardMainRecycler.class);
@@ -308,7 +298,7 @@ public class BoardAddTest extends AppCompatActivity {
             });
 
             String profileImg = InnerMainRecycler.myContents;   //게시물 올리는 사용자의 프로필사진 경로
-            Log.e("BoardAddTest ImgPath", profileImg);
+
 
             //param값 php로 전송
             smpr.addStringParam("id",id);
@@ -384,13 +374,10 @@ public class BoardAddTest extends AppCompatActivity {
             SimpleDateFormat mFormat = new SimpleDateFormat("yyyy/MM/dd");
             String time = mFormat.format(date);
 
-            Log.e("notice Time check", time);
 
             String projectInfo = pname+"_"+pkey;
 
             String param = "u_nId="+pId+"&u_nContents="+boardTitle+"&u_nDate="+time+"&u_nProjectInfo="+projectInfo+"&u_nKind="+"게시판"+"";
-            //Check param
-            Log.e("VoteMain.param", param);
 
             try {
                 /* 서버연결 */
@@ -420,10 +407,6 @@ public class BoardAddTest extends AppCompatActivity {
                     buff.append(line + "\n");
                 }
                 data = buff.toString().trim();
-
-                /* 서버에서 응답 */
-                Log.e("notice  : ", data);
-
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();

@@ -33,22 +33,21 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-
+//게시물의 목록(리사이클러뷰)을 띄워주는 클래스
 public class BoardMainRecycler extends AppCompatActivity {
     RecyclerView recyclerView;
     ImageButton imageButton;
     BoardList item;
     ArrayList<BoardList> boardList = new ArrayList<>();
-    static String title, writer, date,Contents;
+    static String title, writer, date;
     public static String getsTitle() { return title; }
     public static String getsWriter(){return writer;}
     public static String getsDate(){return date;}
-
     private static String pname, pkey;
 
-
-
     StringBuffer buffer = new StringBuffer();
+
+    //오른쪽 상단 메뉴
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -60,9 +59,8 @@ public class BoardMainRecycler extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        툴바의 옵션메뉴 동작
-//        setHasOptionsMenu(true);
         setContentView(R.layout.board_main);
+
         BoardAdapter adapter = new BoardAdapter(getLayoutInflater(),boardList);
         recyclerView = (RecyclerView) findViewById(R.id.board_recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -80,7 +78,7 @@ public class BoardMainRecycler extends AppCompatActivity {
             }
         });
 
-
+        //게시물 목록을 로드해줌
         loadDB loaddb = new loadDB();
         loaddb.execute();
 
@@ -180,13 +178,5 @@ public class BoardMainRecycler extends AppCompatActivity {
 
         }
     }
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//        BoardMainRecycler.this.finish();
-//        Intent intent = new Intent(BoardMainRecycler.this, InnerMainRecycler.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        startActivity(intent);
-//
-//    }
+
 }

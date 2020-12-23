@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 
 import org.techtown.loginactivity.R;
 
+//게시글의 이미지를 클릭했을 때 실행되는 클래스
 public class BoardImgClick extends AppCompatActivity {
     ImageView imageView;
 

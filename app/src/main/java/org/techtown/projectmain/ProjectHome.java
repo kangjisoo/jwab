@@ -45,16 +45,14 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-//ProjectHome메인
 
 
+//로그인직후 최상단 액티비티
 public class ProjectHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentCallback {
     ProjectHomeRecyclerView fragment0; //로그인 후 첫화면
     ProjectHomeFragment1 fragment1;
     ProjectHomeFragment2 fragment2;
-    ProjectHomeFragment3 fragment3;
-    ProjectBottomMenu1 bottom_menu1;
-    ProjectBottomMenu2 bottom_menu2;
+
     ProjectBottomMenu3 bottom_menu3;
     ProjectBottomMenu4 bottom_menu4;
     ProjectHelp projectHelp;
@@ -66,7 +64,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
     public static View headerView;
     DrawerLayout drawer;
     Toolbar toolbar;
-    public static String t1;
+    public static String t1;        //네비게이션바의 사용자 이름을 담은 변수
     private ProjectHome Context;
     private long lastTimeBackPressed;
 
@@ -123,10 +121,7 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
 
         //하단바 내 정보탭
         fragment2 = new ProjectHomeFragment2();
-        fragment3 = new ProjectHomeFragment3();
 
-        bottom_menu1 = new ProjectBottomMenu1();
-        bottom_menu2 = new ProjectBottomMenu2();
 
         //슬라이드 도움말 탭
         projectHelp = new ProjectHelp();
@@ -213,14 +208,6 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
         return true;
     }
 
-//        @Override
-//        public void onBackPressed () {
-//            if (drawer.isDrawerOpen(GravityCompat.START)) {
-//                drawer.closeDrawer(GravityCompat.START);
-//            } else {
-//                super.onBackPressed();
-//            }
-//        }
 
         //슬라이드메뉴
         @Override
@@ -272,16 +259,10 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
                 //
                 curFragment = bottom_menu3;
                 toolbar.setTitle("내 활동");
-            } else if (position == 2) {
-                curFragment = fragment3;
-                toolbar.setTitle("세 번째 화면");
             } else if (position == 3) {
                 curFragment = fragment0;
                 toolbar.setTitle("프로젝트 홈");
-            } else if (position == 4) {
-                curFragment = bottom_menu2;
-                toolbar.setTitle("두 번째 탭");
-            } else if (position == 5) {
+            }  else if (position == 5) {
                 curFragment = fragment2;
                 //
                 toolbar.setTitle("내 정보");
@@ -363,6 +344,8 @@ public class ProjectHome extends AppCompatActivity implements NavigationView.OnN
             return null;
         }
     }
+
+    //네비게이션바의 사용자 프로필사진 로드(ProjectHomeRecycler에서 사용)
     public static class profileImgDB extends com.android.volley.misc.AsyncTask<Void, Integer, Void> {
 
 

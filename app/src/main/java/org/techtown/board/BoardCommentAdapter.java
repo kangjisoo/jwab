@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 import org.techtown.loginactivity.R;
 
 import java.util.ArrayList;
-
+//BoardView의 어댑터(댓글)
 public class BoardCommentAdapter extends RecyclerView.Adapter<BoardCommentAdapter.ViewHolder> {
     LayoutInflater inflater;
     ArrayList<BoardCommentList> items = new ArrayList<>();

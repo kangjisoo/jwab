@@ -176,7 +176,6 @@ public class ProjectHomeFragment2 extends Fragment implements onBackPressedListe
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) {
-            //profile_pic.setImageResource(0);
             Toast.makeText(getContext(), "취소 되었습니다.", Toast.LENGTH_SHORT).show();
 
             return;

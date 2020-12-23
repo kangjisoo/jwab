@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 
 
 import java.util.ArrayList;
-
+//BoardView의 어댑터(이미지)
 public class BoardViewAdapter extends BaseAdapter{
     LayoutInflater inflater;
     ArrayList<BoardViewList> boardViewLists;

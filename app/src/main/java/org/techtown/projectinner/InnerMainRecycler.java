@@ -56,29 +56,24 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.channels.InterruptedByTimeoutException;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.techtown.projectmain.ProjectHomeListAdapter;
-
-import kotlinx.coroutines.internal.LockFreeLinkedListHead;
 
 //프로젝트에 들어갔을 때 보이는 사용자들의 프로필
 public class InnerMainRecycler extends Fragment {
-    Context context;
     BoardMainRecycler boardMainRecycler;
-    public static String personIdString;
-    public static String Contents, myContents;
+
+
+    public static String personIdString;          //멤버들의 id 문자열을 담은 변수
+
+    public static String Contents, myContents;   //멤버들의 프로필사진경로, 나의 프로필사진 경로
 
     RecyclerView recyclerView;
     private String[] splited2;
-    private String message;
+    private String message;                     //멤버들의 상태메시지
     private static String pname;
     private static String pkey;
     private StringBuffer buffer;
-    private static String[] onlyName;
-    private static String[] splitedMessage;
+    private static String[] onlyName;            //로그인된 사용자의 이름
+    private static String[] splitedMessage;        //로그인된 사용자의 상태메시지
     private ImageButton inner_Project_memberBt;
 
 
@@ -111,13 +106,15 @@ public class InnerMainRecycler extends Fragment {
         recyclerView.setAdapter(adapter);
         inner_Project_memberBt = rootView.findViewById(R.id.inner_project_memberBt);
 
-
+        //선택된 프로젝트에 속한 팀원들의 id를 가져오는 DB
         InnerDB innerDB = new InnerDB();
         innerDB.execute();
 
+        //로그인된 사용자의 프로필사진을 띄워주는 클래스
         myProfileImgDB myProfileImgdb = new myProfileImgDB();
         myProfileImgdb.execute();
 
+        //멤버들의 프로필을 받아오는 클래스
         profileImgDB profileImgdb = new profileImgDB();
         profileImgdb.execute();
 
@@ -140,6 +137,7 @@ public class InnerMainRecycler extends Fragment {
         inflater.inflate(R.menu.inner_menu, menu);
     }
 
+    //오른쪽 상단의 메뉴바 설정
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -330,7 +328,7 @@ public class InnerMainRecycler extends Fragment {
                 nameIndex = splited[i].indexOf("_");
 
                 //onlyName[0] = "이름"
-                          onlyName[i] = splited[i].substring(0,nameIndex);
+                onlyName[i] = splited[i].substring(0,nameIndex);
 
                 //로그인 된 아이디와 이름을 비교하여 나의 프로필이면 제일 상단의 카드뷰에 내 프로필 삽입
                 /*네비게이션뷰의 이름과 splited[i]를 비교, 네비게이션뷰의 아이디와 프로젝트에 삽입된 아이디를 and 연산하여
@@ -521,8 +519,9 @@ public class InnerMainRecycler extends Fragment {
             myMessage.setText(data);
         }
     }
-    public class myProfileImgDB extends com.android.volley.misc.AsyncTask<Void, Integer, Void> {
 
+    //로그인된 사용자의 프로필사진을 띄워주는 클래스
+    public class myProfileImgDB extends com.android.volley.misc.AsyncTask<Void, Integer, Void> {
 
         @SuppressLint("LongLogTag")
         @Override
@@ -579,10 +578,8 @@ public class InnerMainRecycler extends Fragment {
 
         }
     }
-
+    //멤버들의 프로필을 받아오는 클래스
     public class profileImgDB extends com.android.volley.misc.AsyncTask<Void, Integer, Void> {
-
-
         @SuppressLint("LongLogTag")
         @Override
         protected Void doInBackground(Void... unused) {
@@ -637,7 +634,7 @@ public class InnerMainRecycler extends Fragment {
             String[] userName = new String[splited.length];
             String[] userImg = new String[splited.length];
 
-            Log.e("크기 : ",splited.length+"");
+
             //personName만을 추출
             for (int i = 1; i < splited.length; i++) {
                 //"splited = 이름_상메" 형태로 되어있음. "_"로 구분해야하므로 이름과 상메 인덱스에 위치 저장
@@ -647,8 +644,6 @@ public class InnerMainRecycler extends Fragment {
                 //onlyName[0] = "이름"
                 userName[i] = splited[i].substring(0,nameIndex);
                 userImg[i] = splited[i].substring(pathIndex+1);
-
-                Log.e("userImg[i]",userImg[i]);
 
                 //로그인 된 아이디와 이름을 비교하여 나의 프로필이면 제일 상단의 카드뷰에 내 프로필 삽입
                 /*네비게이션뷰의 이름과 splited[i]를 비교, 네비게이션뷰의 아이디와 프로젝트에 삽입된 아이디를 and 연산하여
