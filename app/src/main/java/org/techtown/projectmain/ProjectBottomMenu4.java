@@ -1,28 +1,22 @@
 package org.techtown.projectmain;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.android.volley.misc.AsyncTask;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
-import org.techtown.randomgame.RandomGameFirst;
-import org.techtown.randomgame.RandomGameSecond;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,7 +27,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
+
 
 //하단바 알림 탭
 public class ProjectBottomMenu4 extends Fragment implements onBackPressedListener{
@@ -87,13 +81,14 @@ public class ProjectBottomMenu4 extends Fragment implements onBackPressedListene
         String data = "";
         String pId = MainActivity.getsId();
 
+        @SuppressLint("LongLogTag")
         @Override
         protected Void doInBackground(Void... unused) {
 
             String param = "u_id="+pId+"";
 
             //Check param
-            Log.e("ProjectBottomMenu4: ", param);
+            Log.e("ProjectBottomMenu4.param: ", param);
 
             try {
                 /* 서버연결 */
@@ -147,7 +142,7 @@ public class ProjectBottomMenu4 extends Fragment implements onBackPressedListene
             int noticeCount = 0;
             noticeCount = firstDiv.length;
 
-            Log.e("values check", Arrays.toString(firstDiv));
+
 
             int sequence, sequence2, sequence3, sequence4, sequence5;
             String[] getWriteId = new String[noticeCount];

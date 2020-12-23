@@ -18,14 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 import org.techtown.projectinner.InnerMainRecycler;
-import org.techtown.randomgame.RandomGameSecond;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -185,7 +183,7 @@ public class VoteDP extends AppCompatActivity {
             String param = "u_projectName="+pname+"&u_projectKey="+pkey+"&u_myId="+myId+"";
 
             //Check param
-            Log.e("POST.param", param);
+            Log.e("VoteDp param: ", param);
 
             try {
                 /* 서버연결 */
@@ -235,7 +233,6 @@ public class VoteDP extends AppCompatActivity {
 
             String[] div = voteListPrint.split("@");
             itemCount= div.length;
-            Log.e("체크", Arrays.toString(div));
 
             //받아온 값 나누기
             int sequence, sequenceS;
@@ -257,9 +254,6 @@ public class VoteDP extends AppCompatActivity {
                 getVoteKey[i] = getVoteInfo[i].substring(0,sequenceS);
                 getSelect[i] = getVoteInfo[i].substring(sequenceS+1);
 
-                Log.e("투표이름 :",getVoteName[i]);
-                Log.e("투표키 :",getVoteKey[i]);
-                Log.e("투표선택 :",getSelect[i]);
 
                 if(Integer.parseInt(getSelect[i])>0){
                     VoteDPData newVoteDpData = new VoteDPData(getVoteName[i],"참여",Integer.parseInt(getVoteKey[i]));

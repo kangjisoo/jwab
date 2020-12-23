@@ -1,5 +1,6 @@
 package org.techtown.vote;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -17,13 +18,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.navigation.NavigationView;
 
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
-import org.techtown.loginactivity.SignActivty;
 import org.techtown.projectinner.InnerMainRecycler;
-import org.techtown.projectmain.ProjectAdd;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -266,7 +264,6 @@ public class VoteMain extends AppCompatActivity {
             cal.add(Calendar.DATE,3);
             String deathDate = mFormat.format(cal.getTime());
 
-            Log.e("deathDate check", deathDate);
 
             //투표 목록을 합쳐서 변수에 저장
             for (int i =0; i<listNum; i++){
@@ -279,7 +276,7 @@ public class VoteMain extends AppCompatActivity {
             String param = "u_voteProjectName=" + pname + "&u_voteProjectPrk="+ pkey +"&u_voteName="+voteTitle+"&u_voteList="+voteAllList+"&u_voteListCount="+(listNum+1)+"&u_voteDate="+deathDate+"";
 
             //Check param
-            Log.e("POST.param", param);
+            Log.e("voteMain.param", param);
 
             try {
                 /* 서버연결 */
@@ -311,7 +308,7 @@ public class VoteMain extends AppCompatActivity {
                 data = buff.toString().trim();
 
                 /* 서버에서 응답 */
-                Log.e("getVoteTitleKey : ", data);
+                Log.e("voteMain : ", data);
                 voteNameAndKey = data;
 
 
@@ -331,6 +328,7 @@ public class VoteMain extends AppCompatActivity {
         String pkey = InnerMainRecycler.getPkey();
         String pId = MainActivity.getsId();
 
+        @SuppressLint("LongLogTag")
         @Override
         protected Void doInBackground(Void... unused) {
 
@@ -342,13 +340,11 @@ public class VoteMain extends AppCompatActivity {
             SimpleDateFormat mFormat = new SimpleDateFormat("yyyy/MM/dd");
             String time = mFormat.format(date);
 
-            Log.e("notice Time check", time);
-
             String projectInfo = pname+"_"+pkey;
 
             String param = "u_nId="+pId+"&u_nContents="+voteTitle+"&u_nDate="+time+"&u_nProjectInfo="+projectInfo+"&u_nKind="+"투표"+"";
             //Check param
-            Log.e("VoteMain.param", param);
+            Log.e("VoteMain.setNotice.param", param);
 
             try {
                 /* 서버연결 */
@@ -380,7 +376,7 @@ public class VoteMain extends AppCompatActivity {
                 data = buff.toString().trim();
 
                 /* 서버에서 응답 */
-                Log.e("notice  : ", data);
+                Log.e("voteMain.Set  : ", data);
 
 
             } catch (MalformedURLException e) {

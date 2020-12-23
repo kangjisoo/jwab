@@ -2,13 +2,11 @@ package org.techtown.projectmain;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -36,19 +34,10 @@ import com.android.volley.misc.AsyncTask;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.signature.ObjectKey;
-import com.google.android.material.navigation.NavigationView;
 
-import org.techtown.board.BoardAddTest;
-import org.techtown.board.BoardMainRecycler;
-import org.techtown.board.BoardView;
-import org.techtown.board.BoardViewList;
 import org.techtown.loginactivity.MainActivity;
 import org.techtown.loginactivity.R;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,9 +46,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 
-import static org.techtown.projectmain.ProjectHome.headerView;
 
 //하단바 내정보 탭
 public class ProjectHomeFragment2 extends Fragment implements onBackPressedListener{

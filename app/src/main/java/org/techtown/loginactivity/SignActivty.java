@@ -168,7 +168,7 @@ public class SignActivty extends AppCompatActivity {
 
             /* 인풋 파라메터값 생성 */
             String param = "u_id=" + sid + "";
-            Log.e("POST",param);
+            Log.e("signActivity.param:",param);
             try {
                 /* 서버연결 */
                 URL url = new URL(
@@ -202,7 +202,7 @@ public class SignActivty extends AppCompatActivity {
 
 
                 /* 서버에서 응답 */
-                Log.e("RECV DATA1",data);
+                Log.e("signActivity: ",data);
 
                 if(data.equals("0"))
                 {
@@ -229,7 +229,7 @@ public class SignActivty extends AppCompatActivity {
             super.onPostExecute(aVoid);
 
             /* 서버에서 응답 */
-            Log.e("RECV DATA2",data);
+            Log.e("signActivity.param2:",data);
 
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
 
@@ -321,7 +321,7 @@ public class SignActivty extends AppCompatActivity {
             /* 인풋 파라메터값 생성 */
 
             String param = "u_name=" + sname + "&u_phone=" + sphone + "&u_id=" + sid + "&u_pw=" + spw + "&u_pwck=" + spwck + "";
-            Log.e("POST", param);
+            Log.e("signActivity.param3:", param);
             try {
                 /* 서버연결 */
                 URL url = new URL(
@@ -354,7 +354,7 @@ public class SignActivty extends AppCompatActivity {
                 }
                 data = buff.toString().trim();
 
-                Log.e("RECV DATA3", data);
+                Log.e("signActivity3:", data);
 
                 if (data.equals("0")) {
                     if(idDoubleCheck==false){

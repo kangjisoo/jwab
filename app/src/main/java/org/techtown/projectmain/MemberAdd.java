@@ -261,7 +261,7 @@ public class MemberAdd extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... unused) {
             String param = "u_id=" + stridPhone + "&pname=" + projectName + "";
-            Log.e("POST", param);
+            Log.e("memberAdd.param: ", param);
             try {
 
                 /* 서버연결 */
@@ -313,10 +313,8 @@ public class MemberAdd extends AppCompatActivity {
 
             //php에서 오는 data를 받아 비교
             // 1이면 같은 아이디 없음
+            //0이면 추가 가능한 조원
             if (data.equals("0")){
-
-                Log.e("RESULT", "추가 가능한 조원");
-
 
                 //ProjectPerson tmp를 null값으로 초기화 시키고 tmp에 추가할 데이터 값인 newMember를 대입
                 ProjectPerson tmp = null;
@@ -330,7 +328,6 @@ public class MemberAdd extends AppCompatActivity {
 
                     //insert_text에 값이 들어가 있는 stridPhone과 tmp안에 SearchId를 받아서 비교 같으면 반복문 나오기
                     if (stridPhone.equals(tmp.getSearchId())){
-                        Log.e("RESULT","이미 추가된 조원");
 
                         Toast.makeText(MemberAdd.this, "이미 추가된 조원 입니다.", Toast.LENGTH_LONG).show();
                         alreadyExistIdCheck=true;
@@ -374,19 +371,16 @@ public class MemberAdd extends AppCompatActivity {
 
             //db에서 없는 아이디이면 data 1을 출력
             else if (data.equals("1")) {
-                Log.e("RESULT", "찾을 수 없는 아이디");
                 Toast.makeText(MemberAdd.this, "찾을 수 없는 아이디 입니다.", Toast.LENGTH_LONG).show();
             }
 
             //입력창이 비어 있으면 data -1을 출력
             else if (data.equals("-1")){
-                Log.e("RESULT", "입력창이 빈칸");
                 Toast.makeText(MemberAdd.this, "입력창이 비어 있습니다.", Toast.LENGTH_LONG).show();
             }
 
             //이미 프로젝트에 존재하는 멤버이면 2를 출력
             else if (data.equals("2")){
-                Log.e("RESULT", "이미 프로젝트에 존재하는 멤버");
                 Toast.makeText(MemberAdd.this, "이미 프로젝트 멤버입니다.", Toast.LENGTH_LONG).show();
             }
 
@@ -412,7 +406,6 @@ public class MemberAdd extends AppCompatActivity {
             String partner[] = new String[countMember];
             String param = "u_member=";
 
-            Log.e("확인", countMember+"");
 
             for (int i = 0; i<countMember; i++) {
 
@@ -428,7 +421,7 @@ public class MemberAdd extends AppCompatActivity {
             //u_member=조원1아이디,조원2아이디,조원3아이디....&pname=프로젝트이름
             param= param.concat("&pname=" + pname +"&pkey="+ pkey + "&howManyMember=" + (countMember) + "");
 
-            Log.e("POST", param);
+            Log.e("memberAdd.param : ", param);
             try {
 
                 /* 서버연결 */
